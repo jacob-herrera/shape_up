@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfwo7r5if2e3u"]
+
+[ext_resource type="Shader" path="res://shader/ntsc.gdshader" id="1_vcgab"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnstk"]
+shader = ExtResource("1_vcgab")
+shader_parameter/SCREEN_SIZE = Vector2(640, 480)
+
+[node name="ScreenShader" type="CanvasLayer"]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_dnstk")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

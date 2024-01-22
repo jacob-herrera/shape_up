@@ -1,24 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://cqsm78eiwy8rh"]
+[gd_scene load_steps=6 format=3 uid="uid://cqsm78eiwy8rh"]
 
-[ext_resource type="Script" path="res://scripts/character.gd" id="1_453jv"]
 [ext_resource type="Material" uid="uid://n1fviqbjybdf" path="res://mat/grass.tres" id="1_xipre"]
-[ext_resource type="Script" path="res://scripts/camera.gd" id="2_bmm0x"]
+[ext_resource type="PackedScene" uid="uid://qhuvdggdf4tv" path="res://scenes/character.tscn" id="2_nrxvm"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
-[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="4_qrodg"]
-[ext_resource type="Shader" path="res://shader/ntsc.gdshader" id="5_g68pg"]
-[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="5_okxhu"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnstk"]
-shader = ExtResource("5_g68pg")
-shader_parameter/SCREEN_SIZE = Vector2(640, 480)
 
 [node name="Node3D" type="Node3D"]
 
@@ -32,37 +20,7 @@ transform = Transform3D(25, 0, 0, 0, -1.09278e-06, 25, 0, -25, -1.09278e-06, 0, 
 material_override = ExtResource("1_xipre")
 mesh = SubResource("QuadMesh_yoqv7")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-script = ExtResource("1_453jv")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-shape = SubResource("CylinderShape3D_cc7ui")
-
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-fov = 90.0
-script = ExtResource("2_bmm0x")
-
-[node name="DropShadow" type="MeshInstance3D" parent="CharacterBody3D"]
-transform = Transform3D(2, 0, 0, 0, -8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 0, 0)
-top_level = true
-material_override = ExtResource("4_qrodg")
-mesh = SubResource("QuadMesh_lwswg")
-skeleton = NodePath("../..")
-script = ExtResource("5_okxhu")
+[node name="Character" parent="." instance=ExtResource("2_nrxvm")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_knkit")
-
-[node name="ScreenShader" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="ColorRect" type="ColorRect" parent="ScreenShader"]
-material = SubResource("ShaderMaterial_dnstk")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2

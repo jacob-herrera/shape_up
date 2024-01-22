@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://qhuvdggdf4tv"]
+
+[ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="3_p8w7e"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="4_7rsg4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
+
+[node name="Character" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+script = ExtResource("1_3xlau")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_cc7ui")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+fov = 90.0
+script = ExtResource("2_34f15")
+
+[node name="DropShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 0, 0)
+top_level = true
+material_override = ExtResource("3_p8w7e")
+mesh = SubResource("QuadMesh_lwswg")
+skeleton = NodePath("../..")
+script = ExtResource("4_7rsg4")
