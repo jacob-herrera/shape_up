@@ -1,6 +1,7 @@
 extends Node3D
 
 const MAX_BULLETS: int = 1024
+const BULLET_GRAV: float = -50.0
 
 class Bullet extends Object:
 	var active: bool
@@ -9,9 +10,14 @@ class Bullet extends Object:
 	
 var bullets: Array[Bullet]
 
+var params: PhysicsRayQueryParameters3D
+var space: PhysicsDirectSpaceState3D
+
 @export var bb_mesh: PackedScene = preload("res://scenes/bb.tscn")
 	
 func _enter_tree() -> void:
+	space = get_world_3d().direct_space_state
+	params = PhysicsRayQueryParameters3D.new()
 	bullets = []
 	for i in MAX_BULLETS:
 		var mesh: MeshInstance3D = bb_mesh.instantiate() as MeshInstance3D
@@ -31,8 +37,17 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
 	for bullet: Bullet in bullets:
 		if not bullet.active: continue
+		bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
+		var start: Vector3 = bullet.mesh.global_transform.origin
 		var motion: Vector3 = bullet.velocity * delta
-		bullet.mesh.global_transform.origin += motion
+		params.from = start
+		params.to = start + motion
+		var result: Dictionary = space.intersect_ray(params)
+		if not result.is_empty():
+			bullet.velocity = bullet.velocity.bounce(result.normal)
+			bullet.mesh.global_transform.origin = result.position + Vector3(0, 0.01, 0)
+		else:
+			bullet.mesh.global_transform.origin += motion
 		if bullet.mesh.global_transform.origin.length() > 100:
 			bullet.active = false
 			bullet.mesh.visible = false
