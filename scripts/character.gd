@@ -14,6 +14,7 @@ const JUMP_VEL: float = 2.0 * JUMP_HEIGHT / JUMP_TIME_TO_PEAK
 const GRAVITY: float = (-2.0 * JUMP_HEIGHT) / (JUMP_TIME_TO_PEAK * JUMP_TIME_TO_PEAK)
 
 @onready var camera: Camera3D = $Camera3D
+const bb: PackedScene = preload("res://scenes/bb.tscn")
 
 var grounded: bool = false
 
@@ -37,6 +38,13 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	grounded = is_on_floor()
+	
+	if Controls.get_primary_attack():
+		print("shoot")
+		var BB: Node = bb.instantiate()
+		#BB.scale = Vector3.ONE * 0.025
+		BB.global_transform.origin = global_transform.origin
+		get_tree().current_scene.add_child(BB)
 
 func get_wish_dir() -> Vector3:
 	var move_input: Vector2 = Controls.get_move_input().normalized()

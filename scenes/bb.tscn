@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjfcn7l7jfcxr"]
+
+[ext_resource type="Shader" path="res://shader/bb.gdshader" id="1_psye5"]
+[ext_resource type="ArrayMesh" uid="uid://chypsrfwiijl7" path="res://models/BB.obj" id="2_enp45"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_prj4x"]
+render_priority = 0
+shader = ExtResource("1_psye5")
+shader_parameter/previous_position = null
+shader_parameter/new_position = null
+shader_parameter/intensity = 1.0
+shader_parameter/freq = 1.0
+shader_parameter/delta = null
+
+[node name="BB" type="MeshInstance3D"]
+material_override = SubResource("ShaderMaterial_prj4x")
+mesh = ExtResource("2_enp45")
