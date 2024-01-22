@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.2", "Mobile")
 Controls="*res://scripts/controls.gd"
 Menu="*res://scenes/menu.tscn"
 HUD="*res://scenes/hud.tscn"
+BulletServer="*res://scripts/bullet_server.gd"
 
 [display]
 

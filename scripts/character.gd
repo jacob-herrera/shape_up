@@ -42,9 +42,7 @@ func _physics_process(delta: float) -> void:
 	grounded = is_on_floor()
 	
 	if Controls.get_primary_attack():
-		var BB: Node = bb.instantiate()
-		get_tree().current_scene.add_child(BB)
-		BB.global_transform.origin = global_transform.origin
+		BulletServer.fire_bullet(global_transform.origin, -camera.global_basis.z * 100)
 
 func get_wish_dir() -> Vector3:
 	var move_input: Vector2 = Controls.get_move_input().normalized()

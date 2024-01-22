@@ -1,26 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bjfcn7l7jfcxr"]
+[gd_scene load_steps=3 format=3 uid="uid://bjfcn7l7jfcxr"]
 
-[ext_resource type="Shader" path="res://shader/bb.gdshader" id="1_psye5"]
+[ext_resource type="Material" uid="uid://cb5x7kfnjb6c7" path="res://mat/mat_bb.tres" id="1_uxtty"]
 [ext_resource type="ArrayMesh" uid="uid://chypsrfwiijl7" path="res://models/BB.obj" id="2_enp45"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6o8js"]
-render_priority = 0
-shader = ExtResource("1_psye5")
-shader_parameter/previous_position = null
-shader_parameter/new_position = null
-shader_parameter/intensity = 1.0
-shader_parameter/freq = 1.0
-shader_parameter/delta = null
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_4n252"]
-radius = 0.25
-
-[node name="BB" type="RigidBody3D"]
-collision_layer = 4
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_6o8js")
+[node name="BB" type="MeshInstance3D"]
+material_override = ExtResource("1_uxtty")
 mesh = ExtResource("2_enp45")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_4n252")
