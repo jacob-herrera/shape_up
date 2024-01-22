@@ -43,6 +43,7 @@ func _physics_process(delta: float) -> void:
 	
 	if Controls.get_primary_attack():
 		BulletServer.fire_bullet(global_transform.origin, -camera.global_basis.z * 100)
+		velocity += camera.global_basis.z * 0.75
 
 func get_wish_dir() -> Vector3:
 	var move_input: Vector2 = Controls.get_move_input().normalized()

@@ -39,16 +39,18 @@ func _process(delta: float) -> void:
 		if not bullet.active: continue
 		bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
 		var start: Vector3 = bullet.mesh.global_transform.origin
-		var motion: Vector3 = bullet.velocity * delta
+		var end: Vector3 = start + (bullet.velocity * delta)
 		params.from = start
-		params.to = start + motion
+		params.to = end
 		var result: Dictionary = space.intersect_ray(params)
 		if not result.is_empty():
 			bullet.velocity = bullet.velocity.bounce(result.normal)
+			bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 2
 			bullet.mesh.global_transform.origin = result.position + Vector3(0, 0.01, 0)
 		else:
-			bullet.mesh.global_transform.origin += motion
-		if bullet.mesh.global_transform.origin.length() > 100:
+			bullet.mesh.global_transform.origin = end
+			
+		if bullet.mesh.global_transform.origin.length() > 100 or bullet.velocity.length() < 1:
 			bullet.active = false
 			bullet.mesh.visible = false
 
