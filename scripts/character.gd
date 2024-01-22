@@ -32,8 +32,10 @@ func _physics_process(delta: float) -> void:
 	
 	velocity.y += GRAVITY * delta;
 	
-	if velocity.length() > SPEED_CAP:
-		velocity = velocity.normalized() * SPEED_CAP
+	var flat_vel := Vector3(velocity.x, 0, velocity.z)
+	if flat_vel.length() > SPEED_CAP:
+		flat_vel = flat_vel.normalized() * SPEED_CAP
+		velocity = Vector3(flat_vel.x, velocity.y, flat_vel.z)
 	
 	move_and_slide()
 	
