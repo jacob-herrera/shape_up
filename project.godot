@@ -20,6 +20,7 @@ Controls="*res://scripts/controls.gd"
 Menu="*res://scenes/menu.tscn"
 HUD="*res://scenes/hud.tscn"
 BulletServer="*res://scripts/bullet_server.gd"
+Math="*res://scripts/math.gd"
 
 [display]
 

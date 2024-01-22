@@ -1,8 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjfcn7l7jfcxr"]
+[gd_scene load_steps=6 format=3 uid="uid://bjfcn7l7jfcxr"]
 
 [ext_resource type="Material" uid="uid://cb5x7kfnjb6c7" path="res://mat/mat_bb.tres" id="1_uxtty"]
 [ext_resource type="ArrayMesh" uid="uid://chypsrfwiijl7" path="res://models/BB.obj" id="2_enp45"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="3_imowr"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="4_ijqq3"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_637gk"]
 
 [node name="BB" type="MeshInstance3D"]
 material_override = ExtResource("1_uxtty")
 mesh = ExtResource("2_enp45")
+
+[node name="DropShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, 1, 0, -0.3, -4.37114e-08, 0, 0, 0)
+top_level = true
+material_override = ExtResource("3_imowr")
+mesh = SubResource("QuadMesh_637gk")
+skeleton = NodePath("../..")
+script = ExtResource("4_ijqq3")

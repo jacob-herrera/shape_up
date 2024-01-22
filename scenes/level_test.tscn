@@ -16,7 +16,7 @@
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-transform = Transform3D(50, 0, 0, 0, -2.18557e-06, 1, 0, -50, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(100, 0, 0, 0, -4.37114e-06, 1, 0, -100, -4.37114e-08, 0, 0, 0)
 material_override = ExtResource("1_xipre")
 mesh = SubResource("QuadMesh_yoqv7")
 

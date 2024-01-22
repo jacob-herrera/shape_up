@@ -1,12 +1,13 @@
 extends Node3D
 
 const MAX_BULLETS: int = 1024
-const BULLET_GRAV: float = -50.0
+const BULLET_GRAV: float = -30.0
 
 class Bullet extends Object:
 	var active: bool
 	var velocity: Vector3
 	var mesh: MeshInstance3D
+	var bounces: int
 	
 var bullets: Array[Bullet]
 
@@ -28,6 +29,7 @@ func _enter_tree() -> void:
 		bullet.active = false
 		bullet.mesh = mesh
 		bullet.velocity = Vector3.ZERO
+		bullet.bounces = 0
 		bullets.push_back(bullet)
 		
 func _exit_tree() -> void:
@@ -45,12 +47,14 @@ func _process(delta: float) -> void:
 		var result: Dictionary = space.intersect_ray(params)
 		if not result.is_empty():
 			bullet.velocity = bullet.velocity.bounce(result.normal)
-			bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 2
+			bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 4
 			bullet.mesh.global_transform.origin = result.position + Vector3(0, 0.01, 0)
+			bullet.bounces += 1
 		else:
 			bullet.mesh.global_transform.origin = end
 			
-		if bullet.mesh.global_transform.origin.length() > 100 or bullet.velocity.length() < 1:
+		var pos: Vector3 = bullet.mesh.global_transform.origin
+		if bullet.bounces > 3 or pos.x > 200 or pos.y > 200:
 			bullet.active = false
 			bullet.mesh.visible = false
 
@@ -61,4 +65,5 @@ func fire_bullet(pos: Vector3, vel: Vector3) -> void:
 			bullet.mesh.visible = true 
 			bullet.mesh.global_transform.origin = pos
 			bullet.velocity = vel
+			bullet.bounces = 0
 			break

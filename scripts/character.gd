@@ -14,6 +14,7 @@ const JUMP_VEL: float = 2.0 * JUMP_HEIGHT / JUMP_TIME_TO_PEAK
 const GRAVITY: float = (-2.0 * JUMP_HEIGHT) / (JUMP_TIME_TO_PEAK * JUMP_TIME_TO_PEAK)
 
 @onready var camera: Camera3D = $Camera3D
+@onready var fire_pos: Marker3D = $FirePos
 const bb: PackedScene = preload("res://scenes/bb.tscn")
 
 var grounded: bool = false
@@ -41,9 +42,18 @@ func _physics_process(delta: float) -> void:
 	
 	grounded = is_on_floor()
 	
-	if Controls.get_primary_attack():
-		BulletServer.fire_bullet(global_transform.origin, -camera.global_basis.z * 100)
-		velocity += camera.global_basis.z * 0.75
+	if Controls.get_auto_attack():
+		var dir: Vector3 = -camera.global_basis.z
+		dir = Math.random_unit_vector_in_cone(dir, 0.25)
+		BulletServer.fire_bullet(fire_pos.global_transform.origin, dir * 100)
+		if not is_on_floor():
+			velocity += camera.global_basis.z * 0.75
+	
+	if Controls.get_shotgun_attack():
+		var dir: Vector3 = -camera.global_basis.z
+		for _n in 25:
+			BulletServer.fire_bullet(camera.global_transform.origin, Math.random_unit_vector_in_cone(dir, 5) * 100)
+		velocity += camera.global_basis.z * 20.0
 
 func get_wish_dir() -> Vector3:
 	var move_input: Vector2 = Controls.get_move_input().normalized()

@@ -28,3 +28,6 @@ material_override = ExtResource("3_p8w7e")
 mesh = SubResource("QuadMesh_lwswg")
 skeleton = NodePath("../..")
 script = ExtResource("4_7rsg4")
+
+[node name="FirePos" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)

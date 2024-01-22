@@ -5,16 +5,23 @@ var wish_jump: bool = false
 
 var freeze: bool = false
 
-const PRIMARY_FIRERATE: float = 6/60
+const PRIMARY_FIRERATE: float = 1.0/60.0
 var primary_timer: float = 0
+
+const SHOTGUN_CLICK_WINDOW: float = 6.0/60.0
+var shotgun_timer: float = 0
 
 # Set wish_jump depending on player input.
 func _process(delta) -> void:
 	if freeze:
 		wish_jump = false
 		return
-		
+			
+	shotgun_timer -= delta		
 	primary_timer -= delta
+	
+	if Input.is_action_just_pressed("attackprimary"):
+		shotgun_timer = SHOTGUN_CLICK_WINDOW
 	
 	if AUTO_JUMP: # The player keeps jumping as long as 'jump' is held
 		wish_jump = true if Input.is_action_pressed("moveup") else false
@@ -31,10 +38,17 @@ func _unhandled_input(e: InputEvent) -> void:
 		#if is_mb1 and event.pressed:
 		#	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func get_primary_attack() -> bool:
-	var is_pressed = Input.is_action_pressed("attackprimary")
-	if is_pressed and primary_timer <= 0:
+func get_auto_attack() -> bool:
+	if shotgun_timer >= 0 or Input.is_action_just_pressed("attackprimary"):
+		return false
+	if primary_timer <= 0 and Input.is_action_pressed("attackprimary"):
 		primary_timer = PRIMARY_FIRERATE
+		return true
+	return false
+	
+func get_shotgun_attack() -> bool:
+	var is_released = Input.is_action_just_released("attackprimary")
+	if is_released and shotgun_timer > 0:
 		return true
 	return false
 		
