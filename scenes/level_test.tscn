@@ -11,17 +11,17 @@
 [node name="Node3D" type="Node3D"]
 
 [node name="Floor" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-transform = Transform3D(25, 0, 0, 0, -1.09278e-06, 25, 0, -25, -1.09278e-06, 0, 0.5, 0)
+transform = Transform3D(50, 0, 0, 0, -2.18557e-06, 1, 0, -50, -4.37114e-08, 0, 0, 0)
 material_override = ExtResource("1_xipre")
 mesh = SubResource("QuadMesh_yoqv7")
 
 [node name="Character" parent="." instance=ExtResource("2_nrxvm")]
+collision_layer = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_knkit")
