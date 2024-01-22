@@ -10,7 +10,7 @@
 [sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
 
 [node name="Character" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3xlau")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
