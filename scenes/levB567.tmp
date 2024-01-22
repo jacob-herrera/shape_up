@@ -1,0 +1,38 @@
+[gd_scene load_steps=8 format=3 uid="uid://cqsm78eiwy8rh"]
+
+[ext_resource type="Script" path="res://scripts/character.gd" id="1_453jv"]
+[ext_resource type="Material" uid="uid://n1fviqbjybdf" path="res://mat/grass.tres" id="1_xipre"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="2_bmm0x"]
+[ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(25, 0, 0, 0, -1.09278e-06, 25, 0, -25, -1.09278e-06, 0, 0.5, 0)
+material_override = ExtResource("1_xipre")
+mesh = SubResource("QuadMesh_yoqv7")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+script = ExtResource("1_453jv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CylinderShape3D_cc7ui")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+script = ExtResource("2_bmm0x")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("3_knkit")

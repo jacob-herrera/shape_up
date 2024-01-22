@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cue6qhyekjmli"]
+
+[node name="Crosshair" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Line2D" type="Line2D" parent="CenterContainer/Control"]
+points = PackedVector2Array(-1, -1, 1, 1)
+width = 25.0
+
+[node name="Line2D2" type="Line2D" parent="CenterContainer/Control"]
+points = PackedVector2Array(1, -1, -1, 1)
+width = 25.0
