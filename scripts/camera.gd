@@ -9,7 +9,7 @@ const OFFSET: Vector3 = Vector3(0, 0.75, 0)
 
 const FOV: float = 90
 const DASH_FOV: float = 120
-const SNIPER_FOV: float = 45
+const SNIPER_FOV: float = 40
 
 #const LERP: float = 25.0
 var old_pos: Vector3 = Vector3.ZERO

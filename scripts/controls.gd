@@ -11,6 +11,10 @@ var primary_timer: float = 0
 const SHOTGUN_CLICK_WINDOW: float = 6.0/60.0
 var shotgun_timer: float = 0
 
+const SNIPER_DEBOUNCE: float = 12.0/60.0
+var sniper_scoped: bool = false
+var sniper_debounce: float = 0
+
 # Set wish_jump depending on player input.
 func _process(delta) -> void:
 	if freeze:
@@ -19,10 +23,18 @@ func _process(delta) -> void:
 			
 	shotgun_timer -= delta		
 	primary_timer -= delta
+	sniper_debounce -= delta
 	
 	if Input.is_action_just_pressed("attackprimary"):
-		shotgun_timer = SHOTGUN_CLICK_WINDOW
+		if not sniper_scoped:
+			shotgun_timer = SHOTGUN_CLICK_WINDOW
 	
+	if Input.is_action_just_pressed("attacksecondary"):
+		sniper_scoped = not sniper_scoped
+	
+	#if Input.is_action_just_released("attacksecondary"):
+	#	sniper_scoped = false
+
 	if AUTO_JUMP: # The player keeps jumping as long as 'jump' is held
 		wish_jump = true if Input.is_action_pressed("moveup") else false
 	else: # Otherwise buffer the jumps, as long as 'jump' is held
@@ -39,6 +51,8 @@ func _process(delta) -> void:
 		#	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func get_auto_attack() -> bool:
+	if sniper_scoped or sniper_debounce > 0:
+		return false
 	if shotgun_timer >= 0 or Input.is_action_just_pressed("attackprimary"):
 		return false
 	if primary_timer <= 0 and Input.is_action_pressed("attackprimary"):
@@ -47,16 +61,27 @@ func get_auto_attack() -> bool:
 	return false
 	
 func get_shotgun_attack() -> bool:
+	if sniper_scoped:
+		return false
 	var is_released = Input.is_action_just_released("attackprimary")
 	if is_released and shotgun_timer > 0:
 		return true
 	return false
 	
 func get_sniper_scope() -> bool:
-	return Input.is_action_pressed("attacksecondary")
+	return sniper_scoped
+	#if sniper_debounce:
+		#return false
+	#return Input.is_action_pressed("attacksecondary")
 	
 func get_sniper_attack() -> bool:
-	return Input.is_action_just_released("attacksecondary")
+	if sniper_scoped:
+		if Input.is_action_just_pressed("attackprimary"):
+			sniper_scoped = false
+			sniper_debounce = SNIPER_DEBOUNCE
+			return true
+	return false
+
 		
 func get_move_input() -> Vector2:
 	if freeze:
