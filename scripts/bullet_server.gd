@@ -15,10 +15,12 @@ var params: PhysicsRayQueryParameters3D
 var space: PhysicsDirectSpaceState3D
 
 @export var bb_mesh: PackedScene = preload("res://scenes/bb.tscn")
+@export_flags_3d_physics var mask: int
 	
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
 	params = PhysicsRayQueryParameters3D.new()
+	params.collision_mask = mask
 	bullets = []
 	for i in MAX_BULLETS:
 		var mesh: MeshInstance3D = bb_mesh.instantiate() as MeshInstance3D

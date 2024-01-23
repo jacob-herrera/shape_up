@@ -28,13 +28,13 @@ func _ready():
 func _process(delta: float) -> void:
 	fov_T += delta
 	pos_T += delta * 10
-	blur_T += delta * 8
+	blur_T += delta * 7
 	
 	fov_T = clampf(fov_T, 0, 1)
 	pos_T = clampf(pos_T, 0, 1)
 	blur_T = clampf(blur_T, 0, 1)
 	
-	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.05, 0))
+	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.04, 0))
 	
 	fov = lerpf(DASH_FOV, FOV, ease_out_expo(fov_T))
 	
