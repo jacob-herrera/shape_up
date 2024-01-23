@@ -9,6 +9,7 @@ const OFFSET: Vector3 = Vector3(0, 0.75, 0)
 
 const FOV: float = 90
 const DASH_FOV: float = 120
+const SNIPER_FOV: float = 45
 
 #const LERP: float = 25.0
 var old_pos: Vector3 = Vector3.ZERO
@@ -36,7 +37,10 @@ func _process(delta: float) -> void:
 	
 	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.04, 0))
 	
-	fov = lerpf(DASH_FOV, FOV, ease_out_expo(fov_T))
+	if Controls.get_sniper_scope():
+		fov = SNIPER_FOV
+	else:
+		fov = lerpf(DASH_FOV, FOV, ease_out_expo(fov_T))
 	
 	var end: Vector3 = parent.global_transform.origin + OFFSET
 	var mid: Vector3 = old_pos.lerp(end, pos_T)
@@ -59,8 +63,11 @@ func _input(e: InputEvent) -> void:
 		camera_rotation((e as InputEventMouseMotion).relative)
 
 func camera_rotation(mouse_delta: Vector2) -> void:
+	var sens: float = mouse_sensitivity
+	if Controls.get_sniper_scope():
+		sens /= 2
 	# Horizontal mouse look.
-	rotation.y -= mouse_delta.x * mouse_sensitivity
+	rotation.y -= mouse_delta.x * sens
 	# Vertical mouse look.
-	rotation.x -= mouse_delta.y * mouse_sensitivity
+	rotation.x -= mouse_delta.y * sens
 	rotation.x = clampf(rotation.x, -pitch_limit, pitch_limit)

@@ -30,6 +30,10 @@ func _ready() -> void:
 	JUMP_VEL = 2.0 * jump_height / jump_time_to_peak
 	GRAVITY = (-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 
+func _process(_delta: float) -> void:
+	#HUD.set_scope(Controls.get_sniper_scope())
+	if Controls.get_sniper_attack():
+		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
 
 func _physics_process(delta: float) -> void:
 	var wish_dir: Vector3 = get_wish_dir()
@@ -52,7 +56,6 @@ func _physics_process(delta: float) -> void:
 		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
 		elif flat_vel.length() > 0.25:
-			print(flat_vel)
 			global_transform.origin += flat_vel.normalized() * dash_distance
 		else:
 			var forward: Vector3 = -camera.global_transform.basis.z

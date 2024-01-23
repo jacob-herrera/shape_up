@@ -31,10 +31,10 @@ func _process(delta) -> void:
 		if Input.is_action_just_released("moveup"):
 			wish_jump = false
 
-func _unhandled_input(e: InputEvent) -> void:
-	if e is InputEventMouseButton:
-		var event: InputEventMouseButton = e as InputEventMouseButton
-		var is_mb1: bool = event.button_index == MouseButton.MOUSE_BUTTON_LEFT
+#func _unhandled_input(e: InputEvent) -> void:
+	#if e is InputEventMouseButton:
+		#var event: InputEventMouseButton = e as InputEventMouseButton
+		#var is_mb1: bool = event.button_index == MouseButton.MOUSE_BUTTON_LEFT
 		#if is_mb1 and event.pressed:
 		#	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -51,6 +51,12 @@ func get_shotgun_attack() -> bool:
 	if is_released and shotgun_timer > 0:
 		return true
 	return false
+	
+func get_sniper_scope() -> bool:
+	return Input.is_action_pressed("attacksecondary")
+	
+func get_sniper_attack() -> bool:
+	return Input.is_action_just_released("attacksecondary")
 		
 func get_move_input() -> Vector2:
 	if freeze:

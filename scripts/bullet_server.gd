@@ -3,6 +3,8 @@ extends Node3D
 const MAX_BULLETS: int = 1024
 const BULLET_GRAV: float = -30.0
 
+const SNIPER_RANGE: float = 500
+
 class Bullet extends Object:
 	var active: bool
 	var velocity: Vector3
@@ -34,6 +36,8 @@ func _enter_tree() -> void:
 		bullet.bounces = 0
 		bullets.push_back(bullet)
 		
+
+
 func _exit_tree() -> void:
 	for bullet: Bullet in bullets:
 		bullet.free()
@@ -68,3 +72,10 @@ func fire_bullet(pos: Vector3, vel: Vector3) -> void:
 			bullet.velocity = vel
 			bullet.bounces = 0
 			break
+
+func fire_sniper(pos: Vector3, dir: Vector3) -> void:
+	params.from = pos
+	params.to = pos + dir * SNIPER_RANGE
+	var result: Dictionary = space.intersect_ray(params)
+
+	print(result)
