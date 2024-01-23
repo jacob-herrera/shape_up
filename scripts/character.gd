@@ -45,19 +45,22 @@ func _physics_process(delta: float) -> void:
 	
 	var old_pos: Vector3 = global_transform.origin
 	
+	velocity.y += GRAVITY * delta;
+	var flat_vel := Vector3(velocity.x, 0, velocity.z)
+	
 	if Controls.get_try_dash():
-		if not wish_dir.is_equal_approx(Vector3.ZERO):
+		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
+		elif flat_vel.length() > 0.25:
+			print(flat_vel)
+			global_transform.origin += flat_vel.normalized() * dash_distance
 		else:
 			var forward: Vector3 = -camera.global_transform.basis.z
 			forward.y = 0
 			forward = forward.normalized()
-			var dir = Vector3(forward.x , 0,forward.z)
-			global_transform.origin += dir * dash_distance
+			global_transform.origin += forward * dash_distance
 	
-	velocity.y += GRAVITY * delta;
-	
-	var flat_vel := Vector3(velocity.x, 0, velocity.z)
+
 	if flat_vel.length() > SPEED_CAP:
 		flat_vel = flat_vel.normalized() * SPEED_CAP
 		velocity = Vector3(flat_vel.x, velocity.y, flat_vel.z)
