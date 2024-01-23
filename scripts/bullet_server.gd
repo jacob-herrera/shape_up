@@ -48,13 +48,12 @@ func _process(delta: float) -> void:
 		if not result.is_empty():
 			bullet.velocity = bullet.velocity.bounce(result.normal)
 			bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 4
-			bullet.mesh.global_transform.origin = result.position + Vector3(0, 0.01, 0)
+			#bullet.mesh.global_transform.origin = result.position
 			bullet.bounces += 1
 		else:
 			bullet.mesh.global_transform.origin = end
 			
-		var pos: Vector3 = bullet.mesh.global_transform.origin
-		if bullet.bounces > 3 or pos.x > 200 or pos.y > 200:
+		if bullet.bounces > 3:
 			bullet.active = false
 			bullet.mesh.visible = false
 

@@ -62,13 +62,7 @@ func get_move_input() -> Vector2:
 	move_dir.y -= float(Input.is_action_pressed("movebackward"))
 	return move_dir
  
-func get_try_crouch() -> bool:
+func get_try_dash() -> bool:
 	if freeze:
 		return false
-	return Input.is_action_just_pressed("movedown") 
-
-var last_uncrouch_input: bool = false
-func get_try_uncrouch() -> bool:
-	if not freeze:
-		last_uncrouch_input = Input.is_action_pressed("movedown")
-	return last_uncrouch_input
+	return Input.is_action_just_pressed("dash") 

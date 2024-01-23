@@ -12,13 +12,19 @@
 [node name="Character" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3xlau")
+auto_kickback = 0.75
+shotgun_kickback = 20.0
+jump_height = 4.25
+jump_time_to_peak = 0.4
+dash_distance = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_cc7ui")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-fov = 90.0
+top_level = true
+fov = 179.0
 script = ExtResource("2_34f15")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]

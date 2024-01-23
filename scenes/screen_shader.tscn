@@ -1,15 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfwo7r5if2e3u"]
 
-[ext_resource type="Shader" path="res://shader/ntsc.gdshader" id="1_vcgab"]
+[ext_resource type="Shader" path="res://shader/shockwave.gdshader" id="1_e3tku"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dnstk"]
-shader = ExtResource("1_vcgab")
-shader_parameter/SCREEN_SIZE = Vector2(640, 480)
+shader = ExtResource("1_e3tku")
+shader_parameter/blur_center = Vector2(0.5, 0.5)
+shader_parameter/blur_power = 0.0
+shader_parameter/sampling_count = 6
 
 [node name="ScreenShader" type="CanvasLayer"]
-visible = false
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Distort" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_dnstk")
 anchors_preset = 15
 anchor_right = 1.0
