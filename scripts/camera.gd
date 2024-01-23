@@ -11,7 +11,6 @@ const FOV: float = 90
 const DASH_FOV: float = 120
 const SNIPER_FOV: float = 40
 
-#const LERP: float = 25.0
 var old_pos: Vector3 = Vector3.ZERO
 var pos_T: float = 1.0
 var fov_T: float = 1.0
@@ -54,8 +53,6 @@ func dash_cam(pos: Vector3) -> void:
 	pos_T = 0
 	fov_T = 0
 	blur_T = 0
-
-	
 		
 func _input(e: InputEvent) -> void:
 	# Mouse look (only if the mouse is captured).
