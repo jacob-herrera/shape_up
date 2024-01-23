@@ -70,8 +70,6 @@ func get_sniper_attack() -> bool:
 
 		
 func get_move_input() -> Vector2:
-	if freeze:
-		return Vector2.ZERO
 	var move_dir: Vector2 = Vector2(0,0)
 	move_dir.x += float(Input.is_action_pressed("moveright"))
 	move_dir.x -= float(Input.is_action_pressed("moveleft"))
@@ -80,6 +78,4 @@ func get_move_input() -> Vector2:
 	return move_dir
  
 func get_try_dash() -> bool:
-	if freeze:
-		return false
 	return Input.is_action_just_pressed("dash") 

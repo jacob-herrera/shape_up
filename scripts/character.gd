@@ -22,6 +22,11 @@ var GRAVITY: float
 
 @onready var camera: Camera = $Camera3D
 @onready var fire_pos: Marker3D = $FirePos
+
+@onready var sfx_sniper_shoot: AudioStreamPlayer = $Sounds/SniperShoot
+@onready var sfx_autopool: AudioStreamPlayer = $Sounds/Auto
+@onready var sfx_shotgun: AudioStreamPlayer= $Sounds/Shotgun
+
 const bb: PackedScene = preload("res://scenes/bb.tscn")
 
 var grounded: bool = false
@@ -33,9 +38,12 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	#HUD.set_scope(Controls.get_sniper_scope())
 	if Controls.get_sniper_attack():
+		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
 
 func _physics_process(delta: float) -> void:
+	if Controls.freeze: return
+	
 	var wish_dir: Vector3 = get_wish_dir()
 	
 	if is_on_floor() and Controls.wish_jump:
@@ -81,6 +89,7 @@ func _physics_process(delta: float) -> void:
 		BulletServer.fire_bullet(fire_pos.global_transform.origin, dir * 100)
 		if not is_on_floor():
 			velocity += camera.global_basis.z * auto_kickback
+		sfx_autopool.play()
 	
 	if Controls.get_shotgun_attack():
 		var dir: Vector3 = -camera.global_basis.z
@@ -88,6 +97,7 @@ func _physics_process(delta: float) -> void:
 			BulletServer.fire_bullet(camera.global_transform.origin, Math.random_unit_vector_in_cone(dir, 5) * 100)
 		var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
 		velocity += camera.global_basis.z * knockback
+		sfx_shotgun.play()
 
 func get_wish_dir() -> Vector3:
 	var move_input: Vector2 = Controls.get_move_input().normalized()

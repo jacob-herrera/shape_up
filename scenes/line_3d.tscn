@@ -5,6 +5,7 @@
 
 [node name="Line3D" type="MeshInstance3D"]
 script = ExtResource("1_g0lrx")
+points = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, 0)])
 startThickness = 0.05
 endThickness = 0.05
 material = ExtResource("2_4w3c4")
