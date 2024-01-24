@@ -5,11 +5,14 @@ const BULLET_GRAV: float = -30.0
 
 const SNIPER_RANGE: float = 500
 
+enum BulletState {DISABLED, PROJECTILE, COLLECTABLE}
+
 class Bullet extends Object:
-	var active: bool
+	var state: BulletState
 	var velocity: Vector3
 	var mesh: MeshInstance3D
 	var bounces: int
+	var bob: float
 	
 var bullets: Array[Bullet]
 
@@ -37,7 +40,7 @@ func _enter_tree() -> void:
 		mesh.visible = false
 		mesh.global_transform.origin = Vector3(0, 2, 0)
 		var bullet: Bullet = Bullet.new()
-		bullet.active = false
+		bullet.state = BulletState.DISABLED
 		bullet.mesh = mesh
 		bullet.velocity = Vector3.ZERO
 		bullet.bounces = 0
@@ -55,29 +58,45 @@ func _process(delta: float) -> void:
 	line_alpha = clampf(line_alpha, 0.0, 1.0)
 	line.material.set_shader_parameter("alpha", line_alpha)
 	for bullet: Bullet in bullets:
-		if not bullet.active: continue
-		bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
-		var start: Vector3 = bullet.mesh.global_transform.origin
-		var end: Vector3 = start + (bullet.velocity * delta)
-		params.from = start
-		params.to = end
-		var result: Dictionary = space.intersect_ray(params)
-		if not result.is_empty():
-			bullet.velocity = bullet.velocity.bounce(result.normal)
-			bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 4
-			#bullet.mesh.global_transform.origin = result.position
-			bullet.bounces += 1
-		else:
-			bullet.mesh.global_transform.origin = end
-			
-		if bullet.bounces > 3:
-			bullet.active = false
-			bullet.mesh.visible = false
+		if bullet.state == BulletState.PROJECTILE:
+			bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
+			var start: Vector3 = bullet.mesh.global_transform.origin
+			var end: Vector3 = start + (bullet.velocity * delta)
+			params.from = start
+			params.to = end
+			var result: Dictionary = space.intersect_ray(params)
+			if not result.is_empty():
+				bullet.velocity = bullet.velocity.bounce(result.normal)
+				bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 3
+				bullet.bounces += 1
+			else:
+				bullet.mesh.global_transform.origin = end
+				
+			if bullet.bounces > 2:
+				bullet.state = BulletState.COLLECTABLE
+				bullet.mesh.global_transform.origin.y = 0
+				bullet.bob = -3 + randf()
+
+	for bullet: Bullet in bullets:
+		if bullet.state == BulletState.COLLECTABLE:
+			bullet.bob += delta * 2.0
+			bullet.mesh.global_transform.origin.y = bob_ease(bullet.bob)
+
+func bob_ease(bob: float) -> float:
+	if bob > 0:
+		bob = sin(bob) / 4.0
+		return bob + 0.5
+	else:
+		bob = clampf(bob, -1, 0)
+		bob = remap(bob, -1, 0, 0.05, 0.5	)
+		return bob
+	
+ 	
 
 func fire_bullet(pos: Vector3, vel: Vector3) -> void:
 	for bullet: Bullet in bullets:
-		if bullet.active == false:
-			bullet.active = true
+		if bullet.state == BulletState.DISABLED:
+			bullet.state = BulletState.PROJECTILE
 			bullet.mesh.visible = true 
 			bullet.mesh.global_transform.origin = pos
 			bullet.velocity = vel
