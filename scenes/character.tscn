@@ -49,17 +49,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 stream = ExtResource("5_11dwx")
 pitch_scale = 2.0
 max_polyphony = 2
+bus = &"Effects"
 
 [node name="Shotgun" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("7_8p87u")
 max_polyphony = 2
+bus = &"Effects"
 
 [node name="SniperCharge" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("7_aefwd")
+bus = &"Effects"
 
 [node name="SniperShoot" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_jl6i1")
+bus = &"Effects"
 
 [node name="Dash" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("9_ylc2e")
 max_polyphony = 3
+bus = &"Effects"
