@@ -18,6 +18,9 @@ var sniper_debounce: float = 0
 signal entered_scope
 signal exited_scope
 
+func _ready() -> void:
+	Engine.max_fps = 60
+
 func _process(delta) -> void:
 	if freeze:
 		wish_jump = false

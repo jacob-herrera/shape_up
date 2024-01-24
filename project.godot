@@ -28,6 +28,7 @@ BulletServer="*res://scenes/bullet_server.tscn"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
+window/vsync/vsync_mode=0
 
 [file_customization]
 

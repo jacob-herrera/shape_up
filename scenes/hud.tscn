@@ -64,3 +64,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_5vdlu")
+
+[node name="FPS" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 19.0
+theme_override_font_sizes/font_size = 24
+text = "FPS: 100
+"

@@ -1,12 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://cqsm78eiwy8rh"]
+[gd_scene load_steps=9 format=3 uid="uid://cqsm78eiwy8rh"]
 
 [ext_resource type="Material" uid="uid://0iqxlwgsdbch" path="res://mat/mat_tile.tres" id="1_5c6lb"]
 [ext_resource type="PackedScene" uid="uid://qhuvdggdf4tv" path="res://scenes/character.tscn" id="2_nrxvm"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
+[ext_resource type="Texture2D" uid="uid://bl6lerffaxjic" path="res://textures/makita.png" id="4_v6tsh"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_rq5o3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hyue4"]
+transparency = 1
+albedo_texture = ExtResource("4_v6tsh")
 
 [node name="Node3D" type="Node3D"]
 
@@ -41,3 +48,8 @@ collision_layer = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_knkit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(15.78, 0, 0, 0, 8.845, 0, 0, 0, 15.78, 0, 42.5073, -378.411)
+mesh = SubResource("QuadMesh_rq5o3")
+surface_material_override/0 = SubResource("StandardMaterial3D_hyue4")
