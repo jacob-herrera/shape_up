@@ -47,8 +47,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 
 [node name="Auto" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_11dwx")
-pitch_scale = 1.5
-max_polyphony = 3
+pitch_scale = 2.0
+max_polyphony = 2
 
 [node name="Shotgun" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("7_8p87u")

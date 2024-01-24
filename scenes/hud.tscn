@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=4 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
 [ext_resource type="Texture2D" uid="uid://dkct7ua6bwkl3" path="res://textures/scoped.png" id="2_5vdlu"]
+[ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -12,6 +13,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_gxd7r")
+
+[node name="TempMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_a71iw")
+volume_db = -5.0
+autoplay = true
 
 [node name="Timer" type="Label" parent="."]
 layout_mode = 1

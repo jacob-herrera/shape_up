@@ -8,7 +8,7 @@ const DEG_PITCH_LIMIT: float = 89.99
 const OFFSET: Vector3 = Vector3(0, 0.75, 0)
 
 const FOV: float = 90
-const DASH_FOV: float = 120
+const DASH_FOV: float = 70
 
 const SNIPER_FOV_MAX: float = 50
 const SNIPER_FOV_MIN: float = 30
@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 	pos_T = clampf(pos_T, 0, 1)
 	blur_T = clampf(blur_T, 0, 1)
 	
-	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.04, 0))
+	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.03, 0))
 	
 	if Controls.get_sniper_scope():
 		sniper_fov_T += delta / 3

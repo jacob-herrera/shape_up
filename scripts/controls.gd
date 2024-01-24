@@ -3,28 +3,41 @@ extends Node
 const AUTO_JUMP: bool = true
 var wish_jump: bool = false
 
-const PRIMARY_FIRERATE: float = 1.0/60.0
+const PRIMARY_FIRERATE: float = 2.0/60.0
 var primary_timer: float = 0
 
-const SHOTGUN_CLICK_WINDOW: float = 6.0/60.0
-var shotgun_timer: float = 0
+const SHOTGUN_CLICK_WINDOW: int = 100
+var shotgun_timer: int = 0
 
-const SNIPER_DEBOUNCE: float = 12.0/60.0
+const SNIPER_DEBOUNCE: int = 200
 var sniper_scoped: bool = false
-var sniper_debounce: float = 0
+var sniper_debounce: int = 0
+
+const FAST_SPEED: float = 2.0
+const SLOW_SPEED: float = 0.5
+var clock_speed: float = 1.0
+
+var previous_ms: int
 
 signal entered_scope
 signal exited_scope
 
 func _ready() -> void:
 	Engine.max_fps = 60
+	previous_ms = Time.get_ticks_msec()
 
 func _process(delta) -> void:
-	if Menu.enabled: return
-			
-	shotgun_timer -= delta		
+	if Menu.enabled:
+		previous_ms = Time.get_ticks_msec()
+		return
+	
+	var current_ms: int = Time.get_ticks_msec()
+	var ms_diff: int = current_ms - previous_ms
+	previous_ms = current_ms
+	
+	shotgun_timer -= ms_diff		
 	primary_timer -= delta
-	sniper_debounce -= delta
+	sniper_debounce -= ms_diff
 	
 	if Input.is_action_just_pressed("attackprimary"):
 		if not sniper_scoped:
@@ -37,6 +50,19 @@ func _process(delta) -> void:
 		else:
 			sniper_scoped = false
 			emit_signal("exited_scope")
+			
+			
+	var slow: bool = Input.is_action_pressed("slow")
+	var fast: bool = Input.is_action_pressed("fast")
+	if (slow and fast) or (not slow and not fast):
+		Engine.time_scale = 1.0
+		clock_speed = 1.0
+	elif slow:
+		Engine.time_scale = SLOW_SPEED
+		clock_speed = FAST_SPEED
+	elif fast:
+		Engine.time_scale = FAST_SPEED
+		clock_speed = SLOW_SPEED
 
 	if AUTO_JUMP: # The player keeps jumping as long as 'jump' is held
 		wish_jump = true if Input.is_action_pressed("moveup") else false
