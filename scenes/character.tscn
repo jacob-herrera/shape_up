@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=11 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://cb5xoylnqhgfr" path="res://sound/auto.wav" id="5_11dwx"]
 [ext_resource type="AudioStream" uid="uid://x4bvpakvx1kt" path="res://sound/sniper.wav" id="5_jl6i1"]
 [ext_resource type="AudioStream" uid="uid://cstt71kwk2rch" path="res://sound/shotgun.wav" id="7_8p87u"]
+[ext_resource type="AudioStream" uid="uid://sk0q8758o5cg" path="res://sound/sniper_charge.wav" id="7_aefwd"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
 
@@ -48,9 +49,12 @@ stream = ExtResource("5_11dwx")
 pitch_scale = 1.5
 max_polyphony = 2
 
-[node name="SniperShoot" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource("5_jl6i1")
-
 [node name="Shotgun" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("7_8p87u")
 max_polyphony = 2
+
+[node name="SniperCharge" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_aefwd")
+
+[node name="SniperShoot" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("5_jl6i1")

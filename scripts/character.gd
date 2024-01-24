@@ -24,6 +24,7 @@ var GRAVITY: float
 @onready var fire_pos: Marker3D = $FirePos
 
 @onready var sfx_sniper_shoot: AudioStreamPlayer = $Sounds/SniperShoot
+@onready var sfx_sniper_charge: AudioStreamPlayer= $Sounds/SniperCharge
 @onready var sfx_autopool: AudioStreamPlayer = $Sounds/Auto
 @onready var sfx_shotgun: AudioStreamPlayer= $Sounds/Shotgun
 
@@ -34,12 +35,22 @@ var grounded: bool = false
 func _ready() -> void:
 	JUMP_VEL = 2.0 * jump_height / jump_time_to_peak
 	GRAVITY = (-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
+	Controls.connect("entered_scope", _entered_scope)
+	Controls.connect("exited_scope", _exited_scope)
+	
+func _entered_scope() -> void:
+	sfx_sniper_charge.play()
+	
+func _exited_scope() -> void:
+	sfx_sniper_charge.stop()
 
 func _process(_delta: float) -> void:
 	#HUD.set_scope(Controls.get_sniper_scope())
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
+
+	
 
 func _physics_process(delta: float) -> void:
 	if Controls.freeze: return

@@ -9,12 +9,15 @@ const OFFSET: Vector3 = Vector3(0, 0.75, 0)
 
 const FOV: float = 90
 const DASH_FOV: float = 120
-const SNIPER_FOV: float = 40
+
+const SNIPER_FOV_MAX: float = 40
+const SNIPER_FOV_MIN: float = 20
 
 var old_pos: Vector3 = Vector3.ZERO
 var pos_T: float = 1.0
 var fov_T: float = 1.0
 var blur_T: float = 1.0
+var sniper_fov_T: float = 1.0
 
 var mat: ShaderMaterial
 @onready var parent: Node3D = $".."
@@ -37,8 +40,10 @@ func _process(delta: float) -> void:
 	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.04, 0))
 	
 	if Controls.get_sniper_scope():
-		fov = SNIPER_FOV
+		sniper_fov_T += delta / 3
+		fov = lerpf(SNIPER_FOV_MAX, SNIPER_FOV_MIN, ease_out_expo(sniper_fov_T))
 	else:
+		sniper_fov_T = 0
 		fov = lerpf(DASH_FOV, FOV, ease_out_expo(fov_T))
 	
 	var end: Vector3 = parent.global_transform.origin + OFFSET

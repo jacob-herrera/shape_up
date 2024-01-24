@@ -15,6 +15,9 @@ const SNIPER_DEBOUNCE: float = 12.0/60.0
 var sniper_scoped: bool = false
 var sniper_debounce: float = 0
 
+signal entered_scope
+signal exited_scope
+
 func _process(delta) -> void:
 	if freeze:
 		wish_jump = false
@@ -29,7 +32,12 @@ func _process(delta) -> void:
 			shotgun_timer = SHOTGUN_CLICK_WINDOW
 	
 	if Input.is_action_just_pressed("attacksecondary"):
-		sniper_scoped = not sniper_scoped
+		if not sniper_scoped:
+			sniper_scoped = true
+			emit_signal("entered_scope")
+		else:
+			sniper_scoped = false
+			emit_signal("exited_scope")
 
 	if AUTO_JUMP: # The player keeps jumping as long as 'jump' is held
 		wish_jump = true if Input.is_action_pressed("moveup") else false
@@ -65,6 +73,7 @@ func get_sniper_attack() -> bool:
 		if Input.is_action_just_pressed("attackprimary"):
 			sniper_scoped = false
 			sniper_debounce = SNIPER_DEBOUNCE
+			emit_signal("exited_scope")
 			return true
 	return false
 
