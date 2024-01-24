@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://30uw1akwp55c"]
+[gd_scene load_steps=2 format=3 uid="uid://ds3q4pv5yoswy"]
 
 [ext_resource type="Script" path="res://scripts/bullet_server.gd" id="1_cg617"]
 

@@ -27,6 +27,7 @@ var GRAVITY: float
 @onready var sfx_sniper_charge: AudioStreamPlayer= $Sounds/SniperCharge
 @onready var sfx_autopool: AudioStreamPlayer = $Sounds/Auto
 @onready var sfx_shotgun: AudioStreamPlayer= $Sounds/Shotgun
+@onready var sfx_dash: AudioStreamPlayer= $Sounds/Dash
 
 const bb: PackedScene = preload("res://scenes/bb.tscn")
 
@@ -81,6 +82,7 @@ func _physics_process(delta: float) -> void:
 			forward.y = 0
 			forward = forward.normalized()
 			global_transform.origin += forward * dash_distance
+		sfx_dash.play()
 	
 
 	if flat_vel.length() > SPEED_CAP:
