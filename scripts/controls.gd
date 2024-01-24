@@ -23,7 +23,7 @@ signal entered_scope
 signal exited_scope
 
 func _ready() -> void:
-	Engine.max_fps = 60
+	#Engine.max_fps = 60
 	previous_ms = Time.get_ticks_msec()
 
 func _process(delta) -> void:

@@ -25,7 +25,7 @@ var GRAVITY: float
 
 @onready var sfx_sniper_shoot: AudioStreamPlayer = $Sounds/SniperShoot
 @onready var sfx_sniper_charge: AudioStreamPlayer= $Sounds/SniperCharge
-@onready var sfx_autopool: AudioStreamPlayer = $Sounds/Auto
+@onready var sfx_auto: AudioStreamPlayer = $Sounds/Auto
 @onready var sfx_shotgun: AudioStreamPlayer= $Sounds/Shotgun
 @onready var sfx_dash: AudioStreamPlayer= $Sounds/Dash
 
@@ -38,6 +38,10 @@ func _ready() -> void:
 	GRAVITY = (-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 	Controls.connect("entered_scope", _entered_scope)
 	Controls.connect("exited_scope", _exited_scope)
+	PitchChanger.register_inverse_player(sfx_sniper_shoot)
+	PitchChanger.register_inverse_player(sfx_sniper_charge)
+	PitchChanger.register_inverse_player(sfx_shotgun)
+
 	
 func _entered_scope() -> void:
 	sfx_sniper_charge.play()
@@ -103,7 +107,7 @@ func _physics_process(delta: float) -> void:
 		BulletServer.fire_bullet(fire_pos.global_transform.origin, dir * 100)
 		if not is_on_floor():
 			velocity += camera.global_basis.z * auto_kickback
-		sfx_autopool.play()
+		sfx_auto.play()
 	
 	if Controls.get_shotgun_attack():
 		var dir: Vector3 = -camera.global_basis.z

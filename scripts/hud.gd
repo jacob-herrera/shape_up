@@ -3,7 +3,7 @@ extends Control
 @onready var timer: Label = $Timer
 @onready var scoped: TextureRect = $Scoped
 @onready var fps: Label = $FPS
-@onready var music: AudioStreamPlayer = $TempMusic
+@onready var crosshair: Control = $CenterContainer
 
 var time: float = 100.000
 var start_ms: int
@@ -12,6 +12,7 @@ var pervious_ms: int
 func _ready() -> void:
 	start_ms = Time.get_ticks_msec()
 	pervious_ms = start_ms
+	PitchChanger.register_player($TempMusic)
 
 func _process(delta: float) -> void:
 	if Menu.enabled:
@@ -24,9 +25,11 @@ func _process(delta: float) -> void:
 	time -= (ms_diff / 1000.00 * Controls.clock_speed)
 	timer.text = "%.2f" % time
 	
-	music.pitch_scale = Controls.clock_speed
+	#music.pitch_scale = Controls.clock_speed
+	#print(pitch.pitch_scale)
 
 	scoped.visible = Controls.get_sniper_scope()
+	crosshair.visible = not scoped.visible
 	
 	fps.text = "FPS: %d" % Engine.get_frames_per_second()
 

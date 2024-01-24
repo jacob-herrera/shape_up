@@ -22,13 +22,13 @@ HUD="*res://scenes/hud.tscn"
 Math="*res://scripts/math.gd"
 ScreenShader="*res://scenes/screen_shader.tscn"
 BulletServer="*res://scenes/bullet_server.tscn"
+PitchChanger="*res://scripts/pitch_changer.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
-window/vsync/vsync_mode=0
 
 [file_customization]
 
