@@ -8,9 +8,6 @@ const SPEED_CAP: float = 1000.0
 const SPEED: float = 12.0
 const ACCELERATE: float = 15.0
 
-#const JUMP_HEIGHT: float = 4.25
-#const JUMP_TIME_TO_PEAK: float = 0.4
-
 @export var auto_kickback: float
 @export var shotgun_kickback: float
 @export var jump_height: float
@@ -29,8 +26,6 @@ var GRAVITY: float
 @onready var sfx_shotgun: AudioStreamPlayer= $Sounds/Shotgun
 @onready var sfx_dash: AudioStreamPlayer= $Sounds/Dash
 
-const bb: PackedScene = preload("res://scenes/bb.tscn")
-
 var grounded: bool = false
 
 func _ready() -> void:
@@ -41,7 +36,6 @@ func _ready() -> void:
 	PitchChanger.register_inverse_player(sfx_sniper_shoot)
 	PitchChanger.register_inverse_player(sfx_sniper_charge)
 	PitchChanger.register_inverse_player(sfx_shotgun)
-
 	
 func _entered_scope() -> void:
 	sfx_sniper_charge.play()
@@ -55,8 +49,6 @@ func _process(_delta: float) -> void:
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
-
-	
 
 func _physics_process(delta: float) -> void:
 	if Menu.enabled: return

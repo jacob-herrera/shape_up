@@ -44,7 +44,6 @@ func _enter_tree() -> void:
 		bullets.push_back(bullet)
 		
 func _ready() -> void:
-	#var cam: Camera3D = get_viewport().get_camera_3d()
 	line.set_camera(get_viewport().get_camera_3d())
 
 func _exit_tree() -> void:
