@@ -20,7 +20,7 @@ Controls="*res://scripts/controls.gd"
 Menu="*res://scenes/menu.tscn"
 HUD="*res://scenes/hud.tscn"
 Math="*res://scripts/math.gd"
-ScreenShader="*res://scenes/screen_shader.tscn"
+ScreenShader="*res://scenes/dash_shader.tscn"
 BulletServer="*res://scenes/bullet_server.tscn"
 PitchChanger="*res://scripts/pitch_changer.gd"
 
