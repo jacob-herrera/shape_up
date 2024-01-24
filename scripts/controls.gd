@@ -16,6 +16,8 @@ var sniper_debounce: int = 0
 const FAST_SPEED: float = 2.0
 const SLOW_SPEED: float = 0.5
 var clock_speed: float = 1.0
+var target_clock_speed: float = 1.0
+var TIME_RAMP_LERP: float = 15.0
 
 var previous_ms: int
 
@@ -25,6 +27,22 @@ signal exited_scope
 func _ready() -> void:
 	#Engine.max_fps = 60
 	previous_ms = Time.get_ticks_msec()
+
+func _handle_clock(ms_diff: int) -> void:
+	var slow: bool = Input.is_action_pressed("slow")
+	var fast: bool = Input.is_action_pressed("fast")
+	if (slow and fast) or (not slow and not fast):
+		Engine.time_scale = 1.0
+		target_clock_speed = 1.0
+	elif slow:
+		Engine.time_scale = SLOW_SPEED
+		target_clock_speed = FAST_SPEED
+	elif fast:
+		Engine.time_scale = FAST_SPEED
+		target_clock_speed = SLOW_SPEED
+	var dt: float = ms_diff / 1000.0
+	var t: float = pow(0.5, dt * TIME_RAMP_LERP)
+	clock_speed = lerpf(target_clock_speed, clock_speed, t)
 
 func _process(delta) -> void:
 	if Menu.enabled:
@@ -51,18 +69,8 @@ func _process(delta) -> void:
 			sniper_scoped = false
 			emit_signal("exited_scope")
 			
-			
-	var slow: bool = Input.is_action_pressed("slow")
-	var fast: bool = Input.is_action_pressed("fast")
-	if (slow and fast) or (not slow and not fast):
-		Engine.time_scale = 1.0
-		clock_speed = 1.0
-	elif slow:
-		Engine.time_scale = SLOW_SPEED
-		clock_speed = FAST_SPEED
-	elif fast:
-		Engine.time_scale = FAST_SPEED
-		clock_speed = SLOW_SPEED
+	_handle_clock(ms_diff)
+		
 
 	if AUTO_JUMP: # The player keeps jumping as long as 'jump' is held
 		wish_jump = true if Input.is_action_pressed("moveup") else false
