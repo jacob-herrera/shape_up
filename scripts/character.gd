@@ -46,7 +46,8 @@ func _exited_scope() -> void:
 	sfx_sniper_charge.stop()
 
 func _process(_delta: float) -> void:
-	#HUD.set_scope(Controls.get_sniper_scope())
+	if Menu.enabled: return
+		
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
@@ -54,7 +55,7 @@ func _process(_delta: float) -> void:
 	
 
 func _physics_process(delta: float) -> void:
-	if Controls.freeze: return
+	if Menu.enabled: return
 	
 	var wish_dir: Vector3 = get_wish_dir()
 	

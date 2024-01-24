@@ -24,13 +24,11 @@ func _toggle_menu() -> void:
 	if enabled:
 		hide()
 		Engine.time_scale = 1
-		Controls.freeze = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
 		#play_button.grab_focus()
 		show()
 		Engine.time_scale = 0
-		Controls.freeze = true
 		#mouse_filter =
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	enabled = not enabled

@@ -3,8 +3,6 @@ extends Node
 const AUTO_JUMP: bool = true
 var wish_jump: bool = false
 
-var freeze: bool = false
-
 const PRIMARY_FIRERATE: float = 1.0/60.0
 var primary_timer: float = 0
 
@@ -22,9 +20,7 @@ func _ready() -> void:
 	Engine.max_fps = 60
 
 func _process(delta) -> void:
-	if freeze:
-		wish_jump = false
-		return
+	if Menu.enabled: return
 			
 	shotgun_timer -= delta		
 	primary_timer -= delta
