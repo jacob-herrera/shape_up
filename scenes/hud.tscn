@@ -18,6 +18,7 @@ script = ExtResource("1_gxd7r")
 stream = ExtResource("3_a71iw")
 volume_db = -5.0
 autoplay = true
+bus = &"Music"
 
 [node name="Timer" type="Label" parent="."]
 layout_mode = 1
