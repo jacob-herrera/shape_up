@@ -16,7 +16,7 @@
 [node name="Character" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3xlau")
-auto_kickback = 0.75
+auto_kickback = 0.6
 shotgun_kickback = 20.0
 jump_height = 4.25
 jump_time_to_peak = 0.4
