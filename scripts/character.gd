@@ -109,13 +109,16 @@ func _physics_process(delta: float) -> void:
 	if Controls.get_try_dash():
 		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
+			velocity = wish_dir * velocity.length()
 		elif flat_vel.length() > 0.25:
 			global_transform.origin += flat_vel.normalized() * dash_distance
+			#velocity = wish_dir * velocity.length()
 		else:
 			var forward: Vector3 = -camera.global_transform.basis.z
 			forward.y = 0
 			forward = forward.normalized()
 			global_transform.origin += forward * dash_distance
+			velocity = forward.normalized() * velocity.length()
 		sfx_dash.play()
 	
 
