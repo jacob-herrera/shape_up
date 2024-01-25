@@ -37,7 +37,7 @@ func _ready() -> void:
 	Controls.connect("exited_scope", _exited_scope)
 	PitchChanger.register_inverse_player(sfx_sniper_shoot)
 	PitchChanger.register_inverse_player(sfx_sniper_charge)
-	PitchChanger.register_inverse_player(sfx_shotgun)
+	#PitchChanger.register_inverse_player(sfx_shotgun)
 	
 func _entered_scope() -> void:
 	sfx_sniper_charge.play()
@@ -54,6 +54,7 @@ func _process(_delta: float) -> void:
 	
 func _do_guns() -> void:
 	var dir: Vector3 = -camera.global_basis.z
+	var pitch_bullets: float = clampi(BulletServer.valid_bullets, 0, 128)
 	
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
@@ -64,7 +65,6 @@ func _do_guns() -> void:
 		if BulletServer.fire_auto(fire_pos.global_transform.origin, dir):
 			if not is_on_floor():
 				velocity -= dir * auto_kickback 
-			var pitch_bullets: float = clampi(BulletServer.valid_bullets, 0, 128)
 			sfx_auto.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 2.0, 1.0)
 			sfx_auto.play()
 		elif not is_auto_out_of_ammo_flag:
@@ -75,6 +75,7 @@ func _do_guns() -> void:
 		var result: int = BulletServer.fire_shotgun(fire_pos.global_transform.origin, dir)
 		if result != 0:
 			var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
+			sfx_shotgun.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 1.0, 0.5)
 			if result == 1:
 				knockback /= 2
 			velocity -= dir * knockback
