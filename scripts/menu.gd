@@ -42,6 +42,12 @@ func _toggle_settings() -> void:
 		main.hide()
 	in_settings = not in_settings
 
+func _fullscreen_toggle(full):
+	if full == true:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
 func _settings_back_pressed() -> void:
 	_toggle_settings()
 
@@ -53,3 +59,4 @@ func _play_pressed() -> void:
 
 func _quit_pressed() -> void:
 	get_tree().quit(0)
+
