@@ -10,6 +10,8 @@ const COLLECT_RANGE: float = 10.0
 
 enum BulletState {DISABLED, PROJECTILE, COLLECTABLE, COLLECTING}
 
+
+
 class Bullet extends Object:
 	var state: BulletState
 	var velocity: Vector3
@@ -58,6 +60,8 @@ func _exit_tree() -> void:
 		bullet.free()
 
 func _process(delta: float) -> void:
+	if Menu.enabled: return
+	
 	line_alpha -= delta
 	line_alpha = clampf(line_alpha, 0.0, 1.0)
 	line.material.set_shader_parameter("alpha", line_alpha)
@@ -129,12 +133,16 @@ func fire_auto(pos: Vector3, dir: Vector3) -> bool:
 	_fire_bullet(pos, spread)
 	return true
 			
-func fire_shotgun(pos: Vector3, dir: Vector3) -> bool:
-	if valid_bullets < NUM_SHOTGUN_BULLETS: return false
-	for i in NUM_SHOTGUN_BULLETS:
+func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
+	if valid_bullets == 0: return 0
+	var shots = clampi(valid_bullets, 1, NUM_SHOTGUN_BULLETS)
+	for i in shots:
 		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, 6)
 		_fire_bullet(pos, spread)
-	return true
+	if shots >= NUM_SHOTGUN_BULLETS / 2:
+		return 2
+	else:
+		return 1
 
 func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	params.from = pos
