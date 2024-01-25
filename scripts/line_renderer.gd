@@ -22,7 +22,7 @@ func _ready():
 func set_camera(cam: Camera3D):
 	camera = cam
 
-func _process(delta):
+func _process(_dt):
 	if points.size() < 2:
 		return
 	

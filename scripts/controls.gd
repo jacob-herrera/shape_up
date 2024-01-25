@@ -1,6 +1,5 @@
 extends Node
 
-const AUTO_JUMP: bool = true
 var wish_jump: bool = false
 
 const PRIMARY_FIRERATE: float = 2.0/60.0
@@ -70,22 +69,17 @@ func _process(delta) -> void:
 			emit_signal("exited_scope")
 			
 	_handle_clock(ms_diff)
-		
 
-	if AUTO_JUMP: # The player keeps jumping as long as 'jump' is held
-		wish_jump = true if Input.is_action_pressed("moveup") else false
-	else: # Otherwise buffer the jumps, as long as 'jump' is held
-		if Input.is_action_just_pressed("moveup") and !wish_jump:
-			wish_jump = true
-		if Input.is_action_just_released("moveup"):
-			wish_jump = false
+	wish_jump = Input.is_action_pressed("moveup")
 
 func get_auto_attack() -> bool:
 	if sniper_scoped or sniper_debounce > 0:
 		return false
-	if shotgun_timer >= 0 or Input.is_action_just_pressed("attackprimary"):
+	if shotgun_timer >= 0:
 		return false
-	if primary_timer <= 0 and Input.is_action_pressed("attackprimary"):
+		
+	var try_fire = Input.is_action_pressed("attackprimary") or Input.is_action_just_released("attackprimary")
+	if primary_timer <= 0 and try_fire:
 		primary_timer = PRIMARY_FIRERATE
 		return true
 	return false
@@ -94,7 +88,7 @@ func get_shotgun_attack() -> bool:
 	if sniper_scoped:
 		return false
 	var is_released = Input.is_action_just_released("attackprimary")
-	if is_released and shotgun_timer > 0:
+	if is_released and shotgun_timer >= 0:
 		return true
 	return false
 	

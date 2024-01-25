@@ -23,6 +23,7 @@ Math="*res://scripts/math.gd"
 ScreenShader="*res://scenes/dash_shader.tscn"
 BulletServer="*res://scenes/bullet_server.tscn"
 PitchChanger="*res://scripts/pitch_changer.gd"
+Character="*res://scenes/character.tscn"
 
 [display]
 

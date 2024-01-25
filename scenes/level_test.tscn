@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cqsm78eiwy8rh"]
+[gd_scene load_steps=8 format=3 uid="uid://cqsm78eiwy8rh"]
 
 [ext_resource type="Material" uid="uid://0iqxlwgsdbch" path="res://mat/mat_tile.tres" id="1_5c6lb"]
-[ext_resource type="PackedScene" uid="uid://qhuvdggdf4tv" path="res://scenes/character.tscn" id="2_nrxvm"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
 [ext_resource type="Texture2D" uid="uid://bl6lerffaxjic" path="res://textures/makita.png" id="4_v6tsh"]
 
@@ -42,9 +41,6 @@ shape = SubResource("WorldBoundaryShape3D_7ym17")
 transform = Transform3D(100, 0, 0, 0, -4.37114e-06, 1, 0, -100, -4.37114e-08, 0, 0, 0)
 material_override = ExtResource("1_5c6lb")
 mesh = SubResource("QuadMesh_yoqv7")
-
-[node name="Character" parent="." instance=ExtResource("2_nrxvm")]
-collision_layer = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_knkit")

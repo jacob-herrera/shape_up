@@ -1,18 +1,21 @@
 extends Node3D
 
-const MAX_BULLETS: int = 1024
+var valid_bullet: int = 256
+const MAX_BULLETS: int = 256
 const BULLET_GRAV: float = -30.0
 
-const SNIPER_RANGE: float = 500
+const SNIPER_RANGE: float = 500.0
 
-enum BulletState {DISABLED, PROJECTILE, COLLECTABLE}
+const COLLECT_RANGE: float = 10.0
+
+enum BulletState {DISABLED, PROJECTILE, COLLECTABLE, COLLECTING}
 
 class Bullet extends Object:
 	var state: BulletState
 	var velocity: Vector3
 	var mesh: MeshInstance3D
 	var bounces: int
-	var bob: float
+	var period: float
 	
 var bullets: Array[Bullet]
 
@@ -75,13 +78,29 @@ func _process(delta: float) -> void:
 			if bullet.bounces > 2:
 				bullet.state = BulletState.COLLECTABLE
 				bullet.mesh.global_transform.origin.y = 0
-				bullet.bob = -3 + randf()
+				bullet.period = -3 + randf()
+
+	var char_pos: Vector3 = Character.global_transform.origin
 
 	for bullet: Bullet in bullets:
 		if bullet.state == BulletState.COLLECTABLE:
-			bullet.bob += delta * 2.0
-			bullet.mesh.global_transform.origin.y = bob_ease(bullet.bob)
-
+			bullet.period += delta * 2.0
+			bullet.mesh.global_transform.origin.y = bob_ease(bullet.period)
+			var dist: float = char_pos.distance_to(bullet.mesh.global_transform.origin)
+			if dist < COLLECT_RANGE:
+				bullet.state = BulletState.COLLECTING
+				bullet.period = 0
+				
+	for bullet: Bullet in bullets:
+		if bullet.state == BulletState.COLLECTING:
+			bullet.period += delta
+			var t: float = remap(bullet.period, 0.0, 0.25, 0.0, 1.0)
+			bullet.mesh.global_transform.origin = lerp(bullet.mesh.global_transform.origin, char_pos - Vector3(0, 0.5, 0), t)
+			if t >= 0.6:
+				bullet.state = BulletState.DISABLED
+				bullet.mesh.visible = false
+				valid_bullet += 1
+	
 func bob_ease(bob: float) -> float:
 	if bob > 0:
 		bob = sin(bob) / 4.0
@@ -91,9 +110,9 @@ func bob_ease(bob: float) -> float:
 		bob = remap(bob, -1, 0, 0.05, 0.5	)
 		return bob
 	
- 	
-
-func fire_bullet(pos: Vector3, vel: Vector3) -> void:
+func fire_bullet(pos: Vector3, vel: Vector3) -> bool:
+	if valid_bullet == 0:
+		return false
 	for bullet: Bullet in bullets:
 		if bullet.state == BulletState.DISABLED:
 			bullet.state = BulletState.PROJECTILE
@@ -101,7 +120,9 @@ func fire_bullet(pos: Vector3, vel: Vector3) -> void:
 			bullet.mesh.global_transform.origin = pos
 			bullet.velocity = vel
 			bullet.bounces = 0
-			break
+			valid_bullet -= 1
+			return true
+	return false
 
 func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	params.from = pos

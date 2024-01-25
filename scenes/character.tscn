@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=13 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="3_p8w7e"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="4_7rsg4"]
 [ext_resource type="AudioStream" uid="uid://cb5xoylnqhgfr" path="res://sound/auto.wav" id="5_11dwx"]
+[ext_resource type="AudioStream" uid="uid://bhcvevcic2fpv" path="res://sound/dryfire.wav" id="5_a6gn7"]
 [ext_resource type="AudioStream" uid="uid://x4bvpakvx1kt" path="res://sound/sniper.wav" id="5_jl6i1"]
 [ext_resource type="AudioStream" uid="uid://cstt71kwk2rch" path="res://sound/shotgun.wav" id="7_8p87u"]
 [ext_resource type="AudioStream" uid="uid://sk0q8758o5cg" path="res://sound/sniper_charge.wav" id="7_aefwd"]
@@ -44,6 +45,12 @@ script = ExtResource("4_7rsg4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 
 [node name="Sounds" type="Node" parent="."]
+
+[node name="Dryfire" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("5_a6gn7")
+volume_db = 10.0
+max_polyphony = 4
+bus = &"Effects"
 
 [node name="Auto" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_11dwx")

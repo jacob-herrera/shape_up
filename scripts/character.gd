@@ -21,10 +21,11 @@ var GRAVITY: float
 @onready var fire_pos: Marker3D = $FirePos
 
 @onready var sfx_sniper_shoot: AudioStreamPlayer = $Sounds/SniperShoot
-@onready var sfx_sniper_charge: AudioStreamPlayer= $Sounds/SniperCharge
+@onready var sfx_sniper_charge: AudioStreamPlayer = $Sounds/SniperCharge
 @onready var sfx_auto: AudioStreamPlayer = $Sounds/Auto
-@onready var sfx_shotgun: AudioStreamPlayer= $Sounds/Shotgun
-@onready var sfx_dash: AudioStreamPlayer= $Sounds/Dash
+@onready var sfx_shotgun: AudioStreamPlayer = $Sounds/Shotgun
+@onready var sfx_dash: AudioStreamPlayer = $Sounds/Dash
+@onready var sfx_dryfire: AudioStreamPlayer = $Sounds/Dryfire
 
 var grounded: bool = false
 
@@ -43,12 +44,36 @@ func _entered_scope() -> void:
 func _exited_scope() -> void:
 	sfx_sniper_charge.stop()
 
+
+var is_auto_out_of_ammo_flag: bool = false
+
 func _process(_delta: float) -> void:
 	if Menu.enabled: return
 		
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
+		
+	if Controls.get_auto_attack():
+		var dir: Vector3 = -camera.global_basis.z
+		dir = Math.random_unit_vector_in_cone(dir, 0.25)
+		
+		if BulletServer.fire_bullet(fire_pos.global_transform.origin, dir * 100):
+			if not is_on_floor():
+				velocity += camera.global_basis.z * auto_kickback
+			sfx_auto.play()
+		elif not is_auto_out_of_ammo_flag:
+			sfx_dryfire.play()
+			is_auto_out_of_ammo_flag = true
+	
+	if Controls.get_shotgun_attack():
+		var dir: Vector3 = -camera.global_basis.z
+		for _n in 32:
+			BulletServer.fire_bullet(fire_pos.global_transform.origin, Math.random_unit_vector_in_cone(dir, 5) * 100)
+		var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
+		velocity += camera.global_basis.z * knockback
+		sfx_shotgun.play()		
+
 
 func _physics_process(delta: float) -> void:
 	if Menu.enabled: return
@@ -93,21 +118,7 @@ func _physics_process(delta: float) -> void:
 	
 	grounded = is_on_floor()
 	
-	if Controls.get_auto_attack():
-		var dir: Vector3 = -camera.global_basis.z
-		dir = Math.random_unit_vector_in_cone(dir, 0.25)
-		BulletServer.fire_bullet(fire_pos.global_transform.origin, dir * 100)
-		if not is_on_floor():
-			velocity += camera.global_basis.z * auto_kickback
-		sfx_auto.play()
-	
-	if Controls.get_shotgun_attack():
-		var dir: Vector3 = -camera.global_basis.z
-		for _n in 25:
-			BulletServer.fire_bullet(camera.global_transform.origin, Math.random_unit_vector_in_cone(dir, 5) * 100)
-		var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
-		velocity += camera.global_basis.z * knockback
-		sfx_shotgun.play()
+
 
 func get_wish_dir() -> Vector3:
 	var move_input: Vector2 = Controls.get_move_input().normalized()

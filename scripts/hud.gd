@@ -4,6 +4,7 @@ extends Control
 @onready var scoped: TextureRect = $Scoped
 @onready var fps: Label = $FPS
 @onready var crosshair: Control = $CenterContainer
+@onready var ammo: Label = $Ammo
 
 var time: float = 100.000
 var start_ms: int
@@ -14,17 +15,18 @@ func _ready() -> void:
 	pervious_ms = start_ms
 	PitchChanger.register_player($TempMusic)
 
-func _process(delta: float) -> void:
+func _process(_dt: float) -> void:
 	if Menu.enabled:
 		pervious_ms = Time.get_ticks_msec()
 		return
 		
-	var current_ms: float = Time.get_ticks_msec()
+	var current_ms: int = Time.get_ticks_msec()
 	var ms_diff: float = current_ms - pervious_ms
 	pervious_ms = current_ms
 	time -= (ms_diff / 1000.00 * Controls.clock_speed)
 	timer.text = "%.2f" % time
 	
+	ammo.text = str(BulletServer.valid_bullet)
 	#music.pitch_scale = Controls.clock_speed
 	#print(pitch.pitch_scale)
 
