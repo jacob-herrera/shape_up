@@ -1,6 +1,5 @@
 extends Node3D
 
-var valid_bullets: int = 256
 const MAX_BULLETS: int = 256
 const BULLET_GRAV: float = -30.0
 const BULLET_SPEED: float = 100.0
@@ -19,17 +18,18 @@ class Bullet extends Object:
 	var period: float
 	
 var bullets: Array[Bullet]
+var valid_bullets: int = 256
 
 var params: PhysicsRayQueryParameters3D
 var space: PhysicsDirectSpaceState3D
 
 @export var bb_mesh: PackedScene = preload("res://scenes/bb.tscn")
 @export var line_3d: PackedScene = preload("res://scenes/line_3d.tscn")
-
 var line: LineRenderer
 var line_alpha: float = 1.0
 
 @export_flags_3d_physics var mask: int
+@onready var pop: AudioStreamPlayer = $Pop
 	
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
@@ -101,6 +101,7 @@ func _process(delta: float) -> void:
 				bullet.state = BulletState.DISABLED
 				bullet.mesh.visible = false
 				valid_bullets += 1
+				pop.play()
 	
 func bob_ease(bob: float) -> float:
 	if bob > 0:
