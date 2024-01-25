@@ -120,7 +120,6 @@ func _physics_process(delta: float) -> void:
 			global_transform.origin += forward * dash_distance
 			velocity = forward.normalized() * velocity.length()
 		sfx_dash.play()
-	
 
 	if flat_vel.length() > SPEED_CAP:
 		flat_vel = flat_vel.normalized() * SPEED_CAP
