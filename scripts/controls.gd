@@ -57,7 +57,7 @@ func _process(delta) -> void:
 	sniper_debounce -= ms_diff
 	
 	if Input.is_action_just_pressed("attackprimary"):
-		if not sniper_scoped:
+		if not sniper_scoped and sniper_debounce < 0:
 			shotgun_timer = SHOTGUN_CLICK_WINDOW
 	
 	if Input.is_action_just_pressed("attacksecondary"):
@@ -73,15 +73,17 @@ func _process(delta) -> void:
 	wish_jump = Input.is_action_pressed("moveup")
 
 func get_auto_attack() -> bool:
-	if sniper_scoped or sniper_debounce > 0:
+	if sniper_scoped or \
+	sniper_debounce > 0 or \
+	shotgun_timer >= 0 or \
+	Input.is_action_just_pressed("attackprimary"):
 		return false
-	if shotgun_timer >= 0:
-		return false
-		
+
 	var try_fire = Input.is_action_pressed("attackprimary") or Input.is_action_just_released("attackprimary")
 	if primary_timer <= 0 and try_fire:
 		primary_timer = PRIMARY_FIRERATE
 		return true
+		
 	return false
 	
 func get_shotgun_attack() -> bool:

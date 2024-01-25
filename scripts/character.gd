@@ -10,6 +10,7 @@ const ACCELERATE: float = 15.0
 
 @export var auto_kickback: float
 @export var shotgun_kickback: float
+@export var sniper_kickback: float
 @export var jump_height: float
 @export var jump_time_to_peak: float
 @export var dash_distance: float
@@ -52,29 +53,35 @@ func _process(_delta: float) -> void:
 		
 	
 func _do_guns() -> void:
+	var dir: Vector3 = -camera.global_basis.z
+	
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
-		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
+		BulletServer.fire_sniper(global_transform.origin, dir)
+		velocity -= dir * sniper_kickback
 		
 	if Controls.get_auto_attack():
-		var dir: Vector3 = -camera.global_basis.z
-		dir = Math.random_unit_vector_in_cone(dir, 0.25)
-		
-		if BulletServer.fire_bullet(fire_pos.global_transform.origin, dir * 100):
+		if BulletServer.fire_auto(fire_pos.global_transform.origin, dir):
 			if not is_on_floor():
-				velocity += camera.global_basis.z * auto_kickback
+				velocity -= dir * auto_kickback 
+			var pitch_bullets: float = clampi(BulletServer.valid_bullets, 0, 128)
+			sfx_auto.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 2.0, 1.0)
 			sfx_auto.play()
 		elif not is_auto_out_of_ammo_flag:
 			sfx_dryfire.play()
 			is_auto_out_of_ammo_flag = true
-	
-	if Controls.get_shotgun_attack():
-		var dir: Vector3 = -camera.global_basis.z
-		for _n in 32:
-			BulletServer.fire_bullet(fire_pos.global_transform.origin, Math.random_unit_vector_in_cone(dir, 5) * 100)
-		var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
-		velocity += camera.global_basis.z * knockback
-		sfx_shotgun.play()	
+			
+	elif Controls.get_shotgun_attack():
+		if BulletServer.fire_shotgun(fire_pos.global_transform.origin, dir):
+			var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
+			velocity -= dir * knockback
+			sfx_shotgun.play()	
+		else:
+			sfx_dryfire.play()
+			
+	if BulletServer.valid_bullets > 0:
+		is_auto_out_of_ammo_flag = false
+
 
 func _physics_process(delta: float) -> void:
 	if Menu.enabled: return

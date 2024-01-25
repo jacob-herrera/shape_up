@@ -21,6 +21,7 @@ collision_layer = 2
 script = ExtResource("1_3xlau")
 auto_kickback = 0.6
 shotgun_kickback = 20.0
+sniper_kickback = 30.0
 jump_height = 4.25
 jump_time_to_peak = 0.4
 dash_distance = 8.0

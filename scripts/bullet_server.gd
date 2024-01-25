@@ -3,7 +3,8 @@ extends Node3D
 var valid_bullets: int = 256
 const MAX_BULLETS: int = 256
 const BULLET_GRAV: float = -30.0
-
+const BULLET_SPEED: float = 100.0
+const NUM_SHOTGUN_BULLETS: int = 32
 const SNIPER_RANGE: float = 500.0
 
 const COLLECT_RANGE: float = 10.0
@@ -110,19 +111,29 @@ func bob_ease(bob: float) -> float:
 		bob = remap(bob, -1, 0, 0.05, 0.5	)
 		return bob
 	
-func fire_bullet(pos: Vector3, vel: Vector3) -> bool:
-	if valid_bullets == 0:
-		return false
+func _fire_bullet(pos: Vector3, dir: Vector3) -> void:
 	for bullet: Bullet in bullets:
 		if bullet.state == BulletState.DISABLED:
 			bullet.state = BulletState.PROJECTILE
 			bullet.mesh.visible = true 
 			bullet.mesh.global_transform.origin = pos
-			bullet.velocity = vel
+			bullet.velocity = dir * BULLET_SPEED
 			bullet.bounces = 0
 			valid_bullets -= 1
-			return true
-	return false
+			break
+			
+func fire_auto(pos: Vector3, dir: Vector3) -> bool:
+	if valid_bullets == 0: return false
+	var spread: Vector3 = Math.random_unit_vector_in_cone(dir, 0.25)
+	_fire_bullet(pos, spread)
+	return true
+			
+func fire_shotgun(pos: Vector3, dir: Vector3) -> bool:
+	if valid_bullets < NUM_SHOTGUN_BULLETS: return false
+	for i in NUM_SHOTGUN_BULLETS:
+		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, 6)
+		_fire_bullet(pos, spread)
+	return true
 
 func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	params.from = pos
