@@ -26,7 +26,7 @@ func _process(_dt: float) -> void:
 	time -= (ms_diff / 1000.00 * Controls.clock_speed)
 	timer.text = "%.2f" % time
 	
-	ammo.text = str(BulletServer.valid_bullet)
+	ammo.text = str(BulletServer.valid_bullets)
 	#music.pitch_scale = Controls.clock_speed
 	#print(pitch.pitch_scale)
 

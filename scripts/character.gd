@@ -50,6 +50,8 @@ var is_auto_out_of_ammo_flag: bool = false
 func _process(_delta: float) -> void:
 	if Menu.enabled: return
 		
+	
+func _do_guns() -> void:
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, -camera.global_basis.z)
@@ -72,8 +74,7 @@ func _process(_delta: float) -> void:
 			BulletServer.fire_bullet(fire_pos.global_transform.origin, Math.random_unit_vector_in_cone(dir, 5) * 100)
 		var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
 		velocity += camera.global_basis.z * knockback
-		sfx_shotgun.play()		
-
+		sfx_shotgun.play()	
 
 func _physics_process(delta: float) -> void:
 	if Menu.enabled: return
@@ -112,6 +113,8 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3(flat_vel.x, velocity.y, flat_vel.z)
 	
 	move_and_slide()
+	
+	_do_guns()
 	
 	if Controls.get_try_dash():
 		camera.dash_cam(old_pos)

@@ -1,6 +1,6 @@
 extends Node3D
 
-var valid_bullet: int = 256
+var valid_bullets: int = 256
 const MAX_BULLETS: int = 256
 const BULLET_GRAV: float = -30.0
 
@@ -99,7 +99,7 @@ func _process(delta: float) -> void:
 			if t >= 0.6:
 				bullet.state = BulletState.DISABLED
 				bullet.mesh.visible = false
-				valid_bullet += 1
+				valid_bullets += 1
 	
 func bob_ease(bob: float) -> float:
 	if bob > 0:
@@ -111,7 +111,7 @@ func bob_ease(bob: float) -> float:
 		return bob
 	
 func fire_bullet(pos: Vector3, vel: Vector3) -> bool:
-	if valid_bullet == 0:
+	if valid_bullets == 0:
 		return false
 	for bullet: Bullet in bullets:
 		if bullet.state == BulletState.DISABLED:
@@ -120,7 +120,7 @@ func fire_bullet(pos: Vector3, vel: Vector3) -> bool:
 			bullet.mesh.global_transform.origin = pos
 			bullet.velocity = vel
 			bullet.bounces = 0
-			valid_bullet -= 1
+			valid_bullets -= 1
 			return true
 	return false
 
