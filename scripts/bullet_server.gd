@@ -1,6 +1,5 @@
 extends Node3D
 
-var valid_bullets: int = 256
 const MAX_BULLETS: int = 256
 const BULLET_GRAV: float = -30.0
 const BULLET_SPEED: float = 100.0
@@ -11,6 +10,8 @@ const COLLECT_RANGE: float = 10.0
 
 enum BulletState {DISABLED, PROJECTILE, COLLECTABLE, COLLECTING}
 
+
+
 class Bullet extends Object:
 	var state: BulletState
 	var velocity: Vector3
@@ -19,17 +20,18 @@ class Bullet extends Object:
 	var period: float
 	
 var bullets: Array[Bullet]
+var valid_bullets: int = 256
 
 var params: PhysicsRayQueryParameters3D
 var space: PhysicsDirectSpaceState3D
 
 @export var bb_mesh: PackedScene = preload("res://scenes/bb.tscn")
 @export var line_3d: PackedScene = preload("res://scenes/line_3d.tscn")
-
 var line: LineRenderer
 var line_alpha: float = 1.0
 
 @export_flags_3d_physics var mask: int
+@onready var pop: AudioStreamPlayer = $Pop
 	
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
@@ -58,6 +60,8 @@ func _exit_tree() -> void:
 		bullet.free()
 
 func _process(delta: float) -> void:
+	if Menu.enabled: return
+	
 	line_alpha -= delta
 	line_alpha = clampf(line_alpha, 0.0, 1.0)
 	line.material.set_shader_parameter("alpha", line_alpha)
@@ -101,6 +105,7 @@ func _process(delta: float) -> void:
 				bullet.state = BulletState.DISABLED
 				bullet.mesh.visible = false
 				valid_bullets += 1
+				pop.play()
 	
 func bob_ease(bob: float) -> float:
 	if bob > 0:
@@ -128,12 +133,16 @@ func fire_auto(pos: Vector3, dir: Vector3) -> bool:
 	_fire_bullet(pos, spread)
 	return true
 			
-func fire_shotgun(pos: Vector3, dir: Vector3) -> bool:
-	if valid_bullets < NUM_SHOTGUN_BULLETS: return false
-	for i in NUM_SHOTGUN_BULLETS:
+func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
+	if valid_bullets == 0: return 0
+	var shots = clampi(valid_bullets, 1, NUM_SHOTGUN_BULLETS)
+	for i in shots:
 		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, 6)
 		_fire_bullet(pos, spread)
-	return true
+	if shots >= NUM_SHOTGUN_BULLETS / 2:
+		return 2
+	else:
+		return 1
 
 func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	params.from = pos

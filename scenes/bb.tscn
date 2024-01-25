@@ -12,7 +12,7 @@ material_override = ExtResource("1_uxtty")
 mesh = ExtResource("2_enp45")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, 1, 0, -0.3, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(0.4, 0, 0, 0, -1.74846e-08, 1, 0, -0.4, -4.37114e-08, 0, 0, 0)
 top_level = true
 material_override = ExtResource("3_imowr")
 mesh = SubResource("QuadMesh_637gk")

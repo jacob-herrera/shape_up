@@ -72,8 +72,11 @@ func _do_guns() -> void:
 			is_auto_out_of_ammo_flag = true
 			
 	elif Controls.get_shotgun_attack():
-		if BulletServer.fire_shotgun(fire_pos.global_transform.origin, dir):
+		var result: int = BulletServer.fire_shotgun(fire_pos.global_transform.origin, dir)
+		if result != 0:
 			var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
+			if result == 1:
+				knockback /= 2
 			velocity -= dir * knockback
 			sfx_shotgun.play()	
 		else:
