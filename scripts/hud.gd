@@ -6,6 +6,11 @@ extends Control
 @onready var crosshair: Control = $CenterContainer
 @onready var ammo: Label = $Ammo
 
+@onready var second_hand: Control = $SecondHand
+@onready var minute_hand: Control = $MinuteHand
+@onready var hour_hand: Control = $HourHand
+
+
 var time: float = 100.000
 var start_ms: int
 var pervious_ms: int
@@ -29,6 +34,9 @@ func _process(_dt: float) -> void:
 	ammo.text = str(BulletServer.valid_bullets)
 	#music.pitch_scale = Controls.clock_speed
 	#print(pitch.pitch_scale)
+	second_hand.rotation = time * -8
+	minute_hand.rotation = time * 4
+	hour_hand.rotation = time * -2
 
 	scoped.visible = Controls.get_sniper_scope()
 	crosshair.visible = not scoped.visible

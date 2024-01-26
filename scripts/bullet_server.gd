@@ -7,6 +7,9 @@ const HALF_SHOTGUN_BULLETS: int = 16
 const BULLET_GRAV: float = -30.0
 const BULLET_SPEED: float = 100.0
 const SNIPER_RANGE: float = 500.0
+const AUTO_SPREAD: float = 0.25
+const SHOTGUN_SPREAD: float = 10.0
+
 
 const BULLET_BOUNCES_UNTIL_BOBBING: int = 5
 const BULLET_BOUNCES_UNTIL_COLLECTABLE: int = 3
@@ -87,13 +90,16 @@ func _try_collect_bullet(delta: float, bullet: Bullet, target: Vector3) -> void:
 		bullet.state = BulletState.COLLECTING
 		bullet.time = 0
 	elif magnet_timeout <= 0:
-		var flat_bullet_pos: Vector3 = bullet.mesh.global_transform.origin
-		flat_bullet_pos.y = 0
-		var flat_char_pos: Vector3 = Vector3(target.x, 0, target.z)
-		var strength: float = MAGNETIC_STRENGTH / (dist * dist)
-		flat_bullet_pos += dir.normalized() * strength * delta
-		bullet.mesh.global_transform.origin = Vector3(flat_bullet_pos.x, bullet.mesh.global_transform.origin.y, flat_bullet_pos.z)
-
+		if bullet.state == BulletState.BOBBING:
+			var flat_bullet_pos: Vector3 = bullet.mesh.global_transform.origin
+			flat_bullet_pos.y = 0
+			var strength: float = MAGNETIC_STRENGTH / (dist * dist)
+			flat_bullet_pos += dir.normalized() * strength * delta
+			bullet.mesh.global_transform.origin = Vector3(flat_bullet_pos.x, bullet.mesh.global_transform.origin.y, flat_bullet_pos.z)
+		elif bullet.state == BulletState.PROJECTILE:
+			var strength: float = MAGNETIC_STRENGTH / (dist * dist)
+			bullet.mesh.global_transform.origin += dir.normalized() * strength * delta
+		
 func _process(delta: float) -> void:
 	if Menu.enabled: return
 	
@@ -164,7 +170,7 @@ func _fire_bullet(pos: Vector3, dir: Vector3) -> void:
 func fire_auto(pos: Vector3, dir: Vector3) -> bool:
 	if valid_bullets == 0: return false
 	magnet_timeout = MAGNET_TIMEOUT_DURATION
-	var spread: Vector3 = Math.random_unit_vector_in_cone(dir, 0.25)
+	var spread: Vector3 = Math.random_unit_vector_in_cone(dir, AUTO_SPREAD)
 	_fire_bullet(pos, spread)
 	return true
 			
@@ -173,7 +179,7 @@ func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
 	magnet_timeout = MAGNET_TIMEOUT_DURATION
 	var shots = clampi(valid_bullets, 1, NUM_SHOTGUN_BULLETS)
 	for i in shots:
-		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, 6)
+		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, SHOTGUN_SPREAD)
 		_fire_bullet(pos, spread)
 	if shots >= HALF_SHOTGUN_BULLETS:
 		return 2
