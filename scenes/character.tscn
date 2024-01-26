@@ -25,6 +25,7 @@ sniper_kickback = 30.0
 jump_height = 4.25
 jump_time_to_peak = 0.4
 dash_distance = 8.0
+min_dash_speed = 30.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_cc7ui")

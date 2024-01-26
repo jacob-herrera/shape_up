@@ -6,9 +6,11 @@ const BULLET_SPEED: float = 100.0
 const NUM_SHOTGUN_BULLETS: int = 32
 const SNIPER_RANGE: float = 500.0
 
-const COLLECT_RANGE: float = 10.0
+const COLLECT_RANGE: float = 8.0
+const MAGNETIC_RANGE: float = 20.0
+const MAGNETIC_STRENGTH: float = 750.0
 
-enum BulletState {DISABLED, PROJECTILE, COLLECTABLE, COLLECTING}
+enum BulletState {DISABLED, PROJECTILE, BOBBING, MAGNETIZING, COLLECTING}
 
 
 
@@ -65,47 +67,52 @@ func _process(delta: float) -> void:
 	line_alpha -= delta
 	line_alpha = clampf(line_alpha, 0.0, 1.0)
 	line.material.set_shader_parameter("alpha", line_alpha)
-	for bullet: Bullet in bullets:
-		if bullet.state == BulletState.PROJECTILE:
-			bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
-			var start: Vector3 = bullet.mesh.global_transform.origin
-			var end: Vector3 = start + (bullet.velocity * delta)
-			params.from = start
-			params.to = end
-			var result: Dictionary = space.intersect_ray(params)
-			if not result.is_empty():
-				bullet.velocity = bullet.velocity.bounce(result.normal)
-				bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 3
-				bullet.bounces += 1
-			else:
-				bullet.mesh.global_transform.origin = end
-				
-			if bullet.bounces > 2:
-				bullet.state = BulletState.COLLECTABLE
-				bullet.mesh.global_transform.origin.y = 0
-				bullet.period = -3 + randf()
-
+	
 	var char_pos: Vector3 = Character.global_transform.origin
-
+	
 	for bullet: Bullet in bullets:
-		if bullet.state == BulletState.COLLECTABLE:
-			bullet.period += delta * 2.0
-			bullet.mesh.global_transform.origin.y = bob_ease(bullet.period)
-			var dist: float = char_pos.distance_to(bullet.mesh.global_transform.origin)
-			if dist < COLLECT_RANGE:
-				bullet.state = BulletState.COLLECTING
-				bullet.period = 0
-				
-	for bullet: Bullet in bullets:
-		if bullet.state == BulletState.COLLECTING:
-			bullet.period += delta
-			var t: float = remap(bullet.period, 0.0, 0.25, 0.0, 1.0)
-			bullet.mesh.global_transform.origin = lerp(bullet.mesh.global_transform.origin, char_pos - Vector3(0, 0.5, 0), t)
-			if t >= 0.6:
-				bullet.state = BulletState.DISABLED
-				bullet.mesh.visible = false
-				valid_bullets += 1
-				pop.play()
+		match bullet.state:
+			BulletState.PROJECTILE:
+				bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
+				var start: Vector3 = bullet.mesh.global_transform.origin
+				var end: Vector3 = start + (bullet.velocity * delta)
+				params.from = start
+				params.to = end
+				var result: Dictionary = space.intersect_ray(params)
+				if not result.is_empty():
+					bullet.velocity = bullet.velocity.bounce(result.normal)
+					bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 3
+					bullet.bounces += 1
+				else:
+					bullet.mesh.global_transform.origin = end
+				if bullet.bounces > 2:
+					bullet.state = BulletState.BOBBING
+					bullet.mesh.global_transform.origin.y = 0
+					bullet.period = -3 + randf()
+			BulletState.BOBBING:
+				bullet.period += delta * 2.0
+				bullet.mesh.global_transform.origin.y = bob_ease(bullet.period)
+				var dir: Vector3 = char_pos - bullet.mesh.global_transform.origin
+				var dist: float = dir.length()
+				if dist < COLLECT_RANGE:
+					bullet.state = BulletState.COLLECTING
+					bullet.period = 0
+				else:
+					var flat_bullet_pos: Vector3 = bullet.mesh.global_transform.origin
+					flat_bullet_pos.y = 0
+					var flat_char_pos: Vector3 = Vector3(char_pos.x, 0, char_pos.z)
+					var strength: float = MAGNETIC_STRENGTH / (dist * dist)
+					flat_bullet_pos += dir.normalized() * strength * delta
+					bullet.mesh.global_transform.origin = Vector3(flat_bullet_pos.x, bullet.mesh.global_transform.origin.y, flat_bullet_pos.z)
+			BulletState.COLLECTING:
+				bullet.period += delta
+				var t: float = remap(bullet.period, 0.0, 0.25, 0.0, 1.0)
+				bullet.mesh.global_transform.origin = lerp(bullet.mesh.global_transform.origin, char_pos - Vector3(0, 0.5, 0), t)
+				if t >= 0.6:
+					bullet.state = BulletState.DISABLED
+					bullet.mesh.visible = false
+					valid_bullets += 1
+					pop.play()
 	
 func bob_ease(bob: float) -> float:
 	if bob > 0:

@@ -14,6 +14,7 @@ const ACCELERATE: float = 15.0
 @export var jump_height: float
 @export var jump_time_to_peak: float
 @export var dash_distance: float
+@export var min_dash_speed: float
 
 var JUMP_VEL: float
 var GRAVITY: float
@@ -107,18 +108,19 @@ func _physics_process(delta: float) -> void:
 	var flat_vel := Vector3(velocity.x, 0, velocity.z)
 	
 	if Controls.get_try_dash():
+		var dash_speed: float = maxf(flat_vel.length(), min_dash_speed)
 		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
-			velocity = wish_dir * velocity.length()
+			velocity = wish_dir * dash_speed
 		elif flat_vel.length() > 0.25:
 			global_transform.origin += flat_vel.normalized() * dash_distance
-			#velocity = wish_dir * velocity.length()
+			velocity = flat_vel.normalized() * dash_speed
 		else:
 			var forward: Vector3 = -camera.global_transform.basis.z
 			forward.y = 0
 			forward = forward.normalized()
 			global_transform.origin += forward * dash_distance
-			velocity = forward.normalized() * velocity.length()
+			velocity = forward.normalized() * dash_speed
 		sfx_dash.play()
 
 	if flat_vel.length() > SPEED_CAP:
