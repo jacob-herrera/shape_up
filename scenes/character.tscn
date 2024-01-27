@@ -31,9 +31,9 @@ min_dash_speed = 30.0
 shape = SubResource("CylinderShape3D_cc7ui")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 top_level = true
-fov = 179.0
+fov = 90.0
 script = ExtResource("2_34f15")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]

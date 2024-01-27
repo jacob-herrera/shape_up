@@ -5,7 +5,7 @@ var mouse_sensitivity: float = 2.0
 var pitch_limit: float
 
 const DEG_PITCH_LIMIT: float = 89.99
-const OFFSET: Vector3 = Vector3(0, 0.75, 0)
+const OFFSET: Vector3 = Vector3(0, 1.75, 0)
 
 const FOV: float = 90
 const DASH_FOV: float = 70

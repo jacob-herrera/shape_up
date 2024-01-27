@@ -17,7 +17,7 @@ const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 
 const COLLECT_RANGE: float = 5.0
 const MAGNETIC_RANGE: float = 20.0
-const MAGNETIC_STRENGTH: float = 750.0
+const MAGNETIC_STRENGTH: float = 850.0
 
 enum BulletState {
 	DISABLED,
@@ -50,9 +50,6 @@ var line_alpha: float = 1.0
 
 const MAGNET_TIMEOUT_DURATION: float = 1.0
 var magnet_timeout: float = 0.0
-
-#func reset_magnet_timeout() -> void:
-#	magnet_timeout = MAGNET_TIMEOUT_DURATION
 
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
@@ -123,9 +120,12 @@ func _process(delta: float) -> void:
 				if not result.is_empty():
 					bullet.velocity = bullet.velocity.bounce(result.normal)
 					bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 3
-					bullet.bounces += 1
+					if bullet.bounces > 0 and Vector3.UP.is_equal_approx(result.normal):
+						bullet.bounces = 3
+					else: bullet.bounces += 1
 				else:
 					bullet.mesh.global_transform.origin = end
+					
 				if bullet.bounces >= BULLET_BOUNCES_UNTIL_BOBBING:
 					bullet.state = BulletState.BOBBING
 					bullet.mesh.global_transform.origin.y = 0

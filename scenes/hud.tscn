@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=9 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
 [ext_resource type="Texture2D" uid="uid://dkct7ua6bwkl3" path="res://textures/scoped.png" id="2_5vdlu"]
 [ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
 [ext_resource type="Texture2D" uid="uid://osc184cess" path="res://textures/handle1.png" id="4_cpako"]
 [ext_resource type="Texture2D" uid="uid://dodstjamhsrvg" path="res://textures/handle2.png" id="4_ixj0j"]
+[ext_resource type="Texture2D" uid="uid://c34af1ae7nhi4" path="res://textures/ui_shadow.png" id="6_n5px1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hure"]
+bg_color = Color(0, 0, 0, 0.501961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipngd"]
+bg_color = Color(1, 0, 0, 1)
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -33,6 +40,10 @@ offset_top = -107.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 96
 text = "100.000"
 horizontal_alignment = 1
@@ -132,7 +143,7 @@ grow_vertical = 0
 
 [node name="Line2D" type="Line2D" parent="SecondHand"]
 points = PackedVector2Array(0, 180, 0, -180)
-default_color = Color(0.678431, 0, 0, 1)
+default_color = Color(1, 0, 0, 1)
 
 [node name="MinuteHand" type="Control" parent="."]
 layout_mode = 1
@@ -145,7 +156,7 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Texture" type="TextureRect" parent="MinuteHand"]
-modulate = Color(0.87451, 0.568627, 0.0901961, 1)
+modulate = Color(1, 0, 1, 1)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -171,7 +182,7 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Texture" type="TextureRect" parent="HourHand"]
-modulate = Color(0.827451, 0.72549, 0.207843, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -182,3 +193,36 @@ offset_right = 64.0
 offset_bottom = 112.635
 grow_horizontal = 2
 texture = ExtResource("4_cpako")
+
+[node name="BossHealthBar" type="ProgressBar" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -540.0
+offset_top = 32.0
+offset_right = 540.0
+offset_bottom = 96.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_0hure")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ipngd")
+value = 29.88
+show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.66, 1.66)
+pivot_offset = Vector2(128, 128)
+texture = ExtResource("6_n5px1")

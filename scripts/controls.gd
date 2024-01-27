@@ -106,14 +106,8 @@ func get_sniper_attack() -> bool:
 			return true
 	return false
 
-		
 func get_move_input() -> Vector2:
-	var move_dir: Vector2 = Vector2(0,0)
-	move_dir.x += float(Input.is_action_pressed("moveright"))
-	move_dir.x -= float(Input.is_action_pressed("moveleft"))
-	move_dir.y += float(Input.is_action_pressed("moveforward"))
-	move_dir.y -= float(Input.is_action_pressed("movebackward"))
-	return move_dir
+	return Input.get_vector("moveleft", "moveright", "movebackward", "moveforward")
  
 func get_try_dash() -> bool:
 	return Input.is_action_just_pressed("dash") 
