@@ -1,7 +1,7 @@
 extends Control
 
 @onready var timer: Label = $Timer
-@onready var scoped: TextureRect = $Scoped
+@onready var scoped: Control = $Scoped
 @onready var fps: Label = $FPS
 @onready var crosshair: Control = $CenterContainer
 @onready var ammo: Label = $Ammo
@@ -76,14 +76,13 @@ func _process(dt: float) -> void:
 		time = 0
 	
 	if time <= spawn_one_time and time > 0:
-		# Truncate float to integer, effectively minus 1
-		if Controls.clock_speed < 1.1 and Controls.clock_speed > 0.9:
+		if Controls.clock_speed < 1.025 and Controls.clock_speed > 0.975:
 			pass
-		elif Controls.clock_speed > 1.1:
+		elif Controls.clock_speed > 1.025:
 			spawn_one_particle(false)
-		elif Controls.clock_speed < 0.9:
+		elif Controls.clock_speed < 0.975:
 			spawn_one_particle(true)
-			
+		# Truncate float to integer, effectively minus 1
 		spawn_one_time = time
 	
 	animate_particles(ms_diff)
@@ -96,8 +95,7 @@ func _process(dt: float) -> void:
 	ammo_bar.value = BulletServer.valid_bullets
 	dash_Bar.value = Controls.dash_meter
 	dashes.text = str(floorf(Controls.dash_meter))
-	#music.pitch_scale = Controls.clock_speed
-	#print(pitch.pitch_scale)
+
 	second_hand.rotation = time * -7
 	minute_hand.rotation = time * 5
 	hour_hand.rotation = time * -2

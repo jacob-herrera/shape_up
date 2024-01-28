@@ -20,7 +20,7 @@ const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 
 const COLLECT_RANGE: float = 5.0
 const MAGNETIC_COLLECT_RANGE: float = 10.0
-const MAGNETIC_STRENGTH: float = 950.0
+const MAGNETIC_STRENGTH: float = 1250.0
 
 enum BulletState {
 	DISABLED,
@@ -106,7 +106,7 @@ func _process(delta: float) -> void:
 	
 	magnet_timeout -= delta
 	line_alpha -= delta
-	line_alpha = clampf(line_alpha, 0.0, 1.0)
+	line_alpha = clampf(line_alpha, 0.0, 0.5)
 	line.material.set_shader_parameter("alpha", line_alpha)
 	
 	var char_pos: Vector3 = Character.global_transform.origin

@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=10 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
-[ext_resource type="Texture2D" uid="uid://dkct7ua6bwkl3" path="res://textures/scoped.png" id="2_5vdlu"]
 [ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
 [ext_resource type="Texture2D" uid="uid://osc184cess" path="res://textures/handle1.png" id="4_cpako"]
 [ext_resource type="Texture2D" uid="uid://dodstjamhsrvg" path="res://textures/handle2.png" id="4_ixj0j"]
@@ -62,16 +61,13 @@ offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Scoped" type="TextureRect" parent="."]
-visible = false
+[node name="Scoped" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("2_5vdlu")
 
 [node name="CenterContainer" type="CenterContainer" parent="Scoped"]
 layout_mode = 1

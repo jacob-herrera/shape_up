@@ -5,9 +5,10 @@ var wish_jump: bool = false
 const PRIMARY_FIRERATE: float = 2.0/60.0
 var primary_timer: float = 0
 
-const SHOTGUN_FIRERATE: float = 12.0/60.0
+const SHOTGUN_COOLDOWN: float = 16.0/60.0
 const SHOTGUN_CLICK_WINDOW: int = 100
-var shotgun_timer: int = 0
+var shotgun_window: int = 0
+var shotgun_cooldown: float = 0.0
 
 const SNIPER_DEBOUNCE: int = 200
 var sniper_scoped: bool = false
@@ -58,13 +59,14 @@ func _process(delta) -> void:
 	previous_ms = current_ms
 	dash_meter += delta * DASH_REFILL_RATE
 	dash_meter = clampf(dash_meter, 0.0, DASH_METER_MAX)
-	shotgun_timer -= ms_diff		
+	shotgun_window -= ms_diff		
 	primary_timer -= delta
+	shotgun_cooldown -= delta
 	sniper_debounce -= ms_diff
 	
 	if Input.is_action_just_pressed("attackprimary"):
 		if not sniper_scoped and sniper_debounce < 0:
-			shotgun_timer = SHOTGUN_CLICK_WINDOW
+			shotgun_window = SHOTGUN_CLICK_WINDOW
 	
 	if Input.is_action_just_pressed("attacksecondary"):
 		if not sniper_scoped:
@@ -81,7 +83,7 @@ func _process(delta) -> void:
 func get_auto_attack() -> bool:
 	if sniper_scoped or \
 	sniper_debounce > 0 or \
-	shotgun_timer >= 0 or \
+	shotgun_window >= 0 or \
 	Input.is_action_just_pressed("attackprimary"):
 		return false
 
@@ -93,10 +95,11 @@ func get_auto_attack() -> bool:
 	return false
 	
 func get_shotgun_attack() -> bool:
-	if sniper_scoped:
+	if sniper_scoped or shotgun_cooldown > 0:
 		return false
 	var is_released = Input.is_action_just_released("attackprimary")
-	if is_released and shotgun_timer >= 0:
+	if is_released and shotgun_window >= 0:
+		shotgun_cooldown = SHOTGUN_COOLDOWN
 		return true
 	return false
 	
