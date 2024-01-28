@@ -77,11 +77,11 @@ func _process(dt: float) -> void:
 	
 	if time <= spawn_one_time and time > 0:
 		# Truncate float to integer, effectively minus 1
-		if Controls.clock_speed == 1:
+		if Controls.clock_speed < 1.1 and Controls.clock_speed > 0.9:
 			pass
-		elif Controls.clock_speed > 1:
+		elif Controls.clock_speed > 1.1:
 			spawn_one_particle(false)
-		elif Controls.clock_speed < 1:
+		elif Controls.clock_speed < 0.9:
 			spawn_one_particle(true)
 			
 		spawn_one_time = time
