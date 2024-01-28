@@ -107,7 +107,9 @@ func _physics_process(delta: float) -> void:
 	velocity.y += GRAVITY * delta;
 	var flat_vel := Vector3(velocity.x, 0, velocity.z)
 	
-	if Controls.get_try_dash():
+	var did_dash: bool = Controls.try_dash()
+	
+	if did_dash:
 		var dash_speed: float = maxf(flat_vel.length(), min_dash_speed)
 		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
@@ -131,7 +133,7 @@ func _physics_process(delta: float) -> void:
 	
 	_do_guns()
 	
-	if Controls.get_try_dash():
+	if did_dash:
 		camera.dash_cam(old_pos)
 	
 	grounded = is_on_floor()

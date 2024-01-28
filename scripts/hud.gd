@@ -5,6 +5,10 @@ extends Control
 @onready var fps: Label = $FPS
 @onready var crosshair: Control = $CenterContainer
 @onready var ammo: Label = $Ammo
+@onready var ammo_bar: ProgressBar = $AmmoBar
+
+@onready var dashes: Label = $Dashes
+@onready var dash_Bar: ProgressBar = $DashBar
 
 @onready var second_hand: Control = $SecondHand
 @onready var minute_hand: Control = $MinuteHand
@@ -80,6 +84,9 @@ func _process(dt: float) -> void:
 	timer.global_position = timer_pos + shake_vec
 	
 	ammo.text = str(BulletServer.valid_bullets)
+	ammo_bar.value = BulletServer.valid_bullets
+	dash_Bar.value = Controls.dash_meter
+	dashes.text = str(floorf(Controls.dash_meter))
 	#music.pitch_scale = Controls.clock_speed
 	#print(pitch.pitch_scale)
 	second_hand.rotation = time * -7

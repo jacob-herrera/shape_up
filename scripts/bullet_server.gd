@@ -19,6 +19,7 @@ const BULLET_BOUNCES_UNTIL_COLLECTABLE: int = 3
 const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 
 const COLLECT_RANGE: float = 5.0
+const MAGNETIC_COLLECT_RANGE: float = 10.0
 const MAGNETIC_STRENGTH: float = 950.0
 
 enum BulletState {
@@ -84,6 +85,7 @@ func _try_collect_bullet(delta: float, bullet: Bullet, target: Vector3) -> void:
 	var height_diff: float = absf(target.y - bullet.mesh.global_transform.origin.y)
 	var dist: float = dir.length()
 	var flat_dist: float = Vector3(target.x, 0, target.z).distance_to(Vector3(bullet.mesh.global_transform.origin.x, 0, bullet.mesh.global_transform.origin.z))
+	var collect_range: float = MAGNETIC_COLLECT_RANGE if magnet_timeout > 0 else COLLECT_RANGE
 	# Cylinder hitbox
 	if flat_dist < COLLECT_RANGE and height_diff <= COLLECT_RANGE:
 		bullet.state = BulletState.COLLECTING

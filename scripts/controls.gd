@@ -18,6 +18,10 @@ var clock_speed: float = 1.0
 var target_clock_speed: float = 1.0
 var TIME_RAMP_LERP: float = 15.0
 
+const DASH_METER_MAX: float = 3.0
+const DASH_REFILL_RATE: float = 0.25
+var dash_meter: float = 3.0
+
 var previous_ms: int
 
 signal entered_scope
@@ -51,7 +55,8 @@ func _process(delta) -> void:
 	var current_ms: int = Time.get_ticks_msec()
 	var ms_diff: int = current_ms - previous_ms
 	previous_ms = current_ms
-	
+	dash_meter += delta * DASH_REFILL_RATE
+	dash_meter = clampf(dash_meter, 0.0, DASH_METER_MAX)
 	shotgun_timer -= ms_diff		
 	primary_timer -= delta
 	sniper_debounce -= ms_diff
@@ -109,5 +114,9 @@ func get_sniper_attack() -> bool:
 func get_move_input() -> Vector2:
 	return Input.get_vector("moveleft", "moveright", "movebackward", "moveforward")
  
-func get_try_dash() -> bool:
-	return Input.is_action_just_pressed("dash") 
+func try_dash() -> bool:
+	if Input.is_action_just_pressed("dash"):
+		if dash_meter >= 1.0:
+			dash_meter -= 1.0
+			return true
+	return false
