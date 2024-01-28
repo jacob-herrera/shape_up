@@ -5,7 +5,10 @@ const NUM_SHOTGUN_BULLETS: int = 32
 const HALF_SHOTGUN_BULLETS: int = 16
 
 const BULLET_GRAV: float = -30.0
-const BULLET_SPEED: float = 100.0
+
+const SHOTGUN_BULLET_SPEED: float = 100.0
+const AUTO_BULLET_SPEED: float = 200.0
+
 const SNIPER_RANGE: float = 500.0
 const AUTO_SPREAD: float = 0.25
 const SHOTGUN_SPREAD: float = 10.0
@@ -16,8 +19,7 @@ const BULLET_BOUNCES_UNTIL_COLLECTABLE: int = 3
 const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 
 const COLLECT_RANGE: float = 5.0
-const MAGNETIC_RANGE: float = 20.0
-const MAGNETIC_STRENGTH: float = 850.0
+const MAGNETIC_STRENGTH: float = 950.0
 
 enum BulletState {
 	DISABLED,
@@ -126,8 +128,9 @@ func _process(delta: float) -> void:
 				else:
 					bullet.mesh.global_transform.origin = end
 					
-				if bullet.bounces >= BULLET_BOUNCES_UNTIL_BOBBING:
+				if bullet.velocity.length() <= 1.0:
 					bullet.state = BulletState.BOBBING
+					print("here")
 					bullet.mesh.global_transform.origin.y = 0
 					bullet.time = -3 + randf()
 				elif bullet.bounces >= BULLET_BOUNCES_UNTIL_COLLECTABLE \
@@ -135,8 +138,8 @@ func _process(delta: float) -> void:
 					_try_collect_bullet(delta, bullet, char_pos)
 			BulletState.BOBBING:
 				bullet.time += delta * 2.0
-				bullet.mesh.global_transform.origin.y = bob_ease(bullet.time)
 				_try_collect_bullet(delta, bullet, char_pos)
+				bullet.mesh.global_transform.origin.y = bob_ease(bullet.time)
 			BulletState.COLLECTING:
 				bullet.time += delta
 				var t: float = remap(bullet.time, 0.0, 0.25, 0.0, 1.0)
@@ -156,13 +159,13 @@ func bob_ease(bob: float) -> float:
 		bob = remap(bob, -1, 0, 0.05, 0.5	)
 		return bob
 	
-func _fire_bullet(pos: Vector3, dir: Vector3) -> void:
+func _fire_bullet(pos: Vector3, dir: Vector3, speed: float) -> void:
 	for bullet: Bullet in bullets:
 		if bullet.state == BulletState.DISABLED:
 			bullet.state = BulletState.PROJECTILE
 			bullet.mesh.visible = true 
 			bullet.mesh.global_transform.origin = pos
-			bullet.velocity = dir * BULLET_SPEED
+			bullet.velocity = dir * speed
 			bullet.bounces = 0
 			valid_bullets -= 1
 			break
@@ -171,7 +174,7 @@ func fire_auto(pos: Vector3, dir: Vector3) -> bool:
 	if valid_bullets == 0: return false
 	magnet_timeout = MAGNET_TIMEOUT_DURATION
 	var spread: Vector3 = Math.random_unit_vector_in_cone(dir, AUTO_SPREAD)
-	_fire_bullet(pos, spread)
+	_fire_bullet(pos, spread, AUTO_BULLET_SPEED)
 	return true
 			
 func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
@@ -180,7 +183,7 @@ func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
 	var shots = clampi(valid_bullets, 1, NUM_SHOTGUN_BULLETS)
 	for i in shots:
 		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, SHOTGUN_SPREAD)
-		_fire_bullet(pos, spread)
+		_fire_bullet(pos, spread, SHOTGUN_BULLET_SPEED)
 	if shots >= HALF_SHOTGUN_BULLETS:
 		return 2
 	else:

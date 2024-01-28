@@ -32,19 +32,23 @@ bus = &"Music"
 [node name="Timer" type="Label" parent="."]
 z_index = 1
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_top = -107.0
+offset_left = -208.0
+offset_top = -143.0
+offset_right = 208.0
 grow_horizontal = 2
 grow_vertical = 0
+pivot_offset = Vector2(208, 71)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 96
+theme_override_font_sizes/font_size = 128
 text = "100.000"
 horizontal_alignment = 1
 
@@ -119,14 +123,22 @@ text = "FPS: 100
 
 [node name="Ammo" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 6
+anchor_left = 1.0
 anchor_top = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -9.5
-offset_right = 40.0
-offset_bottom = 9.5
+offset_left = -213.0
+offset_top = -78.5
+offset_bottom = 78.5
+grow_horizontal = 0
 grow_vertical = 2
-theme_override_font_sizes/font_size = 141
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 128
 text = "256
 "
 vertical_alignment = 1
