@@ -15,6 +15,7 @@ extends Control
 @onready var hour_hand: Control = $HourHand
 
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
+@onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
 
 var time: float = 100.000
 var start_ms: int
@@ -39,8 +40,9 @@ func _ready() -> void:
 	PitchChanger.register_player($TempMusic)
 	timer_pos = timer.global_position
 	
-func spawn_one_particle() -> void:
-	var v: Control = minus_one.instantiate() as Control
+func spawn_one_particle(green: bool) -> void:
+	var which: PackedScene = plus_one if green else minus_one
+	var v: Control = which.instantiate() as Control
 	add_child(v)
 	v.global_position = timer.global_position + timer.pivot_offset
 	var part: MinusOneParticle = MinusOneParticle.new()
@@ -74,8 +76,15 @@ func _process(dt: float) -> void:
 		time = 0
 	
 	if time <= spawn_one_time and time > 0:
-		spawn_one_particle()
-		spawn_one_time = time # Truncate float to integer, effectively minus 1
+		# Truncate float to integer, effectively minus 1
+		if Controls.clock_speed == 1:
+			pass
+		elif Controls.clock_speed > 1:
+			spawn_one_particle(false)
+		elif Controls.clock_speed < 1:
+			spawn_one_particle(true)
+			
+		spawn_one_time = time
 	
 	animate_particles(ms_diff)
 	
