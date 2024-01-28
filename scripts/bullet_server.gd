@@ -130,7 +130,6 @@ func _process(delta: float) -> void:
 					
 				if bullet.velocity.length() <= 1.0:
 					bullet.state = BulletState.BOBBING
-					print("here")
 					bullet.mesh.global_transform.origin.y = 0
 					bullet.time = -3 + randf()
 				elif bullet.bounces >= BULLET_BOUNCES_UNTIL_COLLECTABLE \
