@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bf1ee4s2ctdud"
+path="res://.godot/imported/dodecahedron.obj-54aabee92f1181fe02f71f0dbde58689.mesh"
+
+[deps]
+
+files=["res://.godot/imported/dodecahedron.obj-54aabee92f1181fe02f71f0dbde58689.mesh"]
+
+source_file="res://models/dodecahedron.obj"
+dest_files=["res://.godot/imported/dodecahedron.obj-54aabee92f1181fe02f71f0dbde58689.mesh", "res://.godot/imported/dodecahedron.obj-54aabee92f1181fe02f71f0dbde58689.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

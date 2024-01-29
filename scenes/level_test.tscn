@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqsm78eiwy8rh"]
+[gd_scene load_steps=8 format=3 uid="uid://cqsm78eiwy8rh"]
 
 [ext_resource type="Material" uid="uid://0iqxlwgsdbch" path="res://mat/mat_tile.tres" id="1_5c6lb"]
+[ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_ggtlv"]
+[ext_resource type="ArrayMesh" uid="uid://bsp5mhtv0kyyh" path="res://models/pyramid.obj" id="3_jkx4r"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lm5y0"]
+size = Vector3(6, 6, 6)
 
 [node name="Node3D" type="Node3D"]
 
@@ -37,3 +42,20 @@ mesh = SubResource("QuadMesh_yoqv7")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_knkit")
+
+[node name="Boss1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.25, 0)
+
+[node name="Visual" type="Node3D" parent="Boss1"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Boss1/Visual"]
+transform = Transform3D(-4, 6.03983e-07, 0, -6.03983e-07, -4, 0, 0, 0, 4, 0, 0, 0)
+mesh = ExtResource("3_jkx4r")
+skeleton = NodePath("../..")
+script = ExtResource("3_ggtlv")
+
+[node name="Hurtbox" type="Area3D" parent="Boss1"]
+
+[node name="Shape" type="CollisionShape3D" parent="Boss1/Hurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_lm5y0")

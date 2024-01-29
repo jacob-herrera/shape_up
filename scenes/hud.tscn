@@ -65,7 +65,7 @@
 [ext_resource type="Texture2D" uid="uid://ccrn7hyfaxvhw" path="res://textures/twinkle/TWINKLE_57.png" id="63_yoknb"]
 [ext_resource type="Texture2D" uid="uid://vn4v6cxcpgnn" path="res://textures/twinkle/TWINKLE_58.png" id="64_ldn61"]
 [ext_resource type="Texture2D" uid="uid://bw7f5lflqbfo5" path="res://textures/twinkle/TWINKLE_59.png" id="65_4ux0b"]
-[ext_resource type="Script" path="res://scenes/rotate_cone_ui.gd" id="66_cpq01"]
+[ext_resource type="Script" path="res://scripts/rotate_cone_ui.gd" id="66_cpq01"]
 [ext_resource type="Material" uid="uid://dt6o5uic4br7s" path="res://mat/mat_cone.tres" id="66_rjxm2"]
 [ext_resource type="ArrayMesh" uid="uid://d0myg15vybpp3" path="res://models/cone.obj" id="67_j4mye"]
 
