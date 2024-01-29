@@ -1,11 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://b5xr8xjy8bjgg"]
 
 [ext_resource type="Script" path="res://scripts/line_renderer.gd" id="1_g0lrx"]
-[ext_resource type="Material" uid="uid://bi8v4ue4q45ow" path="res://mat/mat_snipertrace.tres" id="2_4w3c4"]
+[ext_resource type="Material" uid="uid://bi8v4ue4q45ow" path="res://mat/mat_magenta.tres" id="2_0yy6x"]
 
 [node name="Line3D" type="MeshInstance3D"]
 script = ExtResource("1_g0lrx")
 points = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, 0)])
-startThickness = 0.05
 endThickness = 0.05
-material = ExtResource("2_4w3c4")
+material = ExtResource("2_0yy6x")

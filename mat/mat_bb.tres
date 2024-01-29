@@ -5,8 +5,4 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_oolfi")
-shader_parameter/previous_position = null
-shader_parameter/new_position = null
-shader_parameter/intensity = 1.0
-shader_parameter/freq = 1.0
-shader_parameter/delta = null
+shader_parameter/color = Color(1, 1, 0, 1)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=78 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
 [ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
@@ -65,6 +65,21 @@
 [ext_resource type="Texture2D" uid="uid://ccrn7hyfaxvhw" path="res://textures/twinkle/TWINKLE_57.png" id="63_yoknb"]
 [ext_resource type="Texture2D" uid="uid://vn4v6cxcpgnn" path="res://textures/twinkle/TWINKLE_58.png" id="64_ldn61"]
 [ext_resource type="Texture2D" uid="uid://bw7f5lflqbfo5" path="res://textures/twinkle/TWINKLE_59.png" id="65_4ux0b"]
+[ext_resource type="Script" path="res://scenes/rotate_cone_ui.gd" id="66_cpq01"]
+[ext_resource type="Material" uid="uid://dt6o5uic4br7s" path="res://mat/mat_cone.tres" id="66_rjxm2"]
+[ext_resource type="ArrayMesh" uid="uid://d0myg15vybpp3" path="res://models/cone.obj" id="67_j4mye"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2ixj"]
+bg_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whddg"]
+bg_color = Color(1, 0, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62dtu"]
+bg_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbamd"]
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hure"]
 bg_color = Color(0, 0, 0, 0.501961)
@@ -76,7 +91,7 @@ bg_color = Color(1, 0, 0, 1)
 bg_color = Color(1, 1, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vi4mo"]
-bg_color = Color(1, 0, 1, 1)
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_lm4kt"]
 animations = [{
@@ -275,6 +290,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_gxd7r")
+styles = Array[StyleBox]([SubResource("StyleBoxFlat_l2ixj"), SubResource("StyleBoxFlat_whddg"), SubResource("StyleBoxFlat_62dtu"), SubResource("StyleBoxFlat_tbamd")])
 
 [node name="TempMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_a71iw")
@@ -574,4 +590,38 @@ mouse_filter = 2
 
 [node name="Twinkle" type="AnimatedSprite2D" parent="Flash/CenterContainer/Control"]
 sprite_frames = SubResource("SpriteFrames_lm4kt")
-frame = 59
+offset = Vector2(-2.5, 4)
+
+[node name="BoltAmmo" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -256.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SubViewport" type="SubViewport" parent="BoltAmmo"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="BoltAmmo/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.75)
+cull_mask = 262144
+projection = 1
+size = 1.66012
+
+[node name="Node3D" type="Node3D" parent="BoltAmmo/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0918827, -0.087158, 0)
+script = ExtResource("66_cpq01")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BoltAmmo/SubViewport/Node3D"]
+transform = Transform3D(0.362638, 0.20881, 0.0303203, -0.164774, 0.422295, 0.17101, 0.0366472, -0.167527, 0.468867, 0, 1.53994, -0.00193727)
+layers = 262144
+material_override = ExtResource("66_rjxm2")
+mesh = ExtResource("67_j4mye")

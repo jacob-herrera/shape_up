@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=3 uid="uid://cqgc6x8wimca6"]
+
+[ext_resource type="ArrayMesh" uid="uid://d0myg15vybpp3" path="res://models/cone.obj" id="1_5l25t"]
+[ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="1_hds3c"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="3_7r1gs"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="4_5w4fd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ixgg"]
+render_priority = 0
+shader = ExtResource("1_hds3c")
+shader_parameter/albedo = Color(1, 0, 1, 1)
+shader_parameter/alpha = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_mo10d"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Node3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.362672, 0.208684, 0.0244497, -0.164245, 0.420048, 0.14178, 0.0386342, -0.173235, 0.37323, 0.115851, 1.5576, -0.142537)
+material_override = SubResource("ShaderMaterial_0ixgg")
+mesh = ExtResource("1_5l25t")
+
+[node name="DropShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, 1, 0, -2, -4.37114e-08, 0, 0, 0)
+top_level = true
+material_override = ExtResource("3_7r1gs")
+mesh = SubResource("QuadMesh_mo10d")
+skeleton = NodePath("../..")
+script = ExtResource("4_5w4fd")

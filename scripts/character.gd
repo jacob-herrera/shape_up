@@ -50,9 +50,6 @@ func _entered_scope() -> void:
 func _exited_scope() -> void:
 	sfx_sniper_charge.stop()
 
-
-
-
 func _process(_delta: float) -> void:
 	if Menu.enabled: return
 		
@@ -64,7 +61,7 @@ func _do_guns() -> void:
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(global_transform.origin, dir)
-		velocity -= dir * sniper_kickback
+		velocity = -dir * sniper_kickback
 		
 	if Controls.get_auto_attack():
 		if BulletServer.fire_auto(fire_pos.global_transform.origin, dir):

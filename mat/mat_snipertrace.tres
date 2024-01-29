@@ -1,8 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bi8v4ue4q45ow"]
-
-[ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="1_mt74i"]
-
-[resource]
-render_priority = 0
-shader = ExtResource("1_mt74i")
-shader_parameter/alpha = 1.0

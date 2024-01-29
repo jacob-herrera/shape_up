@@ -40,8 +40,8 @@ func _process(delta: float) -> void:
 	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.03, 0))
 	
 	if Controls.get_sniper_scope():
-		sniper_fov_T += delta / 3
-		fov = lerpf(SNIPER_FOV_MAX, SNIPER_FOV_MIN, ease_out_expo(sniper_fov_T))
+		#sniper_fov_T += delta / 3
+		fov = lerpf(SNIPER_FOV_MAX, SNIPER_FOV_MIN, ease_out_expo(Controls.sniper_charge))
 	else:
 		sniper_fov_T = 0
 		fov = lerpf(DASH_FOV, FOV, ease_out_expo(fov_T))

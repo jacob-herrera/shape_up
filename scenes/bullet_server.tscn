@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ds3q4pv5yoswy"]
+[gd_scene load_steps=4 format=3 uid="uid://ds3q4pv5yoswy"]
 
 [ext_resource type="Script" path="res://scripts/bullet_server.gd" id="1_cg617"]
 [ext_resource type="AudioStream" uid="uid://dvhb2pwsttobd" path="res://sound/collect_pop.wav" id="2_6k3nl"]
+[ext_resource type="AudioStream" uid="uid://k23hycwyi42l" path="res://sound/collect_bolt.wav" id="3_6ch25"]
 
 [node name="BulletServer" type="Node3D"]
 script = ExtResource("1_cg617")
@@ -11,4 +12,8 @@ mask = 1
 stream = ExtResource("2_6k3nl")
 volume_db = -5.0
 max_polyphony = 16
+bus = &"Effects"
+
+[node name="CollectBolt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6ch25")
 bus = &"Effects"

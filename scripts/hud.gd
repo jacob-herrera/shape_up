@@ -8,7 +8,7 @@ extends Control
 @onready var ammo_bar: ProgressBar = $AmmoBar
 
 @onready var dashes: Label = $Dashes
-@onready var dash_Bar: ProgressBar = $DashBar
+@onready var dash_bar: ProgressBar = $DashBar
 
 @onready var second_hand: Control = $SecondHand
 @onready var minute_hand: Control = $MinuteHand
@@ -19,6 +19,10 @@ extends Control
 
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
+
+@onready var bolt_ammo: Control = $BoltAmmo
+
+@export var styles: Array[StyleBox]
 
 var time: float = 100.000
 var start_ms: int
@@ -97,6 +101,8 @@ func _process(dt: float) -> void:
 	
 	animate_particles(ms_diff)
 	
+	bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED
+	
 	flash_T -= ms_diff / 500.0
 	flash.color.a = remap(flash_T, 0, 1, 0, 0.5)
 	twinkle.frame = remap(flash_T, 1, 0, 0, 60)
@@ -107,8 +113,11 @@ func _process(dt: float) -> void:
 	
 	ammo.text = str(BulletServer.valid_bullets)
 	ammo_bar.value = BulletServer.valid_bullets
-	dash_Bar.value = Controls.dash_meter
-	dashes.text = str(floorf(Controls.dash_meter))
+	dash_bar.value = Controls.dash_meter
+	var dashes_int: int = floorf(Controls.dash_meter)
+	dashes.text = str(dashes_int)
+	#if dashes_int == 0:
+	dash_bar.add_theme_stylebox_override("fill", styles[dashes_int])
 
 	second_hand.rotation = time * -7
 	minute_hand.rotation = time * 5

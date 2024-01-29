@@ -13,6 +13,7 @@ var shotgun_cooldown: float = 0.0
 const SNIPER_DEBOUNCE: int = 200
 var sniper_scoped: bool = false
 var sniper_debounce: int = 0
+var sniper_charge: float = 0.0
 
 const FAST_SPEED: float = 2.0
 const SLOW_SPEED: float = 0.5
@@ -75,16 +76,23 @@ func _process(delta) -> void:
 	shotgun_cooldown -= delta
 	sniper_debounce -= ms_diff
 	
+	if sniper_scoped:
+		sniper_charge += delta / 2.0
+		sniper_charge = clampf(sniper_charge, 0.0, 1.0)
+	else:
+		sniper_charge = 0.0
+	
 	if Input.is_action_just_pressed("attackprimary"):
 		if not sniper_scoped and sniper_debounce < 0:
 			shotgun_window = SHOTGUN_CLICK_WINDOW
 	
 	if Input.is_action_just_pressed("attacksecondary"):
-		if not sniper_scoped:
+		if not sniper_scoped and BulletServer.bolt_state == BulletServer.BoltState.COLLECTED:
 			sniper_scoped = true
 			emit_signal("entered_scope")
 		else:
 			sniper_scoped = false
+			sniper_charge = 0.0
 			emit_signal("exited_scope")
 			
 	_handle_clock(ms_diff)
@@ -115,9 +123,11 @@ func get_shotgun_attack() -> bool:
 	return false
 	
 func get_sniper_scope() -> bool:
+	if BulletServer.bolt_state != BulletServer.BoltState.COLLECTED: return false
 	return sniper_scoped
 	
 func get_sniper_attack() -> bool:
+	if BulletServer.bolt_state != BulletServer.BoltState.COLLECTED: return false
 	if sniper_scoped:
 		if Input.is_action_just_pressed("attackprimary"):
 			sniper_scoped = false

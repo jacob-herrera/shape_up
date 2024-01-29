@@ -21,6 +21,7 @@ const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 const COLLECT_RANGE: float = 5.0
 const MAGNETIC_COLLECT_RANGE: float = 10.0
 const MAGNETIC_STRENGTH: float = 1250.0
+const BOLT_COLLECT_RANGE: float = 7.0
 
 enum BulletState {
 	DISABLED,
@@ -28,6 +29,12 @@ enum BulletState {
 	BOBBING,
 	MAGNETIZING,
 	COLLECTING
+}
+
+enum BoltState {
+	COLLECTED = 0,
+	BOBBING = 1,
+	COLLECTING = 2,
 }
 
 class Bullet extends Object:
@@ -38,21 +45,30 @@ class Bullet extends Object:
 	var time: float
 	
 @export var bb_mesh: PackedScene = preload("res://scenes/bb.tscn")
+@export var cone_mesh: PackedScene = preload("res://scenes/cone.tscn")
 @export var line_3d: PackedScene = preload("res://scenes/line_3d.tscn")
 @export_flags_3d_physics var mask: int
 
 @onready var pop: AudioStreamPlayer = $Pop
+@onready var collect_bolt: AudioStreamPlayer = $CollectBolt
 
 var params: PhysicsRayQueryParameters3D
 var space: PhysicsDirectSpaceState3D
 var line: LineRenderer
+var cone: Node3D
+var cone_mat: ShaderMaterial
 var bullets: Array[Bullet]
 
 var valid_bullets: int = 256
 var line_alpha: float = 1.0
+#var bolt_in_world: bool = false
+var bolt_world_pos: Vector3
+var bolt_T: float = 0
+var bolt_state: BoltState = BoltState.COLLECTED
 
 const MAGNET_TIMEOUT_DURATION: float = 1.0
 var magnet_timeout: float = 0.0
+
 
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
@@ -61,6 +77,10 @@ func _enter_tree() -> void:
 	bullets = []
 	line = line_3d.instantiate()
 	add_child(line)
+	cone = cone_mesh.instantiate()
+	add_child(cone)
+	cone_mat = cone.get_child(0).material_override
+	
 	for i in MAX_BULLETS:
 		var mesh: MeshInstance3D = bb_mesh.instantiate() as MeshInstance3D
 		add_child(mesh)
@@ -77,8 +97,38 @@ func _ready() -> void:
 	line.set_camera(get_viewport().get_camera_3d())
 
 func _exit_tree() -> void:
+	line.queue_free()
+	cone.queue_free()
 	for bullet: Bullet in bullets:
 		bullet.free()
+
+func _prcess_bolt(delta: float) -> void:
+	
+	#print(cone_mat.get_shader_parameter("alpha"))
+	match bolt_state:
+		BoltState.BOBBING:
+			var dist_to_bolt: float = bolt_world_pos.distance_to(Character.global_position)
+			if dist_to_bolt <= BOLT_COLLECT_RANGE:
+				bolt_state = BoltState.COLLECTING
+				bolt_T = 0.0
+				return
+			bolt_T += delta
+			var offset: float = sin(bolt_T * 5.0) / 4.0
+			cone.global_transform.origin = bolt_world_pos + Vector3(0, offset, 0)
+			cone.rotation.y = bolt_T * 2.0
+		BoltState.COLLECTING:
+			bolt_T += delta * 2.0
+			#print(bolt_T)
+			var target: Vector3 = Character.global_position + Vector3(0, -2, 0)
+			#var dist: float = cone.global_position.distance_to(target)
+			if bolt_T >= 0.75:
+				bolt_state = BoltState.COLLECTED
+				collect_bolt.play()
+			cone_mat.set_shader_parameter("alpha", 1-bolt_T)
+			cone.global_position = lerp(cone.global_position, target, bolt_T) 
+			
+	cone.visible = bolt_state != BoltState.COLLECTED
+
 
 func _try_collect_bullet(delta: float, bullet: Bullet, target: Vector3) -> void:
 	var dir: Vector3 = target - bullet.mesh.global_transform.origin
@@ -106,10 +156,18 @@ func _process(delta: float) -> void:
 	
 	magnet_timeout -= delta
 	line_alpha -= delta
-	line_alpha = clampf(line_alpha, 0.0, 0.5)
+	line_alpha = clampf(line_alpha, 0.0, 1.0)
 	line.material.set_shader_parameter("alpha", line_alpha)
 	
+
+	
+	
+	
 	var char_pos: Vector3 = Character.global_transform.origin
+	
+
+		
+	_prcess_bolt(delta)
 	
 	for bullet: Bullet in bullets:
 		match bullet.state:
@@ -198,4 +256,9 @@ func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	line.points[0] = params.from
 	line.points[1] = result.position
 	line_alpha = 1
+	bolt_world_pos = Vector3(result.position.x, 0, result.position.z)
+	cone.global_position = bolt_world_pos
+	bolt_state = BoltState.BOBBING
+	cone_mat.set_shader_parameter("alpha", 1.0)
+	#cone_mesh_instance.set_instance_shader_parameter("Alpha", 0.5)
 	
