@@ -24,16 +24,27 @@ const DASH_METER_MAX: float = 3.0
 const DASH_REFILL_RATE: float = 0.25
 var dash_meter: float = 3.0
 
+const FREEZE_FRAME_MS: int = 75
+var freeze_frames: int = 0
+
+
 var previous_ms: int
 
 signal entered_scope
 signal exited_scope
+signal parry
 
 func _ready() -> void:
 	#Engine.max_fps = 60
 	previous_ms = Time.get_ticks_msec()
 
 func _handle_clock(ms_diff: int) -> void:
+	if freeze_frames > 0:
+		Engine.time_scale = 0
+		freeze_frames -= ms_diff
+		return
+	
+	
 	var slow: bool = Input.is_action_pressed("slow")
 	var fast: bool = Input.is_action_pressed("fast")
 	if (slow and fast) or (not slow and not fast):
@@ -118,9 +129,17 @@ func get_sniper_attack() -> bool:
 func get_move_input() -> Vector2:
 	return Input.get_vector("moveleft", "moveright", "movebackward", "moveforward")
  
-func try_dash() -> bool:
+func get_try_parry() -> bool:
+	if Input.is_action_just_pressed("parry"):
+		emit_signal("parry")
+		freeze_frames = FREEZE_FRAME_MS
+		return true
+	return false
+
+func try_dash() -> int:
 	if Input.is_action_just_pressed("dash"):
 		if dash_meter >= 1.0:
 			dash_meter -= 1.0
-			return true
-	return false
+			return 1
+		return 2
+	return 0

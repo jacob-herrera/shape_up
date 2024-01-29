@@ -27,9 +27,13 @@ var GRAVITY: float
 @onready var sfx_auto: AudioStreamPlayer = $Sounds/Auto
 @onready var sfx_shotgun: AudioStreamPlayer = $Sounds/Shotgun
 @onready var sfx_dash: AudioStreamPlayer = $Sounds/Dash
+@onready var sfx_dash_cooldown: AudioStreamPlayer = $Sounds/DashCooldown
 @onready var sfx_dryfire: AudioStreamPlayer = $Sounds/Dryfire
+@onready var sfx_parry: AudioStreamPlayer = $Sounds/Parry
 
 var grounded: bool = false
+var is_auto_out_of_ammo_flag: bool = false
+
 
 func _ready() -> void:
 	JUMP_VEL = 2.0 * jump_height / jump_time_to_peak
@@ -47,7 +51,7 @@ func _exited_scope() -> void:
 	sfx_sniper_charge.stop()
 
 
-var is_auto_out_of_ammo_flag: bool = false
+
 
 func _process(_delta: float) -> void:
 	if Menu.enabled: return
@@ -107,9 +111,9 @@ func _physics_process(delta: float) -> void:
 	velocity.y += GRAVITY * delta;
 	var flat_vel := Vector3(velocity.x, 0, velocity.z)
 	
-	var did_dash: bool = Controls.try_dash()
+	var did_dash: int = Controls.try_dash()
 	
-	if did_dash:
+	if did_dash == 1:
 		var dash_speed: float = maxf(flat_vel.length(), min_dash_speed)
 		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
@@ -124,16 +128,21 @@ func _physics_process(delta: float) -> void:
 			global_transform.origin += forward * dash_distance
 			velocity = forward.normalized() * dash_speed
 		sfx_dash.play()
+	elif did_dash == 2:
+		sfx_dash_cooldown.play()
 
 	if flat_vel.length() > SPEED_CAP:
 		flat_vel = flat_vel.normalized() * SPEED_CAP
 		velocity = Vector3(flat_vel.x, velocity.y, flat_vel.z)
 	
+	if Controls.get_try_parry():
+		sfx_parry.play()
+	
 	move_and_slide()
 	
 	_do_guns()
 	
-	if did_dash:
+	if did_dash == 1:
 		camera.dash_cam(old_pos)
 	
 	grounded = is_on_floor()

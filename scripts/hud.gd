@@ -14,6 +14,9 @@ extends Control
 @onready var minute_hand: Control = $MinuteHand
 @onready var hour_hand: Control = $HourHand
 
+@onready var flash: ColorRect = $Flash
+@onready var twinkle: AnimatedSprite2D = $Flash/CenterContainer/Control/Twinkle
+
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
 
@@ -21,6 +24,7 @@ var time: float = 100.000
 var start_ms: int
 var pervious_ms: int
 
+var flash_T: float = 0.0
 var timer_pos: Vector2
 
 var rng := RandomNumberGenerator.new()
@@ -39,7 +43,13 @@ func _ready() -> void:
 	pervious_ms = start_ms
 	PitchChanger.register_player($TempMusic)
 	timer_pos = timer.global_position
+	Controls.connect("parry", _on_parry)
 	
+func _on_parry() -> void:
+	flash_T = 1
+	#twinkle.stop()
+	#twinkle.play("default", 1, false)
+
 func spawn_one_particle(green: bool) -> void:
 	var which: PackedScene = plus_one if green else minus_one
 	var v: Control = which.instantiate() as Control
@@ -86,6 +96,10 @@ func _process(dt: float) -> void:
 		spawn_one_time = time
 	
 	animate_particles(ms_diff)
+	
+	flash_T -= ms_diff / 500.0
+	flash.color.a = remap(flash_T, 0, 1, 0, 0.5)
+	twinkle.frame = remap(flash_T, 1, 0, 0, 60)
 	
 	var strength: float = remap(clampf(Controls.clock_speed, 1.0, 2.0), 1.0, 2.0, 0, SHAKE_STRENGTH)
 	var shake_vec := Vector2(rng.randf_range(-strength, strength), rng.randf_range(-strength, strength))
