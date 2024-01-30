@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=20 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
@@ -12,16 +12,27 @@
 [ext_resource type="AudioStream" uid="uid://c4ulhc5th0olm" path="res://sound/dash.wav" id="9_ylc2e"]
 [ext_resource type="AudioStream" uid="uid://c0svxv8tstpud" path="res://sound/magic_immune.mp3" id="11_ae5iv"]
 [ext_resource type="AudioStream" uid="uid://c3cstg4ysvb5e" path="res://sound/parry.wav" id="12_h74eh"]
+[ext_resource type="PackedScene" uid="uid://d4mrbd8bxs1yr" path="res://scenes/blood.tscn" id="13_55jee"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
+
+[sub_resource type="Curve" id="Curve_kqkpt"]
+_data = [Vector2(0, 0.0102458), 0.0, 0.0, 0, 0, Vector2(0.121186, 0.77476), 2.74727, 2.74727, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="BoxMesh" id="BoxMesh_eoaf6"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7bgfu"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_yed3e"]
+
 [node name="Character" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 25)
 collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_3xlau")
 auto_kickback = 0.6
 shotgun_kickback = 25.0
@@ -35,12 +46,13 @@ min_dash_speed = 30.0
 shape = SubResource("CylinderShape3D_cc7ui")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 top_level = true
 cull_mask = 262143
 current = true
 fov = 90.0
 script = ExtResource("2_34f15")
+death_blur_curve = SubResource("Curve_kqkpt")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Camera3D"]
 offset_right = 40.0
@@ -117,3 +129,12 @@ bus = &"Effects"
 [node name="Parry" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("12_h74eh")
 bus = &"Effects"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+material_override = SubResource("StandardMaterial3D_7bgfu")
+mesh = SubResource("CylinderMesh_yed3e")
+
+[node name="blood" parent="." instance=ExtResource("13_55jee")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+visible = false

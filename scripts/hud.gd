@@ -16,11 +16,14 @@ extends Control
 
 @onready var flash: ColorRect = $Flash
 @onready var twinkle: AnimatedSprite2D = $Flash/CenterContainer/Control/Twinkle
+@onready var sfx_death: AudioStreamPlayer = $Death
 
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
 
 @onready var bolt_ammo: Control = $BoltAmmo
+
+@onready var vignette: ShaderMaterial = $Vignette.material
 
 @export var styles: Array[StyleBox]
 
@@ -48,11 +51,16 @@ func _ready() -> void:
 	PitchChanger.register_player($TempMusic)
 	timer_pos = timer.global_position
 	Controls.connect("parry", _on_parry)
+	Controls.connect("death", _on_death)
 	
 func _on_parry() -> void:
 	flash_T = 1
 	#twinkle.stop()
 	#twinkle.play("default", 1, false)
+
+func _on_death() -> void:
+	print("death on hud")
+	sfx_death.play()
 
 func spawn_one_particle(green: bool) -> void:
 	var which: PackedScene = plus_one if green else minus_one
@@ -75,9 +83,23 @@ func animate_particles(delta: float) -> void:
 			part.unreference()
 			minus_one_particles.remove_at(i)
 
+func bell_cruve(x: float) -> float:
+	return cos((x * PI * 2.0) - PI) + 1.0 if x < 1.0 else 0.0
+
+func ease_out_cubic(x: float) -> float:
+	return 1.0 - pow(1.0 - x, 3.0);
+
 func _process(dt: float) -> void:
 	if Menu.enabled:
 		pervious_ms = Time.get_ticks_msec()
+		return
+		
+	if Controls.is_dead:
+		flash.color.a = remap(bell_cruve(Controls.dead_timer * 4.0), 0, 1, 0, 0.25)
+		var time_remap: float = remap(Controls.dead_timer, 0, 4.6, 0, 1)
+		var val: float = remap(ease_out_cubic(time_remap), 0, 1, 3, 0)
+		val = clampf(val, 0, 5)
+		vignette.set_shader_parameter("SCALE", val)
 		return
 		
 	var current_ms: int = Time.get_ticks_msec()

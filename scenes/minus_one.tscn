@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d4kbc3q6xcd4"]
 
-[ext_resource type="FontFile" uid="uid://b2ruhl7hdm506" path="res://fonts/Arial.ttf" id="1_lm1k3"]
+[ext_resource type="FontFile" uid="uid://6bqvubkwl3ya" path="res://fonts/Times_New_Roman.ttf" id="1_q48vd"]
 
 [node name="Control" type="Control"]
 z_index = -2
@@ -28,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("1_lm1k3")
-theme_override_font_sizes/font_size = 64
+theme_override_fonts/font = ExtResource("1_q48vd")
+theme_override_font_sizes/font_size = 92
 text = "×2"
 horizontal_alignment = 1

@@ -21,6 +21,7 @@ func _input(event: InputEvent) -> void:
 			_toggle_menu()
 
 func _toggle_menu() -> void:
+	if Controls.is_dead: return
 	if enabled:
 		hide()
 		Engine.time_scale = 1

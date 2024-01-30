@@ -34,7 +34,6 @@ var GRAVITY: float
 var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
 
-
 func _ready() -> void:
 	JUMP_VEL = 2.0 * jump_height / jump_time_to_peak
 	GRAVITY = (-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
@@ -52,7 +51,6 @@ func _exited_scope() -> void:
 
 func _process(_delta: float) -> void:
 	if Menu.enabled: return
-		
 	
 func _do_guns() -> void:
 	var dir: Vector3 = -camera.global_basis.z
@@ -91,6 +89,7 @@ func _do_guns() -> void:
 
 func _physics_process(delta: float) -> void:
 	if Menu.enabled: return
+	if Controls.is_dead: return
 	
 	var wish_dir: Vector3 = get_wish_dir()
 	

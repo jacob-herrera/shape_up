@@ -20,7 +20,7 @@ const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 
 const COLLECT_RANGE: float = 5.0
 const MAGNETIC_COLLECT_RANGE: float = 10.0
-const MAGNETIC_STRENGTH: float = 1250.0
+const MAGNETIC_STRENGTH: float = 2000.0
 const BOLT_COLLECT_RANGE: float = 7.0
 
 enum BulletState {
@@ -74,6 +74,7 @@ func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
 	params = PhysicsRayQueryParameters3D.new()
 	params.collision_mask = mask
+	params.collide_with_areas = true
 	bullets = []
 	line = line_3d.instantiate()
 	add_child(line)
@@ -103,8 +104,6 @@ func _exit_tree() -> void:
 		bullet.free()
 
 func _prcess_bolt(delta: float) -> void:
-	
-	#print(cone_mat.get_shader_parameter("alpha"))
 	match bolt_state:
 		BoltState.BOBBING:
 			var dist_to_bolt: float = bolt_world_pos.distance_to(Character.global_position)
@@ -118,9 +117,7 @@ func _prcess_bolt(delta: float) -> void:
 			cone.rotation.y = bolt_T * 2.0
 		BoltState.COLLECTING:
 			bolt_T += delta * 2.0
-			#print(bolt_T)
 			var target: Vector3 = Character.global_position + Vector3(0, -2, 0)
-			#var dist: float = cone.global_position.distance_to(target)
 			if bolt_T >= 0.75:
 				bolt_state = BoltState.COLLECTED
 				collect_bolt.play()
@@ -128,7 +125,6 @@ func _prcess_bolt(delta: float) -> void:
 			cone.global_position = lerp(cone.global_position, target, bolt_T) 
 			
 	cone.visible = bolt_state != BoltState.COLLECTED
-
 
 func _try_collect_bullet(delta: float, bullet: Bullet, target: Vector3) -> void:
 	var dir: Vector3 = target - bullet.mesh.global_transform.origin

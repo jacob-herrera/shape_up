@@ -1,11 +1,13 @@
-[gd_scene load_steps=78 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=82 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
 [ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
+[ext_resource type="AudioStream" uid="uid://dhtmhww5e5nrb" path="res://sound/death.wav" id="3_e0ll7"]
 [ext_resource type="Texture2D" uid="uid://osc184cess" path="res://textures/handle1.png" id="4_cpako"]
 [ext_resource type="Texture2D" uid="uid://dodstjamhsrvg" path="res://textures/handle2.png" id="4_ixj0j"]
 [ext_resource type="Texture2D" uid="uid://88irra8xd5cr" path="res://textures/twinkle/TWINKLE_00.png" id="6_7b1yx"]
 [ext_resource type="Texture2D" uid="uid://c34af1ae7nhi4" path="res://textures/ui_shadow.png" id="6_n5px1"]
+[ext_resource type="FontFile" uid="uid://dpct7jtn2khnu" path="res://fonts/Arial_Black.ttf" id="6_v0t3q"]
 [ext_resource type="Texture2D" uid="uid://jdpm4qw0b6gm" path="res://textures/twinkle/TWINKLE_01.png" id="7_7t643"]
 [ext_resource type="Texture2D" uid="uid://rjdgocrncaom" path="res://textures/twinkle/TWINKLE_02.png" id="8_r5a8k"]
 [ext_resource type="Texture2D" uid="uid://b2v4lx6cmk37s" path="res://textures/twinkle/TWINKLE_03.png" id="9_4wqmt"]
@@ -68,6 +70,7 @@
 [ext_resource type="Script" path="res://scripts/rotate_cone_ui.gd" id="66_cpq01"]
 [ext_resource type="Material" uid="uid://dt6o5uic4br7s" path="res://mat/mat_cone.tres" id="66_rjxm2"]
 [ext_resource type="ArrayMesh" uid="uid://d0myg15vybpp3" path="res://models/cone.obj" id="67_j4mye"]
+[ext_resource type="Shader" path="res://shader/vignette.gdshader" id="71_gm8b8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2ixj"]
 bg_color = Color(1, 0, 0, 1)
@@ -281,6 +284,14 @@ animations = [{
 "speed": 60.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tor0i"]
+shader = ExtResource("71_gm8b8")
+shader_parameter/player_position = Vector2(0.5, 0.5)
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/MULTIPLIER = 1.13
+shader_parameter/SCALE = 5.0
+shader_parameter/SOFTNESS = 1.0
+
 [node name="HUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -297,6 +308,10 @@ stream = ExtResource("3_a71iw")
 volume_db = -5.0
 autoplay = true
 bus = &"Music"
+
+[node name="Death" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_e0ll7")
+bus = &"Effects"
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -465,6 +480,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("6_v0t3q")
 theme_override_font_sizes/font_size = 128
 text = "99.99
 "
@@ -625,3 +641,15 @@ transform = Transform3D(0.362638, 0.20881, 0.0303203, -0.164774, 0.422295, 0.171
 layers = 262144
 material_override = ExtResource("66_rjxm2")
 mesh = ExtResource("67_j4mye")
+
+[node name="Vignette" type="ColorRect" parent="."]
+z_index = 6
+material = SubResource("ShaderMaterial_tor0i")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

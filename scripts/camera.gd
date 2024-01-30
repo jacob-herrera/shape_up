@@ -5,7 +5,7 @@ var mouse_sensitivity: float = 2.0
 var pitch_limit: float
 
 const DEG_PITCH_LIMIT: float = 89.99
-const OFFSET: Vector3 = Vector3(0, 1.75, 0)
+const OFFSET: Vector3 = Vector3(0, 0.9, 0)
 
 const FOV: float = 90
 const DASH_FOV: float = 70
@@ -22,19 +22,53 @@ var sniper_fov_T: float = 1.0
 var mat: ShaderMaterial
 @onready var parent: Node3D = $".."
 
+var has_saved_last_view_angle_before_death: bool = false
+var final: Transform3D
+
+@export var death_blur_curve: Curve
+
 func _ready():
 	var node: ColorRect = ScreenShader.get_child(0)
 	mat = node.material
 	mouse_sensitivity = mouse_sensitivity / 1000
 	pitch_limit = deg_to_rad(DEG_PITCH_LIMIT)
 	
+
+	
 func _process(delta: float) -> void:
+
+	
+	if Controls.is_dead:
+		if not has_saved_last_view_angle_before_death:
+			rotation.x = 0
+			final = Transform3D(global_transform)
+			#final.rotation.x = 0
+			has_saved_last_view_angle_before_death = true
+		
+		
+		#var origin: Transform3D = last_view_angle_before_death
+		#var rotate_transform: Transform3D = Transform3D.IDENTITY
+		var amt: float = death_blur_curve.sample(Controls.dead_timer)
+		amt /= 30.0
+		amt += 0.025
+		mat.set_shader_parameter("blur_power", amt)
+		var spin_rate: float = remap(Controls.dead_timer, 0, 1, 0, 1)
+		var rotate := Transform3D.IDENTITY.rotated(Vector3.UP, Controls.dead_timer * spin_rate)
+		var zoom_back: float = remap(ease_out_expo(Controls.dead_timer), 0, 1.0, 0, 10)
+		zoom_back = clampf(zoom_back, 0, 10)
+		var translate := Transform3D.IDENTITY.translated(Vector3(0, 0, zoom_back))
+		fov = clampf(remap(Controls.dead_timer, 0, 5, 159, 10), 10, 159)
+		#print(last_view_angle_before_death)
+		#transform = last_view_angle_before_death #* translate
+		global_transform = final * rotate * translate
+		return	
+	
 	fov_T += delta
 	pos_T += delta * 10
 	blur_T += delta * 7
 	
 	fov_T = clampf(fov_T, 0, 1)
-	pos_T = clampf(pos_T, 0, 1)
+	pos_T = clampf(pos_T, 0, 1)	
 	blur_T = clampf(blur_T, 0, 1)
 	
 	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.03, 0))
@@ -47,10 +81,10 @@ func _process(delta: float) -> void:
 		fov = lerpf(DASH_FOV, FOV, ease_out_expo(fov_T))
 	
 	var end: Vector3 = parent.global_transform.origin + OFFSET
-	var mid: Vector3 = old_pos.lerp(end, pos_T)
-	global_transform.origin = mid
+	#var mid: Vector3 = old_pos.lerp(end, pos_T)
+	global_transform.origin = end
 	
-func ease_out_expo(x: float) -> float:
+static func ease_out_expo(x: float) -> float:
 	return 1.0 if x == 1.0 else 1.0 - pow(2.0, -10.0 * x)
 
 func dash_cam(pos: Vector3) -> void:

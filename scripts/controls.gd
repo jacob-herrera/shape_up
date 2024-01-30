@@ -28,23 +28,33 @@ var dash_meter: float = 3.0
 const FREEZE_FRAME_MS: int = 75
 var freeze_frames: int = 0
 
-
 var previous_ms: int
+
+var is_dead: bool = false
+var dead_timer: float = 0.0
 
 signal entered_scope
 signal exited_scope
 signal parry
+signal death
 
 func _ready() -> void:
 	#Engine.max_fps = 60
 	previous_ms = Time.get_ticks_msec()
 
 func _handle_clock(ms_diff: int) -> void:
+	if is_dead:
+		Engine.time_scale = 0
+		target_clock_speed = 0.0
+		clock_speed = 0.0
+		return
+	
 	if freeze_frames > 0:
 		Engine.time_scale = 0
 		freeze_frames -= ms_diff
 		return
 	
+	#if eng
 	
 	var slow: bool = Input.is_action_pressed("slow")
 	var fast: bool = Input.is_action_pressed("fast")
@@ -61,14 +71,29 @@ func _handle_clock(ms_diff: int) -> void:
 	var t: float = pow(0.5, dt * TIME_RAMP_LERP)
 	clock_speed = lerpf(target_clock_speed, clock_speed, t)
 
+
+func invoke_player_death() -> void:
+	if not is_dead:
+		is_dead = true
+		emit_signal("death")
+
 func _process(delta) -> void:
-	if Menu.enabled:
-		previous_ms = Time.get_ticks_msec()
-		return
+	
 	
 	var current_ms: int = Time.get_ticks_msec()
 	var ms_diff: int = current_ms - previous_ms
 	previous_ms = current_ms
+	
+	if Menu.enabled: return
+	
+	_handle_clock(ms_diff)
+	
+	if is_dead:
+		dead_timer += ms_diff / 1000.0
+		return
+	
+
+	
 	dash_meter += delta * DASH_REFILL_RATE
 	dash_meter = clampf(dash_meter, 0.0, DASH_METER_MAX)
 	shotgun_window -= ms_diff		
@@ -95,7 +120,7 @@ func _process(delta) -> void:
 			sniper_charge = 0.0
 			emit_signal("exited_scope")
 			
-	_handle_clock(ms_diff)
+	
 
 	wish_jump = Input.is_action_pressed("moveup")
 
