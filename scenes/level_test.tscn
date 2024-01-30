@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://cqsm78eiwy8rh"]
+[gd_scene load_steps=9 format=3 uid="uid://cqsm78eiwy8rh"]
 
 [ext_resource type="Material" uid="uid://0iqxlwgsdbch" path="res://mat/mat_tile.tres" id="1_5c6lb"]
 [ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_ggtlv"]
 [ext_resource type="ArrayMesh" uid="uid://bsp5mhtv0kyyh" path="res://models/pyramid.obj" id="3_jkx4r"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
-[ext_resource type="Script" path="res://scenes/kill_on_touch.gd" id="5_ovuvu"]
-[ext_resource type="Shader" path="res://shader/ntsc.gdshader" id="6_abmgb"]
+[ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="5_ovuvu"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 
@@ -14,10 +13,6 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_1tq5y"]
 height = 6.794
 radius = 3.925
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0qktp"]
-shader = ExtResource("6_abmgb")
-shader_parameter/SCREEN_SIZE = Vector2(640, 480)
 
 [node name="Node3D" type="Node3D"]
 
@@ -68,15 +63,3 @@ script = ExtResource("5_ovuvu")
 
 [node name="Shape" type="CollisionShape3D" parent="Boss1/Hurtbox"]
 shape = SubResource("CylinderShape3D_1tq5y")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_0qktp")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2

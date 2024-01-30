@@ -20,7 +20,7 @@ const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 
 const COLLECT_RANGE: float = 5.0
 const MAGNETIC_COLLECT_RANGE: float = 10.0
-const MAGNETIC_STRENGTH: float = 2000.0
+const MAGNETIC_STRENGTH: float = 2500.0
 const BOLT_COLLECT_RANGE: float = 7.0
 
 enum BulletState {
@@ -69,6 +69,12 @@ var bolt_state: BoltState = BoltState.COLLECTED
 const MAGNET_TIMEOUT_DURATION: float = 1.0
 var magnet_timeout: float = 0.0
 
+func reset() -> void:
+	for b: Bullet in bullets:
+		b.state = BulletState.DISABLED
+		b.mesh.visible = false
+	valid_bullets  = MAX_BULLETS
+	bolt_state = BoltState.COLLECTED
 
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state

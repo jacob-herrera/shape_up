@@ -17,6 +17,7 @@ extends Control
 @onready var flash: ColorRect = $Flash
 @onready var twinkle: AnimatedSprite2D = $Flash/CenterContainer/Control/Twinkle
 @onready var sfx_death: AudioStreamPlayer = $Death
+@onready var music: AudioStreamPlayer = $TempMusic
 
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
@@ -45,10 +46,22 @@ class MinusOneParticle extends RefCounted:
 
 var minus_one_particles: Array[MinusOneParticle] = []
 
+func reset() -> void:
+	time = 100.00
+	spawn_one_time = 99
+	music.stop()
+	music.play(0.0)
+	sfx_death.stop()
+	vignette.set_shader_parameter("SCALE", 3.0)
+	for p: MinusOneParticle in minus_one_particles:
+		p.visual.queue_free()
+		p.unreference()
+	minus_one_particles.clear()
+
 func _ready() -> void:
 	start_ms = Time.get_ticks_msec()
 	pervious_ms = start_ms
-	PitchChanger.register_player($TempMusic)
+	PitchChanger.register_player(music)
 	timer_pos = timer.global_position
 	Controls.connect("parry", _on_parry)
 	Controls.connect("death", _on_death)
@@ -59,7 +72,6 @@ func _on_parry() -> void:
 	#twinkle.play("default", 1, false)
 
 func _on_death() -> void:
-	print("death on hud")
 	sfx_death.play()
 
 func spawn_one_particle(green: bool) -> void:
@@ -100,6 +112,7 @@ func _process(dt: float) -> void:
 		var val: float = remap(ease_out_cubic(time_remap), 0, 1, 3, 0)
 		val = clampf(val, 0, 5)
 		vignette.set_shader_parameter("SCALE", val)
+		pervious_ms = Time.get_ticks_msec()
 		return
 		
 	var current_ms: int = Time.get_ticks_msec()

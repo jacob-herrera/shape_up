@@ -75,10 +75,26 @@ func _handle_clock(ms_diff: int) -> void:
 func invoke_player_death() -> void:
 	if not is_dead:
 		is_dead = true
+		sniper_scoped = false
 		emit_signal("death")
+
+
+func hard_reset() -> void:
+	Controls.clock_speed = 1.0
+	wish_jump = false
+	get_tree().reload_current_scene()
+	Character.reset()
+	BulletServer.reset()
+	HUD.reset()
+	dash_meter = DASH_METER_MAX
+	is_dead = false
+	dead_timer = 0.0
 
 func _process(delta) -> void:
 	
+	if Input.is_action_just_pressed("ui_focus_next"):
+		hard_reset()
+		return
 	
 	var current_ms: int = Time.get_ticks_msec()
 	var ms_diff: int = current_ms - previous_ms
@@ -90,6 +106,11 @@ func _process(delta) -> void:
 	
 	if is_dead:
 		dead_timer += ms_diff / 1000.0
+		if dead_timer >= 5.3:
+			hard_reset()
+			#print("reload")
+			
+		
 		return
 	
 

@@ -22,7 +22,7 @@ var sniper_fov_T: float = 1.0
 var mat: ShaderMaterial
 @onready var parent: Node3D = $".."
 
-var has_saved_last_view_angle_before_death: bool = false
+static var has_saved_last_view_angle_before_death: bool = false
 var final: Transform3D
 
 @export var death_blur_curve: Curve
@@ -84,7 +84,7 @@ func _process(delta: float) -> void:
 	#var mid: Vector3 = old_pos.lerp(end, pos_T)
 	global_transform.origin = end
 	
-static func ease_out_expo(x: float) -> float:
+func ease_out_expo(x: float) -> float:
 	return 1.0 if x == 1.0 else 1.0 - pow(2.0, -10.0 * x)
 
 func dash_cam(pos: Vector3) -> void:
