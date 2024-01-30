@@ -19,9 +19,9 @@ func _process(_dt: float) -> void:
 	
 	if Controls.is_dead:
 		for player: AudioStreamPlayer in _players:
-			player.stream_paused = true
+			player.stop()
 		for player: AudioStreamPlayer in _inverse_players:
-			player.stream_paused = true
+			player.stop()
 	else:
 		for player: AudioStreamPlayer in _players:
 			player.stream_paused = false

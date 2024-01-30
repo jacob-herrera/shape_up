@@ -108,6 +108,7 @@ func _process(dt: float) -> void:
 		return
 		
 	if Controls.is_dead:
+		scoped.visible = false
 		flash.color.a = remap(bell_cruve(Controls.dead_timer * 4.0), 0, 1, 0, 0.25)
 		var time_remap: float = remap(Controls.dead_timer, 0, 4.6, 0, 1)
 		var val: float = remap(ease_out_cubic(time_remap), 0, 1, 3, 0)

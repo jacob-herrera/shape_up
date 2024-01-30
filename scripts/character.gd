@@ -150,6 +150,7 @@ func _physics_process(delta: float) -> void:
 
 
 func reset() -> void:
+	sfx_sniper_charge.stop()
 	just_spawned = 3
 	is_auto_out_of_ammo_flag = false
 	global_position = Vector3(0, 1, 25)

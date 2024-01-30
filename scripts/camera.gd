@@ -48,10 +48,17 @@ func _process(delta: float) -> void:
 		
 		#var origin: Transform3D = last_view_angle_before_death
 		#var rotate_transform: Transform3D = Transform3D.IDENTITY
-		var amt: float = death_blur_curve.sample(Controls.dead_timer)
-		amt /= 30.0
-		amt += 0.025
+		var amt: float
+		if Controls.dead_timer <= 2.0:
+			amt = death_blur_curve.sample(Controls.dead_timer)
+			amt /= 30.0
+			amt += 0.025
+		else:
+			amt = remap(Controls.dead_timer, 2.0, 4.3, 0.025, 0.35)
+			amt = clampf(amt, 0.025, 0.35)
+			
 		mat.set_shader_parameter("blur_power", amt)
+		
 		var spin_rate: float = remap(Controls.dead_timer, 0, 1, 0, 1)
 		var rotate := Transform3D.IDENTITY.rotated(Vector3.UP, Controls.dead_timer * spin_rate)
 		var zoom_back: float = remap(ease_out_expo(Controls.dead_timer), 0, 1.0, 0, 10)
