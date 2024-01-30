@@ -92,9 +92,9 @@ func hard_reset() -> void:
 
 func _process(delta) -> void:
 	
-	if Input.is_action_just_pressed("ui_focus_next"):
-		hard_reset()
-		return
+	#if is_dead and Input.is_action_just_pressed("par"):
+	#	hard_reset()
+	#	return
 	
 	var current_ms: int = Time.get_ticks_msec()
 	var ms_diff: int = current_ms - previous_ms

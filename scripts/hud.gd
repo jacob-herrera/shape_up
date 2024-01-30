@@ -52,7 +52,7 @@ func reset() -> void:
 	music.stop()
 	music.play(0.0)
 	sfx_death.stop()
-	vignette.set_shader_parameter("SCALE", 3.0)
+	vignette.set_shader_parameter("SCALE", 0.0)
 	for p: MinusOneParticle in minus_one_particles:
 		p.visual.queue_free()
 		p.unreference()
@@ -65,6 +65,7 @@ func _ready() -> void:
 	timer_pos = timer.global_position
 	Controls.connect("parry", _on_parry)
 	Controls.connect("death", _on_death)
+	vignette.set_shader_parameter("SCALE", 0)
 	
 func _on_parry() -> void:
 	flash_T = 1
@@ -153,6 +154,10 @@ func _process(dt: float) -> void:
 	dashes.text = str(dashes_int)
 	#if dashes_int == 0:
 	dash_bar.add_theme_stylebox_override("fill", styles[dashes_int])
+
+	var vig: float = remap(time, 100.0, 99.7, 0.0, 3.0)
+	vig = clampf(vig, 0.0, 3.0)
+	vignette.set_shader_parameter("SCALE", vig)
 
 	second_hand.rotation = time * -7
 	minute_hand.rotation = time * 5
