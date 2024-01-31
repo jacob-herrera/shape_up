@@ -5,7 +5,7 @@ var wish_jump: bool = false
 const PRIMARY_FIRERATE: float = 2.0/60.0
 var primary_timer: float = 0
 
-const SHOTGUN_COOLDOWN: float = 16.0/60.0
+const SHOTGUN_COOLDOWN: float = 12.0/60.0
 const SHOTGUN_CLICK_WINDOW: int = 100
 var shotgun_window: int = 0
 var shotgun_cooldown: float = 0.0

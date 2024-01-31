@@ -19,6 +19,8 @@ extends Control
 @onready var sfx_death: AudioStreamPlayer = $Death
 @onready var music: AudioStreamPlayer = $TempMusic
 
+@onready var boss_health_bar: ProgressBar = $BossHealthBar
+
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
 
@@ -45,6 +47,9 @@ class MinusOneParticle extends RefCounted:
 	var velocity: Vector2
 
 var minus_one_particles: Array[MinusOneParticle] = []
+
+func update_boss_health(hp: int) -> void:
+	boss_health_bar.value = hp
 
 func reset() -> void:
 	time = 100.00

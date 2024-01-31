@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://0iqxlwgsdbch" path="res://mat/mat_tile.tres" id="1_5c6lb"]
 [ext_resource type="ArrayMesh" uid="uid://jawrljrqpmjo" path="res://models/Tetrahedron.obj" id="3_6ca56"]
-[ext_resource type="Script" path="res://scripts/boss.gd" id="3_7e1cy"]
+[ext_resource type="Script" path="res://scenes/Boss1.gd" id="3_7e1cy"]
 [ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_ggtlv"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
 [ext_resource type="Material" uid="uid://6tp2rue1deuo" path="res://mat/mat_damageable.tres" id="3_xy6ow"]

@@ -187,6 +187,11 @@ func _process(delta: float) -> void:
 					if bullet.bounces > 0 and Vector3.UP.is_equal_approx(result.normal):
 						bullet.bounces = 3
 					else: bullet.bounces += 1
+					
+					var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
+					if hitbox != null:
+						hitbox.do_hit(1)
+						
 				else:
 					bullet.mesh.global_transform.origin = end
 					
@@ -262,5 +267,10 @@ func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	cone.global_position = bolt_world_pos
 	bolt_state = BoltState.BOBBING
 	cone_mat.set_shader_parameter("alpha", 1.0)
+	
+	var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
+	if hitbox != null:
+		hitbox.do_hit(128)
+	
 	#cone_mesh_instance.set_instance_shader_parameter("Alpha", 0.5)
 	
