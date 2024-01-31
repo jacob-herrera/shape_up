@@ -6,7 +6,7 @@ class_name LineRenderer
 @export var endThickness: float = 0.1
 @export var cornerSmooth = 5
 @export var capSmooth = 5
-@export var drawCaps: bool = true
+@export var drawCaps: bool = false
 @export var drawCorners: bool = true
 @export var globalCoords: bool = true
 @export var scaleTexture: bool = true
