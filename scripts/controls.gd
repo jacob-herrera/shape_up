@@ -110,11 +110,8 @@ func _process(delta) -> void:
 		dead_timer += ms_diff / 1000.0
 		if dead_timer >= 5.3:
 			hard_reset()
-			#print("reload")
-			
-		
 		return
-	
+	#else if 
 
 	
 	dash_meter += delta * DASH_REFILL_RATE
@@ -125,7 +122,7 @@ func _process(delta) -> void:
 	sniper_debounce -= ms_diff
 	
 	if sniper_scoped:
-		sniper_charge += delta / 2.0
+		sniper_charge += delta / 1.7
 		sniper_charge = clampf(sniper_charge, 0.0, 1.0)
 	else:
 		sniper_charge = 0.0

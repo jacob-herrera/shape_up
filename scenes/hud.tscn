@@ -69,7 +69,7 @@
 [ext_resource type="Texture2D" uid="uid://bw7f5lflqbfo5" path="res://textures/twinkle/TWINKLE_59.png" id="65_4ux0b"]
 [ext_resource type="Script" path="res://scripts/rotate_cone_ui.gd" id="66_cpq01"]
 [ext_resource type="Material" uid="uid://dt6o5uic4br7s" path="res://mat/mat_cone.tres" id="66_rjxm2"]
-[ext_resource type="ArrayMesh" uid="uid://d0myg15vybpp3" path="res://models/cone.obj" id="67_j4mye"]
+[ext_resource type="ArrayMesh" uid="uid://npif2o1vhb13" path="res://models/Isosahedron.obj" id="70_lbynk"]
 [ext_resource type="Shader" path="res://shader/vignette.gdshader" id="71_gm8b8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2ixj"]
@@ -627,20 +627,19 @@ size = Vector2i(256, 256)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="BoltAmmo/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.75)
 cull_mask = 262144
 projection = 1
 size = 1.66012
 
 [node name="Node3D" type="Node3D" parent="BoltAmmo/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0918827, -0.087158, 0)
 script = ExtResource("66_cpq01")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BoltAmmo/SubViewport/Node3D"]
-transform = Transform3D(0.362638, 0.20881, 0.0303203, -0.164774, 0.422295, 0.17101, 0.0366472, -0.167527, 0.468867, 0, 1.53994, -0.00193727)
+transform = Transform3D(0.453298, 0.20881, 0.0303204, -0.205968, 0.422295, 0.17101, 0.045809, -0.167527, 0.468867, 0, 0, 0)
 layers = 262144
 material_override = ExtResource("66_rjxm2")
-mesh = ExtResource("67_j4mye")
+mesh = ExtResource("70_lbynk")
 
 [node name="Vignette" type="ColorRect" parent="."]
 z_index = 6

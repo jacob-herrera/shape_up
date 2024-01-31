@@ -14,6 +14,11 @@ const AUTO_SPREAD: float = 0.25
 const SHOTGUN_SPREAD: float = 10.0
 
 
+const AUTO_BULLET_DAMAGE: int = 2
+const SHOTGUN_BULLET_DAMAGE: int = 1
+const MIN_SNIPER_DAMAGE: int = 64
+const MAX_SNIPER_DAMAGE: int = 128
+
 const BULLET_BOUNCES_UNTIL_BOBBING: int = 5
 const BULLET_BOUNCES_UNTIL_COLLECTABLE: int = 3
 const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
@@ -43,6 +48,8 @@ class Bullet extends Object:
 	var mesh: MeshInstance3D
 	var bounces: int
 	var time: float
+	var stale: bool
+	var dmg: int
 	
 @export var bb_mesh: PackedScene = preload("res://scenes/bb.tscn")
 @export var cone_mesh: PackedScene = preload("res://scenes/cone.tscn")
@@ -178,19 +185,37 @@ func _process(delta: float) -> void:
 				bullet.velocity += Vector3(0, BULLET_GRAV * delta, 0)
 				var start: Vector3 = bullet.mesh.global_transform.origin
 				var end: Vector3 = start + (bullet.velocity * delta)
+				if start.is_equal_approx(end): continue
 				params.from = start
 				params.to = end
 				var result: Dictionary = space.intersect_ray(params)
 				if not result.is_empty():
-					bullet.velocity = bullet.velocity.bounce(result.normal)
-					bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 3
-					if bullet.bounces > 0 and Vector3.UP.is_equal_approx(result.normal):
-						bullet.bounces = 3
-					else: bullet.bounces += 1
+					var did_hit: bool = false
 					
-					var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
-					if hitbox != null:
-						hitbox.do_hit(1)
+					if not bullet.stale:
+						var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
+						if hitbox != null:
+							hitbox.do_hit(bullet.dmg)
+							did_hit = true
+					
+					var pass_through: bool = Vector3.DOWN.is_equal_approx(result.normal) and did_hit
+					
+					if not pass_through:
+						bullet.velocity = bullet.velocity.bounce(result.normal)
+						bullet.velocity = bullet.velocity.normalized() * bullet.velocity.length() / 3
+						if bullet.bounces > 0 and Vector3.UP.is_equal_approx(result.normal):
+							bullet.bounces = BULLET_BOUNCES_UNTIL_COLLECTABLE
+						else:
+							bullet.bounces += 1
+						if bullet.bounces >= BULLET_BOUNCES_UNTIL_COLLECTABLE:
+							bullet.stale = true
+						var dir: Vector3 = (end - start).normalized() / 1000.0
+						bullet.mesh.global_transform.origin = result.position - dir
+					else:
+						bullet.stale = true
+						bullet.mesh.global_transform.origin = end
+		
+
 						
 				else:
 					bullet.mesh.global_transform.origin = end
@@ -202,6 +227,7 @@ func _process(delta: float) -> void:
 				elif bullet.bounces >= BULLET_BOUNCES_UNTIL_COLLECTABLE \
 					or bullet.time >= BULLET_TIME_UNTIL_COLLECTABLE:
 					_try_collect_bullet(delta, bullet, char_pos)
+					
 			BulletState.BOBBING:
 				bullet.time += delta * 2.0
 				_try_collect_bullet(delta, bullet, char_pos)
@@ -225,7 +251,7 @@ func bob_ease(bob: float) -> float:
 		bob = remap(bob, -1, 0, 0.05, 0.5	)
 		return bob
 	
-func _fire_bullet(pos: Vector3, dir: Vector3, speed: float) -> void:
+func _fire_bullet(pos: Vector3, dir: Vector3, speed: float, dmg: int) -> void:
 	for bullet: Bullet in bullets:
 		if bullet.state == BulletState.DISABLED:
 			bullet.state = BulletState.PROJECTILE
@@ -233,6 +259,9 @@ func _fire_bullet(pos: Vector3, dir: Vector3, speed: float) -> void:
 			bullet.mesh.global_transform.origin = pos
 			bullet.velocity = dir * speed
 			bullet.bounces = 0
+			bullet.stale = false
+			bullet.time = 0
+			bullet.dmg = dmg
 			valid_bullets -= 1
 			break
 			
@@ -240,7 +269,7 @@ func fire_auto(pos: Vector3, dir: Vector3) -> bool:
 	if valid_bullets == 0: return false
 	magnet_timeout = MAGNET_TIMEOUT_DURATION
 	var spread: Vector3 = Math.random_unit_vector_in_cone(dir, AUTO_SPREAD)
-	_fire_bullet(pos, spread, AUTO_BULLET_SPEED)
+	_fire_bullet(pos, spread, AUTO_BULLET_SPEED, AUTO_BULLET_DAMAGE)
 	return true
 			
 func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
@@ -249,7 +278,7 @@ func fire_shotgun(pos: Vector3, dir: Vector3) -> int:
 	var shots = clampi(valid_bullets, 1, NUM_SHOTGUN_BULLETS)
 	for i in shots:
 		var spread: Vector3 = Math.random_unit_vector_in_cone(dir, SHOTGUN_SPREAD)
-		_fire_bullet(pos, spread, SHOTGUN_BULLET_SPEED)
+		_fire_bullet(pos, spread, SHOTGUN_BULLET_SPEED, SHOTGUN_BULLET_DAMAGE)
 	if shots >= HALF_SHOTGUN_BULLETS:
 		return 2
 	else:
@@ -270,7 +299,6 @@ func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	
 	var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
 	if hitbox != null:
-		hitbox.do_hit(128)
-	
-	#cone_mesh_instance.set_instance_shader_parameter("Alpha", 0.5)
-	
+		var dmg: int = remap(Controls.sniper_charge, 0.0, 1.0, MIN_SNIPER_DAMAGE, MAX_SNIPER_DAMAGE) as int
+		hitbox.do_hit(dmg)
+

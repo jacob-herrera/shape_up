@@ -7,7 +7,7 @@
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
 [ext_resource type="Material" uid="uid://6tp2rue1deuo" path="res://mat/mat_damageable.tres" id="3_xy6ow"]
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="5_ovuvu"]
-[ext_resource type="Script" path="res://scenes/Hitbox.gd" id="8_levh3"]
+[ext_resource type="Script" path="res://scripts/hitbox.gd" id="8_levh3"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 

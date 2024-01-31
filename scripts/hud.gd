@@ -130,6 +130,7 @@ func _process(_dt: float) -> void:
 	
 	if time < 0:
 		time = 0
+		Controls.invoke_player_death()
 	
 	if time <= spawn_one_time and time > 0:
 		if Controls.clock_speed < 1.025 and Controls.clock_speed > 0.975:

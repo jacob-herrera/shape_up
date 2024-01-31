@@ -59,11 +59,11 @@ func _do_guns() -> void:
 	
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.play()
-		BulletServer.fire_sniper(global_transform.origin, dir)
+		BulletServer.fire_sniper(camera.global_position, dir)
 		velocity = -dir * sniper_kickback
 		
 	if Controls.get_auto_attack():
-		if BulletServer.fire_auto(fire_pos.global_transform.origin, dir):
+		if BulletServer.fire_auto(fire_pos.global_position, dir):
 			if not is_on_floor():
 				velocity -= dir * auto_kickback 
 			sfx_auto.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 2.0, 1.0)
@@ -73,9 +73,9 @@ func _do_guns() -> void:
 			is_auto_out_of_ammo_flag = true
 			
 	elif Controls.get_shotgun_attack():
-		var result: int = BulletServer.fire_shotgun(fire_pos.global_transform.origin, dir)
+		var result: int = BulletServer.fire_shotgun(fire_pos.global_position, dir)
 		if result != 0:
-			var knockback: float = shotgun_kickback/2 if is_on_floor() else shotgun_kickback
+			var knockback: float = shotgun_kickback
 			sfx_shotgun.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 1.0, 0.5)
 			if result == 1:
 				knockback /= 2

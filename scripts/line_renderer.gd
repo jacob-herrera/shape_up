@@ -129,7 +129,7 @@ func cap(center, pivot, thickness, smoothing):
 	array[smoothing] = center - orthogonal;
 	
 	for i in range(1, smoothing):
-		array[i] = center + (orthogonal.rotated(axis, lerpf(0, PI, float(i) / smoothing)));
+		array[i] = center + (orthogonal.rotated(axis.normalized(), lerpf(0, PI, float(i) / smoothing)));
 	
 	for i in range(1, smoothing + 1):
 		mesh.surface_set_uv(Vector2(0, (i - 1) / smoothing))
