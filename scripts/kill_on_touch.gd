@@ -3,7 +3,7 @@ extends Area3D
 const DAMAGING_COLLIDER_LAYER: int = 4
 const PLAYER_LAYER: int = 2
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var overlap: bool = has_overlapping_bodies()
 	if overlap and Character.just_spawned <= 0:
 		Controls.invoke_player_death()

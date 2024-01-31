@@ -102,7 +102,7 @@ func bell_cruve(x: float) -> float:
 func ease_out_cubic(x: float) -> float:
 	return 1.0 - pow(1.0 - x, 3.0);
 
-func _process(dt: float) -> void:
+func _process(_dt: float) -> void:
 	if Menu.enabled:
 		pervious_ms = Time.get_ticks_msec()
 		return
@@ -134,15 +134,15 @@ func _process(dt: float) -> void:
 		elif Controls.clock_speed < 0.975:
 			spawn_one_particle(true)
 		# Truncate float to integer, effectively minus 1
-		spawn_one_time = time
+		spawn_one_time = time as int
 	
 	animate_particles(ms_diff)
 	
 	bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED
 	
 	flash_T -= ms_diff / 500.0
-	flash.color.a = remap(flash_T, 0, 1, 0, 0.5)
-	twinkle.frame = remap(flash_T, 1, 0, 0, 60)
+	flash.color.a = remap(flash_T, 0.0, 1.0, 0.0, 0.5)
+	twinkle.frame = remap(flash_T, 1.0, 0.0, 0.0, 60.0) as int
 	
 	var strength: float = remap(clampf(Controls.clock_speed, 1.0, 2.0), 1.0, 2.0, 0, SHAKE_STRENGTH)
 	var shake_vec := Vector2(rng.randf_range(-strength, strength), rng.randf_range(-strength, strength))
@@ -151,7 +151,7 @@ func _process(dt: float) -> void:
 	ammo.text = str(BulletServer.valid_bullets)
 	ammo_bar.value = BulletServer.valid_bullets
 	dash_bar.value = Controls.dash_meter
-	var dashes_int: int = floorf(Controls.dash_meter)
+	var dashes_int: int = floorf(Controls.dash_meter) as int
 	dashes.text = str(dashes_int)
 	#if dashes_int == 0:
 	dash_bar.add_theme_stylebox_override("fill", styles[dashes_int])

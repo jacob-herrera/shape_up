@@ -60,14 +60,14 @@ func _process(delta: float) -> void:
 		mat.set_shader_parameter("blur_power", amt)
 		
 		var spin_rate: float = remap(Controls.dead_timer, 0, 1, 0, 1)
-		var rotate := Transform3D.IDENTITY.rotated(Vector3.UP, Controls.dead_timer * spin_rate)
+		var rot := Transform3D.IDENTITY.rotated(Vector3.UP, Controls.dead_timer * spin_rate)
 		var zoom_back: float = remap(ease_out_expo(Controls.dead_timer), 0, 1.0, 0, 10)
 		zoom_back = clampf(zoom_back, 0, 10)
-		var translate := Transform3D.IDENTITY.translated(Vector3(0, 0, zoom_back))
+		var trans := Transform3D.IDENTITY.translated(Vector3(0, 0, zoom_back))
 		fov = clampf(remap(Controls.dead_timer, 0, 5, 159, 10), 10, 159)
 		#print(last_view_angle_before_death)
 		#transform = last_view_angle_before_death #* translate
-		global_transform = final * rotate * translate
+		global_transform = final * rot * trans
 		return	
 	
 	fov_T += delta

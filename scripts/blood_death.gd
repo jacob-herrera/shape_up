@@ -30,7 +30,7 @@ func _ready() -> void:
 	
 	original_droplet.queue_free()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#if go:
 	visible = Controls.dead_timer > 0
 	var time = Controls.dead_timer - 0.1

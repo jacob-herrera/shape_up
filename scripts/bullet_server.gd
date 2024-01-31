@@ -139,7 +139,7 @@ func _try_collect_bullet(delta: float, bullet: Bullet, target: Vector3) -> void:
 	var flat_dist: float = Vector3(target.x, 0, target.z).distance_to(Vector3(bullet.mesh.global_transform.origin.x, 0, bullet.mesh.global_transform.origin.z))
 	var collect_range: float = MAGNETIC_COLLECT_RANGE if magnet_timeout > 0 else COLLECT_RANGE
 	# Cylinder hitbox
-	if flat_dist < COLLECT_RANGE and height_diff <= COLLECT_RANGE:
+	if flat_dist < collect_range and height_diff <= collect_range:
 		bullet.state = BulletState.COLLECTING
 		bullet.time = 0
 	elif magnet_timeout <= 0:
