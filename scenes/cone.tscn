@@ -1,15 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqgc6x8wimca6"]
+[gd_scene load_steps=6 format=3 uid="uid://cqgc6x8wimca6"]
 
-[ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="1_hds3c"]
+[ext_resource type="Material" uid="uid://dt6o5uic4br7s" path="res://mat/mat_cone.tres" id="1_qsc4q"]
 [ext_resource type="ArrayMesh" uid="uid://npif2o1vhb13" path="res://models/Isosahedron.obj" id="2_20rbp"]
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="3_7r1gs"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="4_5w4fd"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ixgg"]
-render_priority = 0
-shader = ExtResource("1_hds3c")
-shader_parameter/albedo = Color(1, 0, 1, 1)
-shader_parameter/alpha = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_mo10d"]
 
@@ -17,7 +11,7 @@ shader_parameter/alpha = 1.0
 
 [node name="Node3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.45334, 0.208684, 0.0305619, -0.205306, 0.420049, 0.177225, 0.0482927, -0.173235, 0.466538, 0.115851, 1.5576, -0.142537)
-material_override = SubResource("ShaderMaterial_0ixgg")
+material_override = ExtResource("1_qsc4q")
 mesh = ExtResource("2_20rbp")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]

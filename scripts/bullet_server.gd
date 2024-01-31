@@ -26,7 +26,7 @@ const BULLET_TIME_UNTIL_COLLECTABLE: float = 5.0
 const COLLECT_RANGE: float = 5.0
 const MAGNETIC_COLLECT_RANGE: float = 10.0
 const MAGNETIC_STRENGTH: float = 2500.0
-const BOLT_COLLECT_RANGE: float = 7.0
+const BOLT_COLLECT_RANGE: float = 10.0
 
 enum BulletState {
 	DISABLED,

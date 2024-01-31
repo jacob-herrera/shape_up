@@ -1,9 +1,9 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dt6o5uic4br7s"]
 
-[ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="1_stbui"]
+[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_25162"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_stbui")
+shader = ExtResource("1_25162")
 shader_parameter/albedo = Color(1, 0, 1, 1)
-shader_parameter/alpha = 1.0
+shader_parameter/shadow = Color(0, 0, 0, 1)
