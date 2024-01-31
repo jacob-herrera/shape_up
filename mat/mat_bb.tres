@@ -1,8 +1,9 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cb5x7kfnjb6c7"]
 
-[ext_resource type="Shader" path="res://shader/bb.gdshader" id="1_oolfi"]
+[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_l5tbd"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_oolfi")
-shader_parameter/color = Color(1, 1, 0, 1)
+shader = ExtResource("1_l5tbd")
+shader_parameter/albedo = Color(1, 1, 0, 1)
+shader_parameter/shadow = Color(0.501961, 0.501961, 0, 1)
