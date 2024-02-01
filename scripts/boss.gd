@@ -24,7 +24,7 @@ enum BossState {
 var state: BossState = BossState.BALLS
 var state_time: float = 1.0
 
-var health: int = 4000
+var health: int = 2000
 
 var pos: Vector3 = Vector3(0.0, 5.25, 0.0)
 
