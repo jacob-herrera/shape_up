@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ecnen"]
 [ext_resource type="Theme" uid="uid://ch3qd5h20v3n4" path="res://fonts/theme1.tres" id="2_2vfbs"]
-[ext_resource type="PackedScene" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
+[ext_resource type="PackedScene" uid="uid://bforo8g1mqv01" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
 
 [node name="Menu" type="Control"]
 z_index = 3
