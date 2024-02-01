@@ -1,0 +1,47 @@
+[gd_scene load_steps=10 format=3 uid="uid://dc0gmsk33h0rg"]
+
+[ext_resource type="Script" path="res://boss_attacks/growing.gd" id="1_by8yn"]
+[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_yrlsf"]
+[ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="2_yl65c"]
+[ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="4_pck5i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_33jo6"]
+render_priority = 0
+shader = ExtResource("1_yrlsf")
+shader_parameter/albedo = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_eyr50"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jwvbj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k2i8f"]
+render_priority = 0
+shader = ExtResource("4_pck5i")
+shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/alpha = 0.474
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dlcrd"]
+
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("col", "mesh")]
+top_level = true
+script = ExtResource("1_by8yn")
+col = NodePath("Area3D/CollisionShape3D")
+mesh = NodePath("circle_mesh")
+grow_rate = 1.0
+
+[node name="circle_mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.015, 0)
+material_override = SubResource("ShaderMaterial_33jo6")
+mesh = SubResource("SphereMesh_eyr50")
+
+[node name="Area3D" type="Area3D" parent="."]
+script = ExtResource("2_yl65c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.015, 0)
+shape = SubResource("SphereShape3D_jwvbj")
+
+[node name="warning_mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 100, 0, 0, 0, 0.25, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_k2i8f")
+mesh = SubResource("CylinderMesh_dlcrd")

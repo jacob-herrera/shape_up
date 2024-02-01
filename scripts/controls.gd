@@ -122,7 +122,7 @@ func _process(delta) -> void:
 	sniper_debounce -= ms_diff
 	
 	if sniper_scoped:
-		sniper_charge += delta / 1.7
+		sniper_charge += delta * 0.75
 		sniper_charge = clampf(sniper_charge, 0.0, 1.0)
 	else:
 		sniper_charge = 0.0

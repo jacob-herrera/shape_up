@@ -1,4 +1,5 @@
 extends Area3D
+class_name Hurtbox
 
 const DAMAGING_COLLIDER_LAYER: int = 4
 const PLAYER_LAYER: int = 2

@@ -16,8 +16,8 @@
 [sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_1tq5y"]
-height = 6.0
-radius = 3.5
+height = 6.5
+radius = 4.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_hfy6a"]
 
@@ -53,7 +53,7 @@ mesh = SubResource("QuadMesh_yoqv7")
 environment = ExtResource("3_knkit")
 
 [node name="Boss1" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 script = ExtResource("3_7e1cy")
 
 [node name="Visual" type="Node3D" parent="Boss1"]
@@ -71,7 +71,6 @@ collision_mask = 2
 script = ExtResource("5_ovuvu")
 
 [node name="Shape" type="CollisionShape3D" parent="Boss1/Hurtbox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("CylinderShape3D_1tq5y")
 
 [node name="Hitbox" type="Node" parent="Boss1/Hurtbox"]

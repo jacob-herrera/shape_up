@@ -77,7 +77,6 @@ horizontal_alignment = 1
 [node name="Music Volume" parent="Margin/Settings" instance=ExtResource("4_fimqj")]
 custom_minimum_size = Vector2(128, 16)
 layout_mode = 2
-value = 0.25
 bus_name = "Music"
 
 [node name="Effects Label" type="Label" parent="Margin/Settings"]
