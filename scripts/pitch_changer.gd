@@ -2,6 +2,7 @@ extends Node
 
 var _players: Array[AudioStreamPlayer]
 var _inverse_players: Array[AudioStreamPlayer]
+#var _players3d: Array[AudioS]
 
 func register_player(player: AudioStreamPlayer) -> void:
 	_players.push_back(player)
@@ -22,6 +23,8 @@ func _process(_dt: float) -> void:
 			player.stop()
 		for player: AudioStreamPlayer in _inverse_players:
 			player.stop()
+		for player3d: AudioStreamPlayer3D in get_tree().get_nodes_in_group("player3d"):
+			player3d.stop()
 	else:
 		for player: AudioStreamPlayer in _players:
 			player.stream_paused = false
@@ -29,3 +32,6 @@ func _process(_dt: float) -> void:
 		for player: AudioStreamPlayer in _inverse_players:
 			player.stream_paused = false
 			player.pitch_scale = 1.0 / Controls.clock_speed
+			 
+		for player3d: AudioStreamPlayer3D in get_tree().get_nodes_in_group("player3d"):
+			player3d.pitch_scale = 1.0 / Controls.clock_speed
