@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://dk7yay5kxv10p"]
+
+[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_4nx75"]
+[ext_resource type="Script" path="res://boss_attacks/chaser.gd" id="1_voo7n"]
+[ext_resource type="ArrayMesh" uid="uid://jawrljrqpmjo" path="res://models/Tetrahedron.obj" id="2_5hnvq"]
+[ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_0sprl"]
+[ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="4_k22hm"]
+[ext_resource type="AudioStream" uid="uid://bxyx5knwxowx" path="res://sound/followlaugh1.mp3" id="6_5h7qx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rprg5"]
+render_priority = 0
+shader = ExtResource("1_4nx75")
+shader_parameter/albedo = Color(0, 1, 0, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_22jbm"]
+radius = 1.285
+
+[node name="Node3D" type="Node3D"]
+top_level = true
+script = ExtResource("1_voo7n")
+speed = 25.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_rprg5")
+mesh = ExtResource("2_5hnvq")
+script = ExtResource("3_0sprl")
+
+[node name="Area3D" type="Area3D" parent="."]
+script = ExtResource("4_k22hm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_22jbm")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
+stream = ExtResource("6_5h7qx")
+volume_db = 10.0
+autoplay = true
+bus = &"Effects"
