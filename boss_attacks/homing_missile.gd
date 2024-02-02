@@ -15,8 +15,8 @@ func _process(delta: float) -> void:
 	
 	#var original
 	var target: Vector3 = Character.global_position
-	var dir: Vector3 = global_position.direction_to(target)
-	var angle_to_player: float = global_position.angle_to(target)
+	#var dir: Vector3 = global_position.direction_to(target)
+	#var angle_to_player: float = global_position.angle_to(target)
 	#rotate(dir, angle_to_player)
 	if time < life_time:
 		var original_basis: Basis = basis

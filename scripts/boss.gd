@@ -28,7 +28,7 @@ var health: int = MAX_HEALTH
 var spawned_chaser: bool = false
 
 
-var pos: Vector3 = Vector3(0.0, 5.25, 0.0)
+var center_pos: Vector3 = Vector3(0.0, 5.25, 0.0)
 
 func _ready() -> void:
 	HUD.boss_health_bar.max_value = MAX_HEALTH
@@ -52,7 +52,7 @@ func handle_state() -> void:
 
 func move_boss() -> void:
 	spawned_chaser = true
-	var origin := Transform3D(Basis.IDENTITY, pos)
+	var origin := Transform3D(Basis.IDENTITY, center_pos)
 	var rot := Transform3D.IDENTITY.rotated(Vector3.UP, alive_time)
 	var height: float = sin(alive_time) * 3 + 1
 	var trans := Transform3D.IDENTITY.translated(Vector3(0, height, 10))
@@ -76,7 +76,7 @@ func _process(delta: float) -> void:
 	
 	state_time -= delta
 	
-	if health <= MAX_HEALTH / 2:
+	if health <= MAX_HEALTH / 2.0:
 		spawn_chaser()
 	
 	if state_time <= 0:
