@@ -1,7 +1,9 @@
 extends Area3D
 class_name Hurtbox
 
-const DAMAGING_COLLIDER_LAYER: int = 4
+@export_flags_3d_physics var additional_layer: int = 0
+
+const HURTBOX_LAYER: int = 4
 const PLAYER_LAYER: int = 2
 
 func _physics_process(_delta: float) -> void:
@@ -11,4 +13,4 @@ func _physics_process(_delta: float) -> void:
 
 func _ready() -> void:
 	collision_mask = PLAYER_LAYER
-	collision_layer = DAMAGING_COLLIDER_LAYER
+	collision_layer = HURTBOX_LAYER | additional_layer

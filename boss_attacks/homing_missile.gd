@@ -5,7 +5,7 @@ extends Node3D
 @export var life_time: float
 
 var time: float = 0.0
-
+	
 func _process(delta: float) -> void:
 	time += delta
 	

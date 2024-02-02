@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=21 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
@@ -21,6 +21,9 @@ _data = [Vector2(0, 0.0102458), 0.0, 0.0, 0, 0, Vector2(0.121186, 0.77476), 2.74
 point_count = 3
 
 [sub_resource type="BoxMesh" id="BoxMesh_eoaf6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m6r6c"]
+size = Vector3(2.75, 1, 1.25)
 
 [sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
 
@@ -76,6 +79,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.93805, -1.53815, -4.7149)
 visible = false
 layers = 524288
 mesh = SubResource("BoxMesh_eoaf6")
+
+[node name="Area3D" type="Area3D" parent="Camera3D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.875)
+shape = SubResource("BoxShape3D_m6r6c")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, -8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 0, 0)
