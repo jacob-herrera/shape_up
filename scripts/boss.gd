@@ -5,7 +5,7 @@ class_name Boss
 @onready var visual: Node3D = $Visual
 
 @onready var growing_circle: PackedScene = preload("res://boss_attacks/growing_circle.tscn")
-@onready var missle: PackedScene = preload("res://boss_attacks/homing_missle.tscn")
+@onready var missle: PackedScene = preload("res://boss_attacks/homing_missile.tscn")
 @onready var chaser: PackedScene = preload("res://boss_attacks/chaser.tscn")
 
 var RNG := RandomNumberGenerator.new()
