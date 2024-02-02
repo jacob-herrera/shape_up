@@ -34,6 +34,7 @@ func _ready() -> void:
 	HUD.boss_health_bar.max_value = MAX_HEALTH
 
 func spawn_chaser() -> void:
+	spawned_chaser = true
 	var new: Node3D = chaser.instantiate()
 	add_child(new)
 	new.global_position = global_position
@@ -76,7 +77,7 @@ func _process(delta: float) -> void:
 	
 	state_time -= delta
 	
-	if health <= MAX_HEALTH / 2.0:
+	if not spawned_chaser and health <= MAX_HEALTH / 2.0:
 		spawn_chaser()
 	
 	if state_time <= 0:
