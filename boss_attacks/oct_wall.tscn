@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://bit0qk0fnop0g"]
+
+[ext_resource type="ArrayMesh" uid="uid://kke0uiokt388" path="res://models/hex_wall_mesh.obj" id="1_7hwqv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5ag4u"]
+size = Vector3(1, 10, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aqax8"]
+size = Vector3(6, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hisif"]
+size = Vector3(6, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k5ukp"]
+size = Vector3(1, 10, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pb0qd"]
+size = Vector3(1, 10, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x7ukr"]
+size = Vector3(6, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qay2u"]
+size = Vector3(6, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_457he"]
+size = Vector3(1, 10, 6)
+
+[node name="OctWall" type="Node3D"]
+
+[node name="WallArea" type="Area3D" parent="."]
+
+[node name="WallMesh" type="MeshInstance3D" parent="WallArea"]
+transform = Transform3D(0.92388, 0, 0.382683, 0, 1, 0, -0.382683, 0, 0.92388, 0, 0, 0)
+mesh = ExtResource("1_7hwqv")
+
+[node name="WallCollider0" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.43, 5, 0)
+shape = SubResource("BoxShape3D_5ag4u")
+
+[node name="WallCollider1" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4.546, 5, 4.546)
+shape = SubResource("BoxShape3D_aqax8")
+
+[node name="WallCollider2" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 6.43)
+shape = SubResource("BoxShape3D_hisif")
+
+[node name="WallCollider3" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -4.546, 5, 4.546)
+shape = SubResource("BoxShape3D_k5ukp")
+
+[node name="WallCollider4" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43, 5, 0)
+shape = SubResource("BoxShape3D_pb0qd")
+
+[node name="WallCollider5" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -4.546, 5, -4.546)
+shape = SubResource("BoxShape3D_x7ukr")
+
+[node name="WallCollider6" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -6.43)
+shape = SubResource("BoxShape3D_qay2u")
+
+[node name="WallCollider7" type="CollisionShape3D" parent="WallArea"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4.546, 5, -4.546)
+shape = SubResource("BoxShape3D_457he")
