@@ -5,7 +5,7 @@ var wish_jump: bool = false
 const PRIMARY_FIRERATE: float = 2.0/60.0
 var primary_timer: float = 0
 
-const SHOTGUN_COOLDOWN: float = 12.0/60.0
+const SHOTGUN_COOLDOWN: float = 10.0/60.0
 const SHOTGUN_CLICK_WINDOW: int = 100
 var shotgun_window: int = 0
 var shotgun_cooldown: float = 0.0
@@ -35,7 +35,7 @@ var dead_timer: float = 0.0
 
 signal entered_scope
 signal exited_scope
-signal parry
+#signal parry
 signal death
 
 func _ready() -> void:
@@ -186,8 +186,6 @@ func get_move_input() -> Vector2:
  
 func get_try_parry() -> bool:
 	if Input.is_action_just_pressed("parry"):
-		emit_signal("parry")
-		freeze_frames = FREEZE_FRAME_MS
 		return true
 	return false
 

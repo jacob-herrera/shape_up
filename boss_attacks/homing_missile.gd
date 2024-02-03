@@ -33,3 +33,7 @@ func _process(delta: float) -> void:
 	#var dir: Vector3 = global_position.direction_to(target.origin)
 	#
 	#look_at(target.origin)
+
+func _on_parried() -> void:
+	$hurtbox.disabled = true
+	queue_free()

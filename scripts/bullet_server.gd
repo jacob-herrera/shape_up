@@ -11,7 +11,7 @@ const AUTO_BULLET_SPEED: float = 200.0
 
 const SNIPER_RANGE: float = 500.0
 const AUTO_SPREAD: float = 0.25
-const SHOTGUN_SPREAD: float = 10.0
+const SHOTGUN_SPREAD: float = 8.0
 
 
 const AUTO_BULLET_DAMAGE: int = 1

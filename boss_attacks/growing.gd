@@ -21,7 +21,8 @@ func _process(delta: float) -> void:
 	
 	if sfx_flag == false:
 		sfx_flag = true
-		$AudioStreamPlayer3D.play()
+		$explosion.play()
+		$noise.play()
 	
 	col.scale += grow_vec * delta
 	mesh.scale += grow_vec * delta

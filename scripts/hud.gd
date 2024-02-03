@@ -53,6 +53,7 @@ func update_boss_health(hp: int) -> void:
 
 func reset() -> void:
 	time = 100.00
+	flash_T = 0
 	spawn_one_time = 99
 	music.stop()
 	music.play(0.0)
@@ -68,7 +69,7 @@ func _ready() -> void:
 	pervious_ms = start_ms
 	PitchChanger.register_player(music)
 	timer_pos = timer.global_position
-	Controls.connect("parry", _on_parry)
+	Character.connect("parry", _on_parry)
 	Controls.connect("death", _on_death)
 	vignette.set_shader_parameter("SCALE", 0)
 	
@@ -79,6 +80,9 @@ func _on_parry() -> void:
 
 func _on_death() -> void:
 	sfx_death.play()
+	flash_T = 0
+	flash.color.a = 1
+	twinkle.frame = 60
 
 func spawn_one_particle(green: bool) -> void:
 	var which: PackedScene = plus_one if green else minus_one

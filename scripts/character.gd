@@ -30,10 +30,13 @@ var GRAVITY: float
 @onready var sfx_dash_cooldown: AudioStreamPlayer = $Sounds/DashCooldown
 @onready var sfx_dryfire: AudioStreamPlayer = $Sounds/Dryfire
 @onready var sfx_parry: AudioStreamPlayer = $Sounds/Parry
+@onready var sfx_parry_miss: AudioStreamPlayer = $Sounds/ParryMiss
 
 var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
 var just_spawned: int = 2
+
+signal parry
 
 func _ready() -> void:
 	JUMP_VEL = 2.0 * jump_height / jump_time_to_peak
@@ -134,7 +137,17 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3(flat_vel.x, velocity.y, flat_vel.z)
 	
 	if Controls.get_try_parry():
-		sfx_parry.play()
+		var parry_area: Area3D = Character.get_node("Camera3D/ParryArea") as Area3D
+		var overlapping: Array[Area3D] = parry_area.get_overlapping_areas()
+		if overlapping.size() > 0:
+			for area: Area3D in overlapping:
+				area.emit_signal("parried")
+			emit_signal("parry")
+			Controls.freeze_frames = Controls.FREEZE_FRAME_MS
+			
+			sfx_parry.play()
+		else:
+			sfx_parry_miss.play()
 	
 	move_and_slide()
 	

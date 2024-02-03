@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dc0gmsk33h0rg"]
+[gd_scene load_steps=13 format=3 uid="uid://dc0gmsk33h0rg"]
 
 [ext_resource type="Script" path="res://boss_attacks/growing.gd" id="1_by8yn"]
 [ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_yrlsf"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="4_pck5i"]
 [ext_resource type="AudioStream" uid="uid://duqy512qpnkny" path="res://sound/explosion3.mp3" id="5_4unhc"]
 [ext_resource type="AudioStream" uid="uid://svprabnr0gi7" path="res://sound/launch3.mp3" id="6_n4a5x"]
+[ext_resource type="AudioStream" uid="uid://ct1yxqeci33hs" path="res://sound/deep_noise.wav" id="6_vaxda"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_33jo6"]
 render_priority = 0
@@ -52,7 +53,7 @@ transform = Transform3D(0.25, 0, 0, 0, 100, 0, 0, 0, 0.25, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_k2i8f")
 mesh = SubResource("CylinderMesh_dlcrd")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
+[node name="explosion" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
 stream = ExtResource("5_4unhc")
 bus = &"Effects"
 
@@ -61,4 +62,8 @@ stream = ExtResource("6_n4a5x")
 volume_db = 40.0
 pitch_scale = 0.25
 autoplay = true
+bus = &"Effects"
+
+[node name="noise" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
+stream = ExtResource("6_vaxda")
 bus = &"Effects"
