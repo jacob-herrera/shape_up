@@ -20,12 +20,13 @@ extends Control
 @onready var music: AudioStreamPlayer = $TempMusic
 
 @onready var boss_health_bar: ProgressBar = $BossHealthBar
+@onready var boss_health_label: Label = $BossHealthBar/Label
 
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
 
-@onready var bolt_ammo: Control = $BoltAmmo
-
+@onready var bolt_ammo: TextureProgressBar = $BoltAmmo
+@onready var bolt_dmg: Label = $BoltAmmo/amt
 @onready var vignette: ShaderMaterial = $Vignette.material
 
 @export var styles: Array[StyleBox]
@@ -50,6 +51,7 @@ var minus_one_particles: Array[MinusOneParticle] = []
 
 func update_boss_health(hp: int) -> void:
 	boss_health_bar.value = hp
+	boss_health_label.text = "%.0f" % (hp / boss_health_bar.max_value * 100)
 
 func reset() -> void:
 	time = 100.00
@@ -68,7 +70,7 @@ func _ready() -> void:
 	start_ms = Time.get_ticks_msec()
 	pervious_ms = start_ms
 	PitchChanger.register_player(music)
-	timer_pos = timer.global_position
+	timer_pos = timer.position
 	Character.connect("parry", _on_parry)
 	Controls.connect("death", _on_death)
 	vignette.set_shader_parameter("SCALE", 0)
@@ -88,10 +90,10 @@ func spawn_one_particle(green: bool) -> void:
 	var which: PackedScene = plus_one if green else minus_one
 	var v: Control = which.instantiate() as Control
 	add_child(v)
-	v.global_position = timer.global_position + timer.pivot_offset
+	v.position = timer.position + timer.pivot_offset
 	var part: MinusOneParticle = MinusOneParticle.new()
 	part.visual = v
-	part.velocity = Vector2((randf() * 2 - 1) * 200, -300.0)
+	part.velocity = Vector2((randf() * 2 - 1) * 200, -500.0)
 	minus_one_particles.push_back(part)
 	
 func animate_particles(delta: float) -> void:
@@ -148,7 +150,9 @@ func _process(_dt: float) -> void:
 	
 	animate_particles(ms_diff)
 	
+	bolt_ammo.value = BulletServer.bolt_damage
 	bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED
+	bolt_dmg.text = str(BulletServer.bolt_damage as int)
 	
 	flash_T -= ms_diff / 500.0
 	flash.color.a = remap(flash_T, 0.0, 1.0, 0.0, 0.5)
@@ -156,7 +160,7 @@ func _process(_dt: float) -> void:
 	
 	var strength: float = remap(clampf(Controls.clock_speed, 1.0, 2.0), 1.0, 2.0, 0, SHAKE_STRENGTH)
 	var shake_vec := Vector2(rng.randf_range(-strength, strength), rng.randf_range(-strength, strength))
-	timer.global_position = timer_pos + shake_vec
+	timer.position = timer_pos + shake_vec
 	
 	ammo.text = str(BulletServer.valid_bullets)
 	ammo_bar.value = BulletServer.valid_bullets

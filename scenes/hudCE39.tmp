@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=88 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
 [ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
@@ -75,7 +75,6 @@
 [ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="70_gkafb"]
 [ext_resource type="ArrayMesh" uid="uid://npif2o1vhb13" path="res://models/Isosahedron.obj" id="70_lbynk"]
 [ext_resource type="Shader" path="res://shader/vignette.gdshader" id="71_gm8b8"]
-[ext_resource type="Shader" path="res://shader/ntsc.gdshader" id="76_k3xay"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2ixj"]
 bg_color = Color(1, 0, 0, 1)
@@ -289,9 +288,6 @@ animations = [{
 "speed": 60.0
 }]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_edd3d"]
-viewport_path = NodePath("BoltAmmo/SubViewport")
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_qglk6"]
 viewport_path = NodePath("BoltAmmo/SubViewport")
 
@@ -307,10 +303,6 @@ shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/MULTIPLIER = 1.13
 shader_parameter/SCALE = 5.0
 shader_parameter/SOFTNESS = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cjg52"]
-shader = ExtResource("76_k3xay")
-shader_parameter/SCREEN_SIZE = Vector2(797.15, 0)
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -642,7 +634,6 @@ fill_mode = 3
 show_percentage = false
 
 [node name="DashDividers" type="TextureRect" parent="DashBar"]
-modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -683,22 +674,14 @@ sprite_frames = SubResource("SpriteFrames_lm4kt")
 offset = Vector2(-2.5, 4)
 
 [node name="BoltAmmo" type="TextureProgressBar" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -320.0
-offset_top = -320.0
-grow_horizontal = 0
-grow_vertical = 0
-max_value = 128.0
+layout_mode = 2
+offset_left = 1664.0
+offset_top = 824.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 value = 66.0
-fill_mode = 5
-texture_under = SubResource("ViewportTexture_edd3d")
+fill_mode = 4
 texture_progress = SubResource("ViewportTexture_qglk6")
-tint_under = Color(0.25098, 0.25098, 0.25098, 0.501961)
 
 [node name="amt" type="Label" parent="BoltAmmo"]
 layout_mode = 1
@@ -725,7 +708,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="BoltAmmo"]
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(320, 320)
+size = Vector2i(256, 256)
 
 [node name="Camera3D" type="Camera3D" parent="BoltAmmo/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.75)
@@ -753,14 +736,3 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="ScreenShader" type="CanvasLayer" parent="."]
-
-[node name="Distort" type="ColorRect" parent="ScreenShader"]
-material = SubResource("ShaderMaterial_cjg52")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2

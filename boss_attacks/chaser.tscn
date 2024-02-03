@@ -5,8 +5,8 @@
 [ext_resource type="ArrayMesh" uid="uid://jawrljrqpmjo" path="res://models/Tetrahedron.obj" id="2_5hnvq"]
 [ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_0sprl"]
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="4_k22hm"]
-[ext_resource type="AudioStream" uid="uid://bxyx5knwxowx" path="res://sound/followlaugh1.mp3" id="6_5h7qx"]
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="7_dhtdh"]
+[ext_resource type="AudioStream" uid="uid://bg7wy7l2r44mj" path="res://sound/followlaugh1.wav" id="8_t7vo2"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="8_u42fg"]
 [ext_resource type="AudioStream" uid="uid://slbg7f6woysn" path="res://sound/chaser_spawn.wav" id="9_o15la"]
 
@@ -14,7 +14,6 @@
 render_priority = 0
 shader = ExtResource("1_4nx75")
 shader_parameter/albedo = Color(0, 1, 1, 1)
-shader_parameter/alpha = 1.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_22jbm"]
 radius = 1.285
@@ -25,6 +24,7 @@ radius = 1.285
 top_level = true
 script = ExtResource("1_voo7n")
 speed = 18.0
+delay = 2.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -38,12 +38,6 @@ script = ExtResource("4_k22hm")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_22jbm")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
-stream = ExtResource("6_5h7qx")
-volume_db = 15.0
-autoplay = true
-bus = &"Effects"
-
 [node name="DropShadow" type="MeshInstance3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, -1.74846e-07, 4, 0, -4, -1.74846e-07, 0, 0, 0)
 top_level = true
@@ -55,5 +49,10 @@ script = ExtResource("8_u42fg")
 [node name="spawn" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
 stream = ExtResource("9_o15la")
 volume_db = 15.0
+autoplay = true
+bus = &"Effects"
+
+[node name="laugh" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
+stream = ExtResource("8_t7vo2")
 autoplay = true
 bus = &"Effects"

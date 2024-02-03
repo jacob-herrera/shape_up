@@ -43,7 +43,7 @@ func _ready() -> void:
 	GRAVITY = (-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 	Controls.connect("entered_scope", _entered_scope)
 	Controls.connect("exited_scope", _exited_scope)
-	PitchChanger.register_inverse_player(sfx_sniper_shoot)
+	#PitchChanger.register_inverse_player(sfx_sniper_shoot)
 	PitchChanger.register_inverse_player(sfx_sniper_charge)
 	#PitchChanger.register_inverse_player(sfx_shotgun)
 	
@@ -61,6 +61,9 @@ func _do_guns() -> void:
 	var pitch_bullets: float = clampi(BulletServer.valid_bullets, 0, 128)
 	
 	if Controls.get_sniper_attack():
+		sfx_sniper_shoot.pitch_scale = remap(BulletServer.bolt_damage, 0.0, 128.0, 1.25, 0.75)
+		sfx_sniper_shoot.volume_db = remap(BulletServer.bolt_damage, 0.0, 128.0, -1, 5)
+		print(sfx_sniper_shoot.pitch_scale)
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(camera.global_position, dir)
 		velocity = -dir * sniper_kickback

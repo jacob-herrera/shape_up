@@ -16,7 +16,7 @@ const SHOTGUN_SPREAD: float = 8.0
 
 const AUTO_BULLET_DAMAGE: int = 1
 const SHOTGUN_BULLET_DAMAGE: int = 1
-const MIN_SNIPER_DAMAGE: int = 64
+#const MIN_SNIPER_DAMAGE: int = 64
 const MAX_SNIPER_DAMAGE: int = 128
 
 const BULLET_BOUNCES_UNTIL_BOBBING: int = 5
@@ -72,6 +72,9 @@ var line_alpha: float = 1.0
 var bolt_world_pos: Vector3
 var bolt_T: float = 0
 var bolt_state: BoltState = BoltState.COLLECTED
+var bolt_damage: float = 128.0
+var BOLT_DAMAGE_CHARGE_RATE: float = 8.0
+#const MAX_BOLT_DA
 
 const MAGNET_TIMEOUT_DURATION: float = 1.0
 var magnet_timeout: float = 0.0
@@ -82,6 +85,8 @@ func reset() -> void:
 		b.mesh.visible = false
 	valid_bullets  = MAX_BULLETS
 	bolt_state = BoltState.COLLECTED
+	line_alpha = 0.0
+	bolt_damage = 128.0
 
 func _enter_tree() -> void:
 	space = get_world_3d().direct_space_state
@@ -116,7 +121,7 @@ func _exit_tree() -> void:
 	for bullet: Bullet in bullets:
 		bullet.free()
 
-func _prcess_bolt(delta: float) -> void:
+func _process_bolt(delta: float) -> void:
 	match bolt_state:
 		BoltState.BOBBING:
 			var dist_to_bolt: float = bolt_world_pos.distance_to(Character.global_position)
@@ -129,13 +134,16 @@ func _prcess_bolt(delta: float) -> void:
 			cone.global_transform.origin = bolt_world_pos + Vector3(0, offset, 0)
 			cone.rotation.y = bolt_T * 2.0
 		BoltState.COLLECTING:
-			bolt_T += delta * 2.0
+			bolt_T += delta
 			var target: Vector3 = Character.global_position + Vector3(0, -2, 0)
 			if bolt_T >= 0.75:
 				bolt_state = BoltState.COLLECTED
 				collect_bolt.play()
 			cone_mat.set_shader_parameter("alpha", 1-bolt_T)
 			cone.global_position = lerp(cone.global_position, target, bolt_T) 
+		BoltState.COLLECTED:
+			bolt_damage += delta * BOLT_DAMAGE_CHARGE_RATE
+			bolt_damage = clampf(bolt_damage, 0, MAX_SNIPER_DAMAGE)
 			
 	cone.visible = bolt_state != BoltState.COLLECTED
 
@@ -176,7 +184,7 @@ func _process(delta: float) -> void:
 	
 
 		
-	_prcess_bolt(delta)
+	_process_bolt(delta)
 	
 	for bullet: Bullet in bullets:
 		match bullet.state:
@@ -299,6 +307,7 @@ func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	
 	var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
 	if hitbox != null:
-		var dmg: int = remap(Controls.sniper_charge, 0.0, 1.0, MIN_SNIPER_DAMAGE, MAX_SNIPER_DAMAGE) as int
+		var dmg: int = bolt_damage#remap(Controls.sniper_charge, 0.0, 1.0, 0, MAX_SNIPER_DAMAGE) as int
 		hitbox.do_hit(dmg)
+		bolt_damage = 0
 

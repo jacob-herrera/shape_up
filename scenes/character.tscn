@@ -24,7 +24,7 @@ point_count = 3
 [sub_resource type="BoxMesh" id="BoxMesh_eoaf6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m6r6c"]
-size = Vector3(3, 2, 1.75)
+size = Vector3(4.5, 2.5, 2)
 
 [sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
 
@@ -86,7 +86,7 @@ collision_layer = 0
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/ParryArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.125)
 shape = SubResource("BoxShape3D_m6r6c")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]
@@ -144,6 +144,7 @@ bus = &"Effects"
 
 [node name="ParryMiss" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("13_rsh02")
+volume_db = 15.0
 bus = &"Effects"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

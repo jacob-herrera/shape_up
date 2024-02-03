@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://dc0gmsk33h0rg"]
 
 [ext_resource type="Script" path="res://boss_attacks/growing.gd" id="1_by8yn"]
-[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_yrlsf"]
+[ext_resource type="Shader" path="res://shader/fake_shadows_alpha.gdshader" id="2_n0wqp"]
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="2_yl65c"]
 [ext_resource type="Shader" path="res://shader/snipertrace.gdshader" id="4_pck5i"]
 [ext_resource type="AudioStream" uid="uid://duqy512qpnkny" path="res://sound/explosion3.mp3" id="5_4unhc"]
@@ -10,9 +10,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_33jo6"]
 render_priority = 0
-shader = ExtResource("1_yrlsf")
+shader = ExtResource("2_n0wqp")
 shader_parameter/albedo = Color(1, 0, 0, 1)
-shader_parameter/alpha = 1.0
+shader_parameter/alpha = 0.5
 
 [sub_resource type="SphereMesh" id="SphereMesh_eyr50"]
 

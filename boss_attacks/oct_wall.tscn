@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://cueevqn7gltqm"]
 
 [ext_resource type="ArrayMesh" uid="uid://kke0uiokt388" path="res://models/hex_wall_mesh.obj" id="1_7hwqv"]
-[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="1_232xb"]
+[ext_resource type="Shader" path="res://shader/fake_shadows_alpha.gdshader" id="1_nixvm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p6j23"]
 render_priority = 0
-shader = ExtResource("1_232xb")
+shader = ExtResource("1_nixvm")
 shader_parameter/albedo = Color(0.329412, 0.329412, 0.329412, 1)
-shader_parameter/alpha = 0.25
+shader_parameter/alpha = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5ag4u"]
 size = Vector3(1, 10, 6)
