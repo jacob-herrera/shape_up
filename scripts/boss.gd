@@ -18,14 +18,14 @@ var FADE_RATE: float = 4.0
 var missile_timer: float = 0.0
 var explosion_timer: float = 0.0
 
-var MISSILE_START_RATE: float = 6.0
+var MISSILE_START_RATE: float = 7.0
 var MISSILE_END_RATE: float = 4.0
 
-var EXPLOSION_START_RATE: float = 2.0
-var EXPLOSION_END_RATE: float = 1.0
+var EXPLOSION_START_RATE: float = 5.0
+var EXPLOSION_END_RATE: float = 2.0
 
 var EXPLOSION_START_LIFETIME: float = 10.0
-var EXPLOSION_END_LIFETIME: float = 30.0
+var EXPLOSION_END_LIFETIME: float = 25.0
 
 
 const SHAKE_STRENGTH: float = 0.5
@@ -161,7 +161,9 @@ func _process(delta: float) -> void:
 		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
 		var new: Node3D = growing_circle.instantiate()
 		add_child(new)
-		var pos: Vector3 = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
+		var pos: Vector3 = Vector3.ZERO
+		while pos.distance_to(Vector3.ZERO) < 16:
+			pos = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
 		new.global_position = pos
 		new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
 
