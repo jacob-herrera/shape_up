@@ -59,11 +59,12 @@ bus = &"Effects"
 
 [node name="anticipation" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
 stream = ExtResource("6_n4a5x")
-volume_db = 40.0
+volume_db = 50.0
 pitch_scale = 0.25
 autoplay = true
 bus = &"Effects"
 
 [node name="noise" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
 stream = ExtResource("6_vaxda")
+volume_db = 10.0
 bus = &"Effects"
