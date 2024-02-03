@@ -14,6 +14,20 @@ var RNG := RandomNumberGenerator.new()
 var alive_time: float = 0.0 
 var amt: float = 0.0
 var FADE_RATE: float = 4.0
+
+var missile_timer: float = 0.0
+var explosion_timer: float = 0.0
+
+var MISSILE_START_RATE: float = 6.0
+var MISSILE_END_RATE: float = 4.0
+
+var EXPLOSION_START_RATE: float = 2.0
+var EXPLOSION_END_RATE: float = 1.0
+
+var EXPLOSION_START_LIFETIME: float = 10.0
+var EXPLOSION_END_LIFETIME: float = 30.0
+
+
 const SHAKE_STRENGTH: float = 0.5
 
 enum BossAttack {
@@ -31,8 +45,8 @@ var state: BossState = BossState.ORBITING
 
 const POS_LERP_SPEED: float = 5.0
 
-const ATTACK_RATE: float = 2.5
-var attack_cooldown: float = 0.0
+#const ATTACK_RATE: float = 2.5
+#var attack_cooldown: float = 0.0
 
 const MAX_HEALTH: int = 2000
 var health: int = MAX_HEALTH
@@ -85,17 +99,17 @@ func spawn_wall() -> void:
 	wall.find_child("WallMesh").material_override.set_shader_parameter("albedo", Color.WHITE)
 
 
-func handle_attack(attack: BossAttack) -> void:
-	match attack:
-		BossAttack.EXPLOSION:
-			var new: Node3D = growing_circle.instantiate()
-			add_child(new)
-			var pos: Vector3 = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
-			new.global_position = pos
-		BossAttack.MISSILE:
-			var new: Node3D = missle.instantiate()
-			add_child(new)
-			new.global_position = global_position
+#func handle_attack(attack: BossAttack) -> void:
+	#match attack:
+		#BossAttack.EXPLOSION:
+			#var new: Node3D = growing_circle.instantiate()
+			#add_child(new)
+			#var pos: Vector3 = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
+			#new.global_position = pos
+		#BossAttack.MISSILE:
+			#var new: Node3D = missle.instantiate()
+			#add_child(new)
+			#new.global_position = global_position
 
 func move_boss(delta: float) -> void:
 	var target_pos: Vector3
@@ -131,16 +145,25 @@ func _process(delta: float) -> void:
 	move_boss(delta)
 	try_spawn_wall()
 	
-	attack_cooldown -= delta
+	missile_timer -= delta
+	explosion_timer -= delta
 	
 	if health <= MAX_HEALTH * 0.333:
 		spawn_chaser()
 	
-	if attack_cooldown <= 0:
-		attack_cooldown = ATTACK_RATE
-		var attack: BossAttack = randi_range(0, 1) as BossAttack
-		handle_attack(attack)
+	if missile_timer <= 0:
+		missile_timer = remap(health, MAX_HEALTH, 0, MISSILE_START_RATE, MISSILE_END_RATE)
+		var new: Node3D = missle.instantiate()
+		add_child(new)
+		new.global_position = global_position
 	
+	if explosion_timer <= 0:
+		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
+		var new: Node3D = growing_circle.instantiate()
+		add_child(new)
+		var pos: Vector3 = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
+		new.global_position = pos
+		new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
 
 func _on_hit(dmg: int) -> void:
 	health -= dmg

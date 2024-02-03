@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://32ncibb0iui8"]
+[gd_scene load_steps=16 format=3 uid="uid://32ncibb0iui8"]
 
 [ext_resource type="Script" path="res://boss_attacks/homing_missile.gd" id="1_m7mh6"]
 [ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="2_04ry0"]
@@ -6,11 +6,14 @@
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="4_2dcbs"]
 [ext_resource type="AudioStream" uid="uid://dssstb8wbo8kp" path="res://sound/followsound1.mp3" id="5_5vj5p"]
 [ext_resource type="Script" path="res://boss_attacks/parriable.gd" id="6_j2o3q"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="7_xiwdq"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="8_ydc2q"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mmcil"]
 render_priority = 0
 shader = ExtResource("2_04ry0")
 shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/alpha = 1.0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cq0le"]
 radius = 1.75
@@ -23,6 +26,7 @@ radius = 2.435
 render_priority = 0
 shader = ExtResource("2_04ry0")
 shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/alpha = 1.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_rkgj7"]
 
@@ -30,10 +34,12 @@ shader_parameter/albedo = Color(1, 1, 1, 1)
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.988987, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="QuadMesh" id="QuadMesh_vygbe"]
+
 [node name="Node3D" type="Node3D"]
 top_level = true
 script = ExtResource("1_m7mh6")
-speed = 20.0
+speed = 18.0
 homing_power = 3.0
 life_time = 10.0
 
@@ -71,5 +77,13 @@ material_override = SubResource("ShaderMaterial_pa30x")
 mesh = SubResource("SphereMesh_rkgj7")
 gravity = Vector3(0, 0, 0)
 scale_amount_curve = SubResource("Curve_dd4w1")
+
+[node name="DropShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 0, 0)
+top_level = true
+material_override = ExtResource("7_xiwdq")
+mesh = SubResource("QuadMesh_vygbe")
+skeleton = NodePath("../..")
+script = ExtResource("8_ydc2q")
 
 [connection signal="parried" from="parrybox" to="." method="_on_parried"]

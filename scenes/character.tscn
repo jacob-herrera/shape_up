@@ -24,7 +24,7 @@ point_count = 3
 [sub_resource type="BoxMesh" id="BoxMesh_eoaf6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m6r6c"]
-size = Vector3(2.75, 1.5, 1.25)
+size = Vector3(3, 2, 1.75)
 
 [sub_resource type="QuadMesh" id="QuadMesh_lwswg"]
 
@@ -86,7 +86,7 @@ collision_layer = 0
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/ParryArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.875)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 shape = SubResource("BoxShape3D_m6r6c")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]

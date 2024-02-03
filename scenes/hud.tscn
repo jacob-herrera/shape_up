@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=84 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
 [ext_resource type="AudioStream" uid="uid://b41uuuy6a21ei" path="res://sound/temp_music.mp3" id="3_a71iw"]
@@ -69,7 +69,7 @@
 [ext_resource type="Texture2D" uid="uid://vn4v6cxcpgnn" path="res://textures/twinkle/TWINKLE_58.png" id="64_ldn61"]
 [ext_resource type="Texture2D" uid="uid://bw7f5lflqbfo5" path="res://textures/twinkle/TWINKLE_59.png" id="65_4ux0b"]
 [ext_resource type="Script" path="res://scripts/rotate_cone_ui.gd" id="66_cpq01"]
-[ext_resource type="Material" uid="uid://dt6o5uic4br7s" path="res://mat/mat_cone.tres" id="66_rjxm2"]
+[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="70_gkafb"]
 [ext_resource type="ArrayMesh" uid="uid://npif2o1vhb13" path="res://models/Isosahedron.obj" id="70_lbynk"]
 [ext_resource type="Shader" path="res://shader/vignette.gdshader" id="71_gm8b8"]
 
@@ -284,6 +284,12 @@ animations = [{
 "name": &"default",
 "speed": 60.0
 }]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c7whv"]
+render_priority = 0
+shader = ExtResource("70_gkafb")
+shader_parameter/albedo = Color(1, 0, 1, 1)
+shader_parameter/alpha = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tor0i"]
 shader = ExtResource("71_gm8b8")
@@ -651,7 +657,7 @@ script = ExtResource("66_cpq01")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BoltAmmo/SubViewport/Node3D"]
 transform = Transform3D(0.453298, 0.20881, 0.0303204, -0.205968, 0.422295, 0.17101, 0.045809, -0.167527, 0.468867, 0, 0, 0)
 layers = 262144
-material_override = ExtResource("66_rjxm2")
+material_override = SubResource("ShaderMaterial_c7whv")
 mesh = ExtResource("70_lbynk")
 
 [node name="Vignette" type="ColorRect" parent="."]
