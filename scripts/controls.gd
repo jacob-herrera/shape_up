@@ -6,8 +6,8 @@ const PRIMARY_FIRERATE: float = 2.0/60.0
 var primary_timer: float = 0
 
 const SHOTGUN_COOLDOWN: float = 10.0/60.0
-const SHOTGUN_CLICK_WINDOW: int = 100
-var shotgun_window: int = 0
+var shotgun_click_window: float = 100
+var shotgun_window: float = 0
 var shotgun_cooldown: float = 0.0
 
 const SNIPER_DEBOUNCE: int = 200
@@ -93,7 +93,7 @@ func hard_reset() -> void:
 	sniper_scoped = false
 
 func _process(delta) -> void:
-	
+	print(shotgun_click_window)
 	if Input.is_action_just_pressed("restart"):
 		hard_reset()
 		return
@@ -129,7 +129,7 @@ func _process(delta) -> void:
 	
 	if Input.is_action_just_pressed("attackprimary"):
 		if not sniper_scoped and sniper_debounce < 0:
-			shotgun_window = SHOTGUN_CLICK_WINDOW
+			shotgun_window = shotgun_click_window
 	
 	if Input.is_action_just_pressed("attacksecondary"):
 		if not sniper_scoped and BulletServer.bolt_state == BulletServer.BoltState.COLLECTED:
@@ -196,3 +196,6 @@ func try_dash() -> int:
 			return 1
 		return 2
 	return 0
+	
+func _on_value_changed(value):
+	shotgun_click_window = value
