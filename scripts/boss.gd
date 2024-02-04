@@ -83,7 +83,7 @@ func spawn_chaser() -> void:
 func try_spawn_wall() -> void:
 	if not wall_66 and health <= MAX_HEALTH * 0.6666:
 		wall_66 = true
-		spawn_wall(2.5, 1.0)
+		spawn_wall(3.0, 1.0)
 	if not wall_33 and health <= MAX_HEALTH * 0.3333:
 		wall_33 = true
 		spawn_wall(3.5, 1.5)
@@ -157,7 +157,7 @@ func _process(delta: float) -> void:
 		var new: Node3D = missle.instantiate()
 		add_child(new)
 		new.global_position = global_position
-		new.look_at(new.global_position + Vector3.UP)
+		#new.look_at(new.global_position, transform.basis.y)
 	
 	if explosion_timer <= 0:
 		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
@@ -173,6 +173,7 @@ func _on_hit(dmg: int) -> void:
 	health -= dmg
 	amt = 1.25
 	HUD.shake_health()
+	Character.sfx_hit.play()
 	if wall != null:
 		var col: float = remap(wall_health_threshold, WALL_HEALTH_THRESHOLD, 0, 1, 0)
 		wall.find_child("WallMesh").material_override.set_shader_parameter("albedo", Color(col,col,col))

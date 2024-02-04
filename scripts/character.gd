@@ -32,6 +32,7 @@ var GRAVITY: float
 @onready var sfx_parry: AudioStreamPlayer = $Sounds/Parry
 @onready var sfx_parry_miss: AudioStreamPlayer = $Sounds/ParryMiss
 @onready var sfx_sniper_error: AudioStreamPlayer = $Sounds/SniperError
+@onready var sfx_hit: AudioStreamPlayer = $Sounds/Hit
 
 var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
