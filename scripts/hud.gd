@@ -17,7 +17,7 @@ extends Control
 @onready var flash: ColorRect = $Flash
 @onready var twinkle: AnimatedSprite2D = $Flash/CenterContainer/Control/Twinkle
 @onready var sfx_death: AudioStreamPlayer = $Death
-@onready var music: AudioStreamPlayer = $TempMusic
+@onready var music: AudioStreamPlayer = $Music
 
 @onready var boss_health_bar: ProgressBar = $BossHealthBar
 @onready var boss_health_label: Label = $BossHealthBar/Label

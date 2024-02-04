@@ -10,11 +10,11 @@
 [ext_resource type="AudioStream" uid="uid://cstt71kwk2rch" path="res://sound/shotgun.wav" id="7_8p87u"]
 [ext_resource type="AudioStream" uid="uid://sk0q8758o5cg" path="res://sound/sniper_charge.wav" id="7_aefwd"]
 [ext_resource type="AudioStream" uid="uid://c4ulhc5th0olm" path="res://sound/dash.wav" id="9_ylc2e"]
-[ext_resource type="AudioStream" path="res://sound/deniedbuzzer.wav" id="11_1uk33"]
+[ext_resource type="AudioStream" uid="uid://ggvpekmondj6" path="res://sound/deniedbuzzer.wav" id="11_1uk33"]
 [ext_resource type="AudioStream" uid="uid://c3cstg4ysvb5e" path="res://sound/parry.wav" id="12_h74eh"]
 [ext_resource type="PackedScene" uid="uid://d4mrbd8bxs1yr" path="res://scenes/blood.tscn" id="13_55jee"]
 [ext_resource type="AudioStream" uid="uid://d3egblc8jo66j" path="res://sound/miss.wav" id="13_rsh02"]
-[ext_resource type="AudioStream" path="res://sound/plunk.wav" id="14_irw3d"]
+[ext_resource type="AudioStream" uid="uid://qvokx3n3kdyv" path="res://sound/plunk.wav" id="14_irw3d"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
 
@@ -39,7 +39,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 25)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_3xlau")
-auto_kickback = 0.6
+auto_kickback = 0.9
 shotgun_kickback = 25.0
 sniper_kickback = 60.0
 jump_height = 4.25

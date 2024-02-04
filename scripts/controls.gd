@@ -2,10 +2,10 @@ extends Node
 
 var wish_jump: bool = false
 
-const PRIMARY_FIRERATE: float = 2.0/60.0
+const PRIMARY_FIRERATE: float = 4.0/60.0
 var primary_timer: float = 0
 
-const SHOTGUN_COOLDOWN: float = 10.0/60.0
+const SHOTGUN_COOLDOWN: float = 6.0/60.0
 var shotgun_click_window: float = 100
 var shotgun_window: float = 0
 var shotgun_cooldown: float = 0.0

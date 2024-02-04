@@ -81,10 +81,10 @@ func spawn_chaser() -> void:
 	new.global_position = global_position
 
 func try_spawn_wall() -> void:
-	if not wall_66 and health <= MAX_HEALTH * 0.666:
+	if not wall_66 and health <= MAX_HEALTH * 0.6666:
 		wall_66 = true
 		spawn_wall(2.5, 1.0)
-	if not wall_33 and health <= MAX_HEALTH * 0.333:
+	if not wall_33 and health <= MAX_HEALTH * 0.3333:
 		wall_33 = true
 		spawn_wall(3.5, 1.5)
 
@@ -157,6 +157,7 @@ func _process(delta: float) -> void:
 		var new: Node3D = missle.instantiate()
 		add_child(new)
 		new.global_position = global_position
+		new.look_at(new.global_position + Vector3.UP)
 	
 	if explosion_timer <= 0:
 		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)

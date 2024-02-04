@@ -7,14 +7,14 @@ const HALF_SHOTGUN_BULLETS: int = 16
 const BULLET_GRAV: float = -30.0
 
 const SHOTGUN_BULLET_SPEED: float = 100.0
-const AUTO_BULLET_SPEED: float = 200.0
+const AUTO_BULLET_SPEED: float = 100.0
 
 const SNIPER_RANGE: float = 500.0
 const AUTO_SPREAD: float = 0.25
 const SHOTGUN_SPREAD: float = 8.0
 
 
-const AUTO_BULLET_DAMAGE: int = 1
+const AUTO_BULLET_DAMAGE: int = 2
 const SHOTGUN_BULLET_DAMAGE: int = 1
 #const MIN_SNIPER_DAMAGE: int = 64
 const MAX_SNIPER_DAMAGE: int = 128
@@ -170,6 +170,7 @@ func _try_collect_bullet(delta: float, bullet: Bullet, target: Vector3) -> void:
 		
 func _process(delta: float) -> void:
 	if Menu.enabled: return
+	if Controls.is_dead: return
 	
 	magnet_timeout -= delta
 	line_alpha -= delta
