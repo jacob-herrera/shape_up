@@ -63,7 +63,6 @@ func _do_guns() -> void:
 	if Controls.get_sniper_attack():
 		sfx_sniper_shoot.pitch_scale = remap(BulletServer.bolt_damage, 0.0, 128.0, 1.25, 0.75)
 		sfx_sniper_shoot.volume_db = remap(BulletServer.bolt_damage, 0.0, 128.0, -1, 5)
-		print(sfx_sniper_shoot.pitch_scale)
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(camera.global_position, dir)
 		velocity = -dir * sniper_kickback
@@ -122,9 +121,6 @@ func _physics_process(delta: float) -> void:
 		if wish_dir != Vector3.ZERO:
 			global_transform.origin += wish_dir * dash_distance
 			velocity = wish_dir * dash_speed
-		elif flat_vel.length() > 0.25:
-			global_transform.origin += flat_vel.normalized() * dash_distance
-			velocity = flat_vel.normalized() * dash_speed
 		else:
 			var forward: Vector3 = -camera.global_transform.basis.z
 			forward.y = 0

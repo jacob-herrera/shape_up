@@ -34,6 +34,7 @@ func _process(_dt: float) -> void:
 			player.stream_paused = false
 			player.pitch_scale = Controls.clock_speed
 		for player3d: AudioStreamPlayer3D in p3ds:
+			player3d.stream_paused = false
 			player3d.pitch_scale = Controls.clock_speed
 		for player: AudioStreamPlayer in _inverse_players:
 			player.stream_paused = false
