@@ -80,7 +80,7 @@ gravity = Vector3(0, 0, 0)
 scale_amount_curve = SubResource("Curve_dd4w1")
 
 [node name="DropShadow" type="MeshInstance3D" parent="."]
-transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 0, 0)
+transform = Transform3D(3, 0, 0, 0, -3, 2.62268e-07, 0, -2.62268e-07, -3, 0, 0, 0)
 top_level = true
 material_override = ExtResource("7_xiwdq")
 mesh = SubResource("QuadMesh_vygbe")

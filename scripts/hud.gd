@@ -22,6 +22,9 @@ extends Control
 @onready var boss_health_bar: ProgressBar = $BossHealthBar
 @onready var boss_health_label: Label = $BossHealthBar/Label
 
+@onready var white: ColorRect = $White
+@onready var credits: Label = $Credits
+
 @onready var minus_three: PackedScene = preload("res://scenes/minus_three.tscn")
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
@@ -53,25 +56,54 @@ static var boss_health_bar_shake: float = 0.0
 
 var spawn_one_time: int = 99
 
+var pause_timer: bool = false
+
 class MinusOneParticle extends RefCounted:
 	var visual: Control
 	var velocity: Vector2
 
 var minus_one_particles: Array[MinusOneParticle] = []
 
+var fade_to_white_T: float = 0.0
+
 func update_boss_health(hp: int) -> void:
 	boss_health_bar.value = hp
-	boss_health_label.text = "%.0f" % (hp / boss_health_bar.max_value * 100)
+	boss_health_label.text = "%d" % ceil(hp / boss_health_bar.max_value * 100)
 
 func shake_health() -> void:
 	boss_health_bar_shake = 1.0
 
+func set_visiblity() -> void:
+	timer.visible = false
+	second_hand.visible = false
+	hour_hand.visible = false
+	minute_hand.visible = false
+	boss_health_bar.visible = false
+	$Shadow.visible = false
+	match SceneManager.scene:
+		SceneManager.Scene.BOSS_1:
+			timer.visible = true
+			boss_health_bar.visible = true
+			second_hand.visible = true
+			hour_hand.visible = true
+			minute_hand.visible = true
+			$Shadow.visible = true
+			
+
 func reset() -> void:
+	set_visiblity()
+	credits.modulate.a = 0
+	white.color = Color.TRANSPARENT
+	pause_timer = false
+	fade_to_white_T = 0.0
 	time = 100.00
 	flash_T = 0
 	spawn_one_time = 99
+	
 	music.stop()
-	music.play(0.0)
+	if SceneManager.scene == SceneManager.Scene.BOSS_1:
+		music.play(0.0)
+		
 	sfx_death.stop()
 	vignette.set_shader_parameter("SCALE", 0.0)
 	for p: MinusOneParticle in minus_one_particles:
@@ -88,6 +120,7 @@ func _ready() -> void:
 	Character.connect("parry", _on_parry)
 	Controls.connect("death", _on_death)
 	vignette.set_shader_parameter("SCALE", 0)
+	reset()
 	
 func _on_parry() -> void:
 	flash_T = 1
@@ -101,6 +134,7 @@ func _on_death() -> void:
 	twinkle.frame = 60
 
 func spawn_one_particle(type: ParticleType) -> void:
+	if SceneManager.scene != SceneManager.Scene.BOSS_1: return
 	var which: PackedScene
 	match type:
 		ParticleType.TIMES_TWO:
@@ -152,12 +186,28 @@ func _process(_dt: float) -> void:
 	var current_ms: int = Time.get_ticks_msec()
 	var ms_diff: float = current_ms - pervious_ms
 	pervious_ms = current_ms
-	time -= (ms_diff / 1000.00 * Controls.clock_speed)
-	timer.text = "%.1f" % time
+	
+	if not pause_timer:
+		time -= (ms_diff / 1000.00 * Controls.clock_speed)
+		timer.text = "%.1f" % time
+	else:
+		fade_to_white_T += ms_diff / 4000.00
+		
+		Camera.trauma = remap(fade_to_white_T, 0.0, 0.25, 0.0, 0.5)
+		Camera.trauma = min(0.5, Camera.trauma)
+		white.color = Color(1, 1, 1, fade_to_white_T)
+		var db: float = linear_to_db(1 - fade_to_white_T)
+		var bus_idx: int = AudioServer.get_bus_index("Effects")
+		AudioServer.set_bus_volume_db(bus_idx, db)
+		
+		var credits_alpha: float = remap(fade_to_white_T, 1.0, 1.25, 0.0, 1.0)
+		credits_alpha = clampf(credits_alpha, 0.0, 1.0)
+		credits.modulate.a = credits_alpha
 	
 	if time < 0:
 		time = 0
-		Controls.invoke_player_death()
+		if SceneManager.scene == SceneManager.Scene.BOSS_1:
+			Controls.invoke_player_death()
 	
 	if time <= spawn_one_time and time > 0:
 		if Controls.clock_speed < 1.025 and Controls.clock_speed > 0.975:

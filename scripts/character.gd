@@ -37,6 +37,7 @@ var GRAVITY: float
 var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
 var just_spawned: int = 2
+var invincible: bool = false
 
 signal parry
 
@@ -76,7 +77,7 @@ func _do_guns() -> void:
 				velocity -= dir * auto_kickback 
 			sfx_auto.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 2.0, 1.0)
 			sfx_auto.play()
-		elif not is_auto_out_of_ammo_flag:
+		elif not is_auto_out_of_ammo_flag and not invincible:
 			sfx_dryfire.play()
 			is_auto_out_of_ammo_flag = true
 			
@@ -132,7 +133,8 @@ func _physics_process(delta: float) -> void:
 			velocity = forward.normalized() * dash_speed
 		sfx_dash.play()
 	elif did_dash == 2:
-		sfx_dash_cooldown.play()
+		if not invincible:
+			sfx_dash_cooldown.play()
 
 	if flat_vel.length() > SPEED_CAP:
 		flat_vel = flat_vel.normalized() * SPEED_CAP
@@ -167,12 +169,16 @@ func _physics_process(delta: float) -> void:
 
 
 func reset() -> void:
+	invincible = false
 	sfx_sniper_charge.stop()
 	just_spawned = 3
 	is_auto_out_of_ammo_flag = false
 	global_position = Vector3(0, 1, 25)
 	velocity = Vector3.ZERO
-	$Camera3D.rotation = Vector3(0,0,0)
+	camera.rot_x = 0.0
+	camera.rot_y = 0.0
+	camera.rot_z = 0.0
+	camera.trauma = 0.0
 	Camera.has_saved_last_view_angle_before_death = false
 	move_and_slide()
 

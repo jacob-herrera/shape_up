@@ -37,13 +37,13 @@ enum BossAttack {
 
 enum BossState {
 	ORBITING,
-	WALLED
+	WALLED,
+	DEAD
 }
-
 
 var state: BossState = BossState.ORBITING
 
-const POS_LERP_SPEED: float = 5.0
+const POS_LERP_SPEED: float = 2.5
 
 #const ATTACK_RATE: float = 2.5
 #var attack_cooldown: float = 0.0
@@ -126,6 +126,8 @@ func move_boss(delta: float) -> void:
 		BossState.WALLED:
 			var height: float = sin(alive_time) * 1
 			target_pos = Vector3(0, height + orbit_height, 0)
+		BossState.DEAD:
+			target_pos = global_position
 			
 	var t: float = pow(0.5, delta * POS_LERP_SPEED)
 	global_position = lerp(target_pos, global_position, t)
@@ -142,35 +144,42 @@ func _process(delta: float) -> void:
 	visual.global_position = global_position + shake_vec
 	
 	alive_time += delta
-	
-	move_boss(delta)
-	try_spawn_wall()
-	
 	missile_timer -= delta
 	explosion_timer -= delta
 	
-	if health <= MAX_HEALTH * 0.5:
-		spawn_chaser()
+	if health <= 0:
+		state = BossState.DEAD
+		Character.invincible = true
+		HUD.pause_timer = true
+		HUD.music.stop()
+		PitchChanger.stop_all_sfx()
+	else:
+		try_spawn_wall()
+		
+		if health <= MAX_HEALTH * 0.5:
+			spawn_chaser()
 	
-	if missile_timer <= 0:
-		missile_timer = remap(health, MAX_HEALTH, 0, MISSILE_START_RATE, MISSILE_END_RATE)
-		var new: Node3D = missle.instantiate()
-		add_child(new)
-		new.global_position = global_position
-		#new.look_at(new.global_position, transform.basis.y)
-	
-	if explosion_timer <= 0:
-		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
-		var new: Node3D = growing_circle.instantiate()
-		add_child(new)
-		var pos: Vector3 = Vector3.ZERO
-		while pos.distance_to(Vector3.ZERO) < 16:
-			pos = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
-		new.global_position = pos
-		new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
+		if missile_timer <= 0:
+			missile_timer = remap(health, MAX_HEALTH, 0, MISSILE_START_RATE, MISSILE_END_RATE)
+			var new: Node3D = missle.instantiate()
+			add_child(new)
+			new.global_position = global_position
+		
+		if explosion_timer <= 0:
+			explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
+			var new: Node3D = growing_circle.instantiate()
+			add_child(new)
+			var pos: Vector3 = Vector3.ZERO
+			while pos.distance_to(Vector3.ZERO) < 16:
+				pos = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
+			new.global_position = pos
+			new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
+
+	move_boss(delta)
 
 func _on_hit(dmg: int) -> void:
 	health -= dmg
+	health = max(0, health)
 	amt = 1.25
 	HUD.shake_health()
 	Character.sfx_hit.play()

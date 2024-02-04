@@ -10,6 +10,15 @@ func register_player(player: AudioStreamPlayer) -> void:
 func register_inverse_player(player: AudioStreamPlayer) -> void:
 	_inverse_players.push_back(player)	
 	
+func stop_all_sfx() -> void:	
+	var p3ds: Array[Node] = get_tree().get_nodes_in_group("player3d")
+	for player: AudioStreamPlayer in _players:
+		player.stop()
+	for player: AudioStreamPlayer in _inverse_players:
+		player.stop()
+	for player3d: AudioStreamPlayer3D in p3ds:
+		player3d.stop()
+
 func _process(_dt: float) -> void:
 	var p3ds: Array[Node] = get_tree().get_nodes_in_group("player3d")
 	

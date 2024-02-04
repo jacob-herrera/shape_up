@@ -17,4 +17,4 @@ func _on_val_changed(val: float) -> void:
 	val = remap(val, 0.0, 1.0, 0.0, 2.0)
 	var db: float = linear_to_db(val)
 	AudioServer.set_bus_volume_db(bus_idx, db)
-	print(name, " - ",  db)
+	#print(name, " - ",  db)

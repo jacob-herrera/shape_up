@@ -308,7 +308,7 @@ func fire_sniper(pos: Vector3, dir: Vector3) -> void:
 	
 	var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
 	if hitbox != null:
-		var dmg: int = bolt_damage#remap(Controls.sniper_charge, 0.0, 1.0, 0, MAX_SNIPER_DAMAGE) as int
+		var dmg: int = bolt_damage as int#remap(Controls.sniper_charge, 0.0, 1.0, 0, MAX_SNIPER_DAMAGE) as int
 		hitbox.do_hit(dmg)
 		bolt_damage = 0
 

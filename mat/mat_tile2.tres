@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c6pcwikfdgrs3"]
+
+[ext_resource type="Shader" path="res://shader/tile.gdshader" id="1_adhs5"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_adhs5")
+shader_parameter/tile_color = Color(0.603922, 0.603922, 0.603922, 1)
+shader_parameter/grout_color = Color(0.658824, 0.658824, 0.658824, 1)
+shader_parameter/accent_color = Color(0, 0, 0, 1)
+shader_parameter/roughness = 0.323
+shader_parameter/use_normal_map = true
+shader_parameter/normal_intensity = 0.06
+shader_parameter/rotate_45 = true
+shader_parameter/tile_scale = 0.25
+shader_parameter/diamond_size = 0.565
+shader_parameter/grout_thickness = 0.007
+shader_parameter/diamond_accent_size = 0.676
+shader_parameter/grout_accent_size = 0.018

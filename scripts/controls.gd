@@ -54,6 +54,13 @@ func _handle_clock(ms_diff: int) -> void:
 		freeze_frames -= ms_diff
 		return
 	
+	if HUD.pause_timer:
+		dash_meter = 0.0
+		Engine.time_scale = 0.5
+		target_clock_speed = 0.5
+		clock_speed = 0.5
+		return
+	
 	#if eng
 	
 	var slow: bool = Input.is_action_pressed("slow")
@@ -73,7 +80,7 @@ func _handle_clock(ms_diff: int) -> void:
 
 
 func invoke_player_death() -> void:
-	if not is_dead:
+	if not is_dead and not Character.invincible:
 		is_dead = true
 		sniper_scoped = false
 		emit_signal("death")
@@ -90,6 +97,7 @@ func hard_reset() -> void:
 	dead_timer = 0.0
 	sniper_charge = 0.0
 	sniper_scoped = false
+	Menu.reset()
 	if get_tree().current_scene != null:
 		get_tree().reload_current_scene()
 
@@ -138,7 +146,7 @@ func _process(delta) -> void:
 			if BulletServer.bolt_state == BulletServer.BoltState.COLLECTED:
 				sniper_scoped = true
 				emit_signal("entered_scope")
-			else:
+			elif Character.invincible == false:
 				Character.sfx_sniper_error.play()
 		else:
 			sniper_scoped = false

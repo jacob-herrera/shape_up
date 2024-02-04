@@ -327,7 +327,6 @@ styles = Array[StyleBox]([SubResource("StyleBoxFlat_l2ixj"), SubResource("StyleB
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_gk0dc")
 volume_db = -5.0
-autoplay = true
 bus = &"Music"
 
 [node name="Death" type="AudioStreamPlayer" parent="."]
@@ -409,6 +408,7 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="Line2D" type="Line2D" parent="SecondHand"]
 points = PackedVector2Array(0, 200, 0, -200)
@@ -424,6 +424,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.25, 1.25)
+mouse_filter = 2
 
 [node name="Texture" type="TextureRect" parent="MinuteHand"]
 modulate = Color(1, 0, 1, 1)
@@ -439,6 +440,7 @@ offset_right = 80.0
 offset_bottom = 157.215
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 texture = ExtResource("4_ixj0j")
 
 [node name="HourHand" type="Control" parent="."]
@@ -451,6 +453,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.25, 1.25)
+mouse_filter = 2
 
 [node name="Texture" type="TextureRect" parent="HourHand"]
 modulate = Color(1, 1, 0, 1)
@@ -463,10 +466,11 @@ offset_top = -16.365
 offset_right = 64.0
 offset_bottom = 112.635
 grow_horizontal = 2
+mouse_filter = 2
 texture = ExtResource("4_cpako")
 
 [node name="Shadow" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(1, 1, 1, 0.337255)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -480,6 +484,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.66, 1.66)
 pivot_offset = Vector2(128, 128)
+mouse_filter = 2
 texture = ExtResource("6_n5px1")
 
 [node name="Timer" type="Label" parent="."]
@@ -800,3 +805,37 @@ theme_override_font_sizes/font_size = 116
 text = "3"
 vertical_alignment = 1
 autowrap_mode = 1
+
+[node name="White" type="ColorRect" parent="."]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Credits" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 7
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 3)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Designers - Jacob Herrera, Arman Heydarian, James Watkins
+Lead Programmer - Jacob Herrera
+Assistant Programmer - Arman Heydarian
+Asset Curator - James Watkins
+Music - Ean Herrera
+"

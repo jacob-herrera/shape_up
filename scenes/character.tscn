@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=25 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
@@ -22,6 +22,11 @@
 [sub_resource type="Curve" id="Curve_kqkpt"]
 _data = [Vector2(0, 0.0102458), 0.0, 0.0, 0, 0, Vector2(0.121186, 0.77476), 2.74727, 2.74727, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ly6ow"]
+frequency = 0.0361
+fractal_octaves = 9
+fractal_gain = 0.25
 
 [sub_resource type="BoxMesh" id="BoxMesh_eoaf6"]
 
@@ -52,13 +57,16 @@ min_dash_speed = 30.0
 shape = SubResource("CylinderShape3D_cc7ui")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-top_level = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -25)
 cull_mask = 262143
 current = true
 fov = 90.0
 script = ExtResource("2_34f15")
 death_blur_curve = SubResource("Curve_kqkpt")
+max_x = 1.0
+max_y = 1.0
+max_z = 1.0
+noise = SubResource("FastNoiseLite_ly6ow")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Camera3D"]
 offset_right = 40.0
@@ -137,7 +145,7 @@ bus = &"Effects"
 
 [node name="DashCooldown" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("11_1uk33")
-volume_db = 10.0
+volume_db = 5.0
 pitch_scale = 1.25
 bus = &"Effects"
 
@@ -157,7 +165,7 @@ bus = &"Effects"
 
 [node name="Hit" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("15_i881q")
-max_polyphony = 4
+max_polyphony = 3
 bus = &"Effects"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

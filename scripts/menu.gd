@@ -13,6 +13,9 @@ func _ready() -> void:
 	hide()
 	settings.hide()
 
+func reset() -> void:
+	%EffectsVolume._on_val_changed(%EffectsVolume.value)
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
 		if in_settings:
@@ -22,6 +25,7 @@ func _input(event: InputEvent) -> void:
 
 func _toggle_menu() -> void:
 	if Controls.is_dead: return
+	if HUD.pause_timer: return
 	if enabled:
 		hide()
 		Engine.time_scale = 1
@@ -56,6 +60,10 @@ func _settings_pressed() -> void:
 	_toggle_settings()
 
 func _play_pressed() -> void:
+	_toggle_menu()
+
+func _lobby_pressed() -> void:
+	SceneManager.goto_lobby()
 	_toggle_menu()
 
 func _quit_pressed() -> void:

@@ -27,16 +27,58 @@ var final: Transform3D
 
 @export var death_blur_curve: Curve
 
+
+@export var max_x := 10.0
+@export var max_y := 10.0
+@export var max_z := 5.0
+
+var rot_x: float = 0.0
+var rot_y: float = 0.0
+var rot_z: float = 0.0
+
+@export var noise: FastNoiseLite
+@export var noise_speed := 50.0
+
+static var trauma: float = 0.0
+
+var shake_time: float = 0.0
+
+#@onready var camera := $Camera as Camera
+#@onready var initial_rotation := camera.rotation_degrees as Vector3
+
+#func _process(delta):
+	#time += delta
+	#trauma = max(trauma - delta * trauma_reduction_rate, 0.0)
+	#
+	#camera.rotation_degrees.x = initial_rotation.x + max_x * get_shake_intensity() * get_noise_from_seed(0)
+	#camera.rotation_degrees.y = initial_rotation.y + max_y * get_shake_intensity() * get_noise_from_seed(1)
+	#camera.rotation_degrees.z = initial_rotation.z + max_z * get_shake_intensity() * get_noise_from_seed(2)
+
+func add_trauma(trauma_amount : float):
+	trauma = clamp(trauma + trauma_amount, 0.0, 1.0)
+
+func get_shake_intensity() -> float:
+	return trauma * trauma
+
+func get_noise_from_seed(_seed : int) -> float:
+	noise.seed = _seed
+	return noise.get_noise_1d(shake_time * noise_speed)
+
+
 func _ready():
 	var node: ColorRect = ScreenShader.get_child(0)
 	mat = node.material
 	mouse_sensitivity = mouse_sensitivity / 1000
 	pitch_limit = deg_to_rad(DEG_PITCH_LIMIT)
 	
-
+func _set_cam_angle():
+	rotation.y = rot_y + max_y * get_shake_intensity() * get_noise_from_seed(1)
+	rotation.x = rot_x + max_x * get_shake_intensity() * get_noise_from_seed(0)
+	#rotation.z = max_z * get_shake_intensity() * get_noise_from_seed(2)
 	
 func _process(delta: float) -> void:
-
+	shake_time += delta
+	#trauma = max(trauma - delta * trauma_reduction_rate, 0.0)
 	
 	if Controls.is_dead:
 		if not has_saved_last_view_angle_before_death:
@@ -80,6 +122,8 @@ func _process(delta: float) -> void:
 	
 	mat.set_shader_parameter("blur_power", remap(blur_T, 0, 1, 0.03, 0))
 	
+	_set_cam_angle()
+	
 	if Controls.get_sniper_scope():
 		#sniper_fov_T += delta / 3
 		fov = lerpf(SNIPER_FOV_MAX, SNIPER_FOV_MIN, ease_out_expo(Controls.sniper_charge))
@@ -110,7 +154,7 @@ func camera_rotation(mouse_delta: Vector2) -> void:
 	if Controls.get_sniper_scope():
 		sens /= 2
 	# Horizontal mouse look.
-	rotation.y -= mouse_delta.x * sens
+	rot_y -= mouse_delta.x * sens
 	# Vertical mouse look.
-	rotation.x -= mouse_delta.y * sens
-	rotation.x = clampf(rotation.x, -pitch_limit, pitch_limit)
+	rot_x -= mouse_delta.y * sens
+	rot_x = clampf(rot_x, -pitch_limit, pitch_limit)
