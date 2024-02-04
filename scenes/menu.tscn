@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ecnen"]
 [ext_resource type="Theme" uid="uid://ch3qd5h20v3n4" path="res://fonts/theme1.tres" id="2_2vfbs"]
 [ext_resource type="StyleBox" uid="uid://64lwa73a6f4o" path="res://fonts/stylebox_black.tres" id="3_2og6p"]
-[ext_resource type="PackedScene" uid="uid://bforo8g1mqv01" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
+[ext_resource type="PackedScene" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
 [ext_resource type="Script" path="res://scripts/controls.gd" id="5_g07w3"]
 
 [node name="Menu" type="Control"]
@@ -160,6 +160,5 @@ text = "BACK
 [connection signal="pressed" from="Margin/Main/Play" to="." method="_play_pressed"]
 [connection signal="pressed" from="Margin/Main/Settings" to="." method="_settings_pressed"]
 [connection signal="pressed" from="Margin/Main/Quit" to="." method="_quit_pressed"]
-[connection signal="value_changed" from="Margin/Settings/Misc Container/Click Window Slider" to="Margin/Settings/Misc Container/Click Window Slider" method="_on_value_changed"]
 [connection signal="toggled" from="Margin/Settings/Misc Container/Fullscreen Toggle" to="." method="_fullscreen_toggle"]
 [connection signal="pressed" from="Margin/Settings/Back Button" to="." method="_settings_back_pressed"]

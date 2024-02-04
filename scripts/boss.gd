@@ -171,6 +171,7 @@ func _process(delta: float) -> void:
 func _on_hit(dmg: int) -> void:
 	health -= dmg
 	amt = 1.25
+	HUD.shake_health()
 	if wall != null:
 		var col: float = remap(wall_health_threshold, WALL_HEALTH_THRESHOLD, 0, 1, 0)
 		wall.find_child("WallMesh").material_override.set_shader_parameter("albedo", Color(col,col,col))

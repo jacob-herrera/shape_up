@@ -22,8 +22,15 @@ extends Control
 @onready var boss_health_bar: ProgressBar = $BossHealthBar
 @onready var boss_health_label: Label = $BossHealthBar/Label
 
+@onready var minus_three: PackedScene = preload("res://scenes/minus_three.tscn")
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
+
+enum ParticleType {
+	TIMES_TWO,
+	TIMES_HALF,
+	MINUS_THREE
+}
 
 @onready var bolt_ammo: TextureProgressBar = $BoltAmmo
 @onready var bolt_dmg: Label = $BoltAmmo/amt
@@ -41,6 +48,9 @@ var timer_pos: Vector2
 var rng := RandomNumberGenerator.new()
 const SHAKE_STRENGTH: float = 5.0
 
+var boss_hb_init_pos: Vector2
+static var boss_health_bar_shake: float = 0.0
+
 var spawn_one_time: int = 99
 
 class MinusOneParticle extends RefCounted:
@@ -52,6 +62,9 @@ var minus_one_particles: Array[MinusOneParticle] = []
 func update_boss_health(hp: int) -> void:
 	boss_health_bar.value = hp
 	boss_health_label.text = "%.0f" % (hp / boss_health_bar.max_value * 100)
+
+func shake_health() -> void:
+	boss_health_bar_shake = 1.0
 
 func reset() -> void:
 	time = 100.00
@@ -71,6 +84,7 @@ func _ready() -> void:
 	pervious_ms = start_ms
 	PitchChanger.register_player(music)
 	timer_pos = timer.position
+	boss_hb_init_pos = boss_health_label.position
 	Character.connect("parry", _on_parry)
 	Controls.connect("death", _on_death)
 	vignette.set_shader_parameter("SCALE", 0)
@@ -86,8 +100,15 @@ func _on_death() -> void:
 	flash.color.a = 1
 	twinkle.frame = 60
 
-func spawn_one_particle(green: bool) -> void:
-	var which: PackedScene = plus_one if green else minus_one
+func spawn_one_particle(type: ParticleType) -> void:
+	var which: PackedScene
+	match type:
+		ParticleType.TIMES_TWO:
+			which = minus_one
+		ParticleType.TIMES_HALF:
+			which = plus_one
+		ParticleType.MINUS_THREE:
+			which = minus_three
 	var v: Control = which.instantiate() as Control
 	add_child(v)
 	v.position = timer.position + timer.pivot_offset
@@ -142,13 +163,20 @@ func _process(_dt: float) -> void:
 		if Controls.clock_speed < 1.025 and Controls.clock_speed > 0.975:
 			pass
 		elif Controls.clock_speed > 1.025:
-			spawn_one_particle(false)
+			spawn_one_particle(ParticleType.TIMES_TWO)
 		elif Controls.clock_speed < 0.975:
-			spawn_one_particle(true)
+			spawn_one_particle(ParticleType.TIMES_HALF)
 		# Truncate float to integer, effectively minus 1
 		spawn_one_time = time as int
 	
 	animate_particles(ms_diff)
+	
+	boss_health_bar_shake -= ms_diff / 500.0
+	boss_health_bar_shake = clampf(boss_health_bar_shake, 0, 1.0)
+	#print(boss_health_bar_shake)
+	var hb_strength: float = remap(boss_health_bar_shake, 0.0, 1.0, 0, SHAKE_STRENGTH)
+	var hb_shake_vec := Vector2(rng.randf_range(-hb_strength, hb_strength), rng.randf_range(-hb_strength, hb_strength))
+	boss_health_label.position = boss_hb_init_pos + hb_shake_vec
 	
 	bolt_ammo.value = BulletServer.bolt_damage
 	bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED

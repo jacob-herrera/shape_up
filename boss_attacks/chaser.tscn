@@ -6,9 +6,9 @@
 [ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_0sprl"]
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="4_k22hm"]
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="7_dhtdh"]
+[ext_resource type="AudioStream" uid="uid://dy1bfsov7iksy" path="res://sound/Bell1.mp3" id="8_n2pme"]
 [ext_resource type="AudioStream" uid="uid://bg7wy7l2r44mj" path="res://sound/followlaugh1.wav" id="8_t7vo2"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="8_u42fg"]
-[ext_resource type="AudioStream" uid="uid://slbg7f6woysn" path="res://sound/chaser_spawn.wav" id="9_o15la"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rprg5"]
 render_priority = 0
@@ -20,10 +20,10 @@ radius = 1.285
 
 [sub_resource type="QuadMesh" id="QuadMesh_lerr6"]
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D2" type="Node3D"]
 top_level = true
 script = ExtResource("1_voo7n")
-speed = 18.0
+speed = 16.0
 delay = 2.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -47,8 +47,8 @@ skeleton = NodePath("../..")
 script = ExtResource("8_u42fg")
 
 [node name="spawn" type="AudioStreamPlayer3D" parent="." groups=["player3d"]]
-stream = ExtResource("9_o15la")
-volume_db = 15.0
+stream = ExtResource("8_n2pme")
+volume_db = 25.0
 autoplay = true
 bus = &"Effects"
 

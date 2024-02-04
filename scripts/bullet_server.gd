@@ -134,7 +134,7 @@ func _process_bolt(delta: float) -> void:
 			cone.global_transform.origin = bolt_world_pos + Vector3(0, offset, 0)
 			cone.rotation.y = bolt_T * 2.0
 		BoltState.COLLECTING:
-			bolt_T += delta
+			bolt_T += delta * 2.0
 			var target: Vector3 = Character.global_position + Vector3(0, -2, 0)
 			if bolt_T >= 0.75:
 				bolt_state = BoltState.COLLECTED

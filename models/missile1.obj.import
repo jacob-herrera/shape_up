@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dk6gwqu34s7vm"
+path="res://.godot/imported/missile1.obj-6d7c744368e9238badfbc9e9c3ed1141.mesh"
+
+[deps]
+
+files=["res://.godot/imported/missile1.obj-6d7c744368e9238badfbc9e9c3ed1141.mesh"]
+
+source_file="res://models/missile1.obj"
+dest_files=["res://.godot/imported/missile1.obj-6d7c744368e9238badfbc9e9c3ed1141.mesh", "res://.godot/imported/missile1.obj-6d7c744368e9238badfbc9e9c3ed1141.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

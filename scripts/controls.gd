@@ -82,7 +82,6 @@ func invoke_player_death() -> void:
 func hard_reset() -> void:
 	Controls.clock_speed = 1.0
 	wish_jump = false
-	get_tree().reload_current_scene()
 	Character.reset()
 	BulletServer.reset()
 	HUD.reset()
@@ -91,9 +90,12 @@ func hard_reset() -> void:
 	dead_timer = 0.0
 	sniper_charge = 0.0
 	sniper_scoped = false
+	if get_tree().current_scene != null:
+		get_tree().reload_current_scene()
 
 func _process(delta) -> void:
-	print(shotgun_click_window)
+	# TODO
+	#print("Shotgun click window: ", shotgun_click_window)
 	if Input.is_action_just_pressed("restart"):
 		hard_reset()
 		return
@@ -122,7 +124,7 @@ func _process(delta) -> void:
 	sniper_debounce -= ms_diff
 	
 	if sniper_scoped:
-		sniper_charge += delta * 0.75
+		sniper_charge += delta * 1.75
 		sniper_charge = clampf(sniper_charge, 0.0, 1.0)
 	else:
 		sniper_charge = 0.0
@@ -132,9 +134,12 @@ func _process(delta) -> void:
 			shotgun_window = shotgun_click_window
 	
 	if Input.is_action_just_pressed("attacksecondary"):
-		if not sniper_scoped and BulletServer.bolt_state == BulletServer.BoltState.COLLECTED:
-			sniper_scoped = true
-			emit_signal("entered_scope")
+		if not sniper_scoped:
+			if BulletServer.bolt_state == BulletServer.BoltState.COLLECTED:
+				sniper_scoped = true
+				emit_signal("entered_scope")
+			else:
+				Character.sfx_sniper_error.play()
 		else:
 			sniper_scoped = false
 			sniper_charge = 0.0

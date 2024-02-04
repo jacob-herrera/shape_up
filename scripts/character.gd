@@ -31,6 +31,7 @@ var GRAVITY: float
 @onready var sfx_dryfire: AudioStreamPlayer = $Sounds/Dryfire
 @onready var sfx_parry: AudioStreamPlayer = $Sounds/Parry
 @onready var sfx_parry_miss: AudioStreamPlayer = $Sounds/ParryMiss
+@onready var sfx_sniper_error: AudioStreamPlayer = $Sounds/SniperError
 
 var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
@@ -44,14 +45,15 @@ func _ready() -> void:
 	Controls.connect("entered_scope", _entered_scope)
 	Controls.connect("exited_scope", _exited_scope)
 	#PitchChanger.register_inverse_player(sfx_sniper_shoot)
-	PitchChanger.register_inverse_player(sfx_sniper_charge)
+	#PitchChanger.register_inverse_player(sfx_sniper_charge)
 	#PitchChanger.register_inverse_player(sfx_shotgun)
 	
 func _entered_scope() -> void:
 	sfx_sniper_charge.play()
 	
 func _exited_scope() -> void:
-	sfx_sniper_charge.stop()
+	pass
+	#sfx_sniper_charge.stop()
 
 func _process(_delta: float) -> void:
 	if Menu.enabled: return
@@ -61,8 +63,8 @@ func _do_guns() -> void:
 	var pitch_bullets: float = clampi(BulletServer.valid_bullets, 0, 128)
 	
 	if Controls.get_sniper_attack():
-		sfx_sniper_shoot.pitch_scale = remap(BulletServer.bolt_damage, 0.0, 128.0, 1.25, 0.75)
-		sfx_sniper_shoot.volume_db = remap(BulletServer.bolt_damage, 0.0, 128.0, -1, 5)
+		#ssfx_sniper_shoot.pitch_scale = remap(BulletServer.bolt_damage, 0.0, 128.0, 1.25, 0.75)
+		#sfx_sniper_shoot.volume_db = remap(BulletServer.bolt_damage, 0.0, 128.0, -1, 5)
 		sfx_sniper_shoot.play()
 		BulletServer.fire_sniper(camera.global_position, dir)
 		velocity = -dir * sniper_kickback
@@ -146,6 +148,8 @@ func _physics_process(delta: float) -> void:
 			
 			sfx_parry.play()
 		else:
+			HUD.time -= 3
+			HUD.spawn_one_particle(HUD.ParticleType.MINUS_THREE)
 			sfx_parry_miss.play()
 	
 	move_and_slide()

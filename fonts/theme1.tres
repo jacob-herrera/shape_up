@@ -99,4 +99,5 @@ Button/styles/focus = SubResource("StyleBoxFlat_k8aae")
 Button/styles/hover = SubResource("StyleBoxFlat_kx7t7")
 Button/styles/normal = SubResource("StyleBoxFlat_lbqmp")
 Button/styles/pressed = SubResource("StyleBoxFlat_u351i")
+Label/constants/line_spacing = -47
 Panel/styles/panel = SubResource("StyleBoxFlat_2mebj")
