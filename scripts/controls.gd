@@ -21,6 +21,9 @@ var clock_speed: float = 1.0
 var target_clock_speed: float = 1.0
 var TIME_RAMP_LERP: float = 15.0
 
+var slow_toggle: bool
+var fast_toggle: bool
+
 const DASH_METER_MAX: float = 3.0
 const DASH_REFILL_RATE: float = 0.25
 var dash_meter: float = 3.0
@@ -65,7 +68,13 @@ func _handle_clock(ms_diff: int) -> void:
 	
 	var slow: bool = Input.is_action_pressed("slow")
 	var fast: bool = Input.is_action_pressed("fast")
-	if (slow and fast) or (not slow and not fast):
+	if Input.is_action_just_released("slowtoggle"):
+		slow_toggle = !slow_toggle
+		fast_toggle = false
+	if Input.is_action_just_released("fasttoggle"):
+		fast_toggle = !fast_toggle
+		slow_toggle = false
+	if (slow and fast) or (not slow and not fast and not slow_toggle and not fast_toggle):
 		Engine.time_scale = 1.0
 		target_clock_speed = 1.0
 	elif slow:
@@ -74,6 +83,12 @@ func _handle_clock(ms_diff: int) -> void:
 	elif fast:
 		Engine.time_scale = FAST_SPEED
 		target_clock_speed = SLOW_SPEED
+	elif slow_toggle:
+			Engine.time_scale = SLOW_SPEED
+			target_clock_speed = FAST_SPEED
+	elif fast_toggle:
+			Engine.time_scale = FAST_SPEED
+			target_clock_speed = SLOW_SPEED
 	var dt: float = ms_diff / 1000.0
 	var t: float = pow(0.5, dt * TIME_RAMP_LERP)
 	clock_speed = lerpf(target_clock_speed, clock_speed, t)
@@ -87,6 +102,8 @@ func invoke_player_death() -> void:
 
 
 func hard_reset() -> void:
+	slow_toggle = false
+	fast_toggle = false
 	Controls.clock_speed = 1.0
 	wish_jump = false
 	Character.reset()
