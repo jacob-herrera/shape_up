@@ -4,6 +4,7 @@ extends Node3D
 @onready var visual: Node3D = $Visual
 @onready var laser_parry: Area3D = $LaserParry
 @onready var laser_damage: Area3D = $LaserDamage
+@onready var spikes: MeshInstance3D = $Spikes
 
 
 
@@ -15,15 +16,21 @@ var line: LineRenderer
 
 const FAR_AWAY: Vector3 = Vector3(0, -100, 0)
 
+const SPIKES_MIN_HEIGHT: float = -5.0
+const SPIKES_MAX_HEIGHT: float = -2.0
+
 
 @export var laser_animate_curve: Curve
-const LASER_MIN_RANDOM_TIME: float = 3.0
-const LASER_MAX_RANDOM_TIME: float = 8.0
+@export var spike_curve: Curve
+
+const LASER_MIN_RANDOM_TIME: float = 6.0
+const LASER_MAX_RANDOM_TIME: float = 12.0
 const LASER_LENGTH: float = 256.0
 
-enum BossState{
+enum BossState {
 	DEAD,
 	CENTER,
+	CHASING, 
 	STOP
 }
 
@@ -32,7 +39,6 @@ enum BossAttack {
 }
 
 var state: BossState
-#var 
 
 var max_health: float
 var health: float
@@ -41,7 +47,13 @@ var time: float = 0.0
 var amt: float = 0.0
 var FADE_RATE: float = 4.0
 
-var delay: float = 2.0
+var laser_cooldown: float = 15.0
+var spike_time: float = 0.0
+
+var SPIKE_COOLDOWN: float = 10.0
+var spike_cooldown: float = 2.0
+
+var CHASE_SPEED: float = 15.0
 
 var laser_fired: bool
 const LASER_DELAY: float = 0.47
@@ -54,7 +66,8 @@ func _ready() -> void:
 	laser_lifetime = 110.0
 	max_health = 2000
 	health = max_health
-	state = BossState.CENTER
+	state = BossState.CHASING
+	spikes.global_position.y = SPIKES_MIN_HEIGHT
 	HUD.boss_health_bar.max_value = max_health
 	HUD.update_boss_health(max_health)
 	line = line_3d.instantiate()
@@ -82,22 +95,43 @@ func _alive_process(delta: float) -> void:
 	laser_alpha = clampf(laser_alpha, 0.0, 1.0)
 	line.material.set_shader_parameter("alpha", laser_alpha)
 	
-	delay -= delta
+	time += delta
+	laser_cooldown -= delta
+	spike_cooldown -= delta
 	laser_delay -= delta
 	laser_lifetime += delta
 	
+	spike_time -= delta
+	
 	var T: float = remap(laser_delay, LASER_DELAY, -LASER_DELAY, 0.0, 1.0)
-	var amt: float = laser_animate_curve.sample(T) - 0.5
-	scale = Vector3(1 - amt, 1 + amt, 1 - amt)
+	var squish: float = laser_animate_curve.sample(T) - 0.5
+	scale = Vector3(1 - squish, 1 + squish, 1 - squish)
+	
+	if spike_time > 0:
+		var T2: float = remap(spike_time, 1.0, 0.0, 0.0, 1.0)
+		var height_T: = spike_curve.sample(T2)
+		var height = remap(height_T, 0.0, 1.0, SPIKES_MIN_HEIGHT, SPIKES_MAX_HEIGHT)
+		spikes.global_position.y = height
 	
 	if not laser_fired and laser_delay <= 0.0:
 		fire_laser()
 	
-	if delay <= 0:
+	if spike_cooldown <= 0:
+		Character.sfx_boss_spikes.play()
+		spike_time = 2.9
+		spike_cooldown = SPIKE_COOLDOWN
+	
+	if laser_cooldown <= 0:
 		Character.sfx_boss_laser.play()
 		laser_fired = false
 		laser_delay = LASER_DELAY
-		delay = randf_range(LASER_MIN_RANDOM_TIME, LASER_MAX_RANDOM_TIME)
+		laser_cooldown = randf_range(LASER_MIN_RANDOM_TIME, LASER_MAX_RANDOM_TIME)
+		
+	match state:
+		BossState.CHASING:
+			var dir: Vector3 = global_position.direction_to(Character.global_position)
+			global_position += dir * CHASE_SPEED * delta
+			global_position.y = max(5.0, global_position.y)
 		
 
 		
@@ -113,6 +147,7 @@ func fire_laser() -> void:
 	laser_parry.look_at(Character.global_position)
 	laser_damage.global_position = global_position
 	laser_damage.look_at(Character.global_position)
+	Camera.trauma = 1.0
 
 func _process(delta: float) -> void:
 	if Menu.enabled or Controls.is_dead: return 

@@ -43,16 +43,8 @@ static var trauma: float = 0.0
 
 var shake_time: float = 0.0
 
-#@onready var camera := $Camera as Camera
-#@onready var initial_rotation := camera.rotation_degrees as Vector3
+const REDUCTION_RATE: float = 4.0
 
-#func _process(delta):
-	#time += delta
-	#trauma = max(trauma - delta * trauma_reduction_rate, 0.0)
-	#
-	#camera.rotation_degrees.x = initial_rotation.x + max_x * get_shake_intensity() * get_noise_from_seed(0)
-	#camera.rotation_degrees.y = initial_rotation.y + max_y * get_shake_intensity() * get_noise_from_seed(1)
-	#camera.rotation_degrees.z = initial_rotation.z + max_z * get_shake_intensity() * get_noise_from_seed(2)
 
 func add_trauma(trauma_amount : float):
 	trauma = clamp(trauma + trauma_amount, 0.0, 1.0)
@@ -79,7 +71,8 @@ func _set_cam_angle():
 	
 func _process(delta: float) -> void:
 	shake_time += delta
-	#trauma = max(trauma - delta * trauma_reduction_rate, 0.0)
+	if not HUD.pause_timer:
+		trauma = max(trauma - delta * REDUCTION_RATE, 0.0)
 	
 	if Controls.is_dead:
 		if not has_saved_last_view_angle_before_death:

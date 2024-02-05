@@ -1,6 +1,6 @@
-[gd_scene load_steps=23 format=3 uid="uid://lpv8itno5sf"]
+[gd_scene load_steps=28 format=3 uid="uid://lpv8itno5sf"]
 
-[ext_resource type="Material" path="res://mat/mat_tile3.tres" id="1_1xluu"]
+[ext_resource type="Material" uid="uid://dhj6accegntx2" path="res://mat/mat_tile3.tres" id="1_1xluu"]
 [ext_resource type="ArrayMesh" uid="uid://c3k46s7otulpr" path="res://models/octogon_floor.obj" id="2_sr8bj"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="2_ywd7e"]
 [ext_resource type="Shader" path="res://shader/damageable.gdshader" id="3_ek3si"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="10_6bl1p"]
 [ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="11_kt8t0"]
 [ext_resource type="Script" path="res://boss_attacks/parriable.gd" id="13_rrm1c"]
+[ext_resource type="Shader" path="res://shader/fake_shadows.gdshader" id="14_sq8kd"]
+[ext_resource type="ArrayMesh" uid="uid://lopgf64u7mjy" path="res://models/spikes.obj" id="15_8441e"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 
@@ -29,6 +31,10 @@ size = Vector2(0.2, 0.2)
 
 [sub_resource type="Curve" id="Curve_1gqsr"]
 _data = [Vector2(0, 0.5), 0.0, -6.49067, 0, 0, Vector2(0.477799, 0.192223), 0.0, 0.0, 0, 0, Vector2(0.508687, 0.757171), 0.0, 0.0, 0, 0, Vector2(1, 0.5), -0.354244, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_qnmkx"]
+_data = [Vector2(0, 0), 0.0, 4.07592, 0, 0, Vector2(0.0875, 1), 0.0, 0.0, 0, 0, Vector2(0.7275, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cflqd"]
@@ -50,6 +56,14 @@ radius = 25.0
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_71xte"]
 height = 100.0
 radius = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rw6sx"]
+render_priority = 0
+shader = ExtResource("14_sq8kd")
+shader_parameter/albedo = Color(0.384314, 0.384314, 0.384314, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yb0v7"]
+size = Vector3(20, 1, 20)
 
 [node name="Node3D" type="Node3D"]
 
@@ -115,6 +129,7 @@ initial_velocity_max = 5.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 script = ExtResource("4_i137r")
 laser_animate_curve = SubResource("Curve_1gqsr")
+spike_curve = SubResource("Curve_qnmkx")
 
 [node name="Visual" type="Node3D" parent="Boss2"]
 
@@ -168,6 +183,18 @@ script = ExtResource("7_gynah")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Boss2/LaserDamage"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -50)
 shape = SubResource("CylinderShape3D_71xte")
+
+[node name="Spikes" type="MeshInstance3D" parent="Boss2"]
+transform = Transform3D(7.5, 0, 0, 0, 7.5, 0, 0, 0, 7.5, 0, -7.47832, 0)
+top_level = true
+material_override = SubResource("ShaderMaterial_rw6sx")
+mesh = ExtResource("15_8441e")
+
+[node name="Area3D" type="Area3D" parent="Boss2/Spikes"]
+script = ExtResource("7_gynah")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boss2/Spikes/Area3D"]
+shape = SubResource("BoxShape3D_yb0v7")
 
 [connection signal="hit" from="Boss2/Hurtbox/Hitbox" to="Boss2" method="_on_hit"]
 [connection signal="parried" from="Boss2/LaserParry" to="Boss2" method="laser_parried"]

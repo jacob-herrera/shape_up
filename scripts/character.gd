@@ -34,6 +34,7 @@ var GRAVITY: float
 @onready var sfx_sniper_error: AudioStreamPlayer = $Sounds/SniperError
 @onready var sfx_hit: AudioStreamPlayer = $Sounds/Hit
 @onready var sfx_boss_laser: AudioStreamPlayer = $Sounds/BossLaser
+@onready var sfx_boss_spikes: AudioStreamPlayer = $Sounds/BossSpikes
 @onready var sfx_click: AudioStreamPlayer = $Sounds/Click
 
 var grounded: bool = false
@@ -52,6 +53,7 @@ func _ready() -> void:
 	Controls.connect("entered_scope", _entered_scope)
 	Controls.connect("exited_scope", _exited_scope)
 	PitchChanger.register_inverse_player(sfx_boss_laser)
+	PitchChanger.register_inverse_player(sfx_boss_spikes)
 	#PitchChanger.register_inverse_player(sfx_sniper_shoot)
 	#PitchChanger.register_inverse_player(sfx_sniper_charge)
 	#PitchChanger.register_inverse_player(sfx_shotgun)

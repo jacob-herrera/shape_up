@@ -31,6 +31,10 @@ extends Control
 @onready var minus_one: PackedScene = preload("res://scenes/minus_one.tscn")
 @onready var plus_one: PackedScene = preload("res://scenes/plus_one.tscn")
 
+@onready var music_boss: AudioStreamMP3 = preload("res://sound/music_boss.mp3")
+@onready var music_hub: AudioStreamMP3 = preload("res://sound/music_hub.mp3")
+@onready var music_tutorial: AudioStreamMP3 = preload("res://sound/music_tutorial.mp3")
+
 enum ParticleType {
 	TIMES_TWO,
 	TIMES_HALF,
@@ -141,7 +145,18 @@ func reset() -> void:
 	music.stop()
 	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
 	or SceneManager.scene == SceneManager.Scene.BOSS_2:
-		music.play(0.0)
+		music.stream = music_boss
+	elif SceneManager.scene == SceneManager.Scene.TUTORIAL_1 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_2\
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_3\
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_4\
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_5\
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
+		music.stream = music_tutorial
+	elif SceneManager.scene == SceneManager.Scene.LOBBY:
+		music.stream = music_hub
+	
+	music.play(0.0)
 		
 	sfx_death.stop()
 	vignette.set_shader_parameter("SCALE", 0.0)
