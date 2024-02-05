@@ -48,8 +48,13 @@ const POS_LERP_SPEED: float = 2.5
 #const ATTACK_RATE: float = 2.5
 #var attack_cooldown: float = 0.0
 
-const MAX_HEALTH: int = 15
-var health: int = MAX_HEALTH
+const HP_EASY: int = 1000
+const HP_MEDIUM: int = 1750
+const HP_HARD: int = 4500
+
+var max_health: float
+
+var health: int
 var spawned_chaser: bool = false
 
 var wall_66: bool = false
@@ -69,8 +74,17 @@ var orbit_height: float = PHASE_ONE_ORIBIT_HEIGHT
 
 
 func _ready() -> void:
-	HUD.boss_health_bar.max_value = MAX_HEALTH
-	HUD.update_boss_health(MAX_HEALTH)
+	match SceneManager.difficulty:
+		SceneManager.Difficulty.EASY:
+			max_health = HP_EASY
+		SceneManager.Difficulty.MEDIUM:
+			max_health = HP_MEDIUM
+		SceneManager.Difficulty.HARD:
+			max_health = HP_HARD
+		
+	health = max_health
+	HUD.boss_health_bar.max_value = max_health
+	HUD.update_boss_health(max_health)
 	spawned_chaser = false
 
 func spawn_chaser() -> void:
@@ -82,10 +96,10 @@ func spawn_chaser() -> void:
 	new.global_position = global_position
 
 func try_spawn_wall() -> void:
-	if not wall_66 and health <= MAX_HEALTH * 0.6666:
+	if not wall_66 and health <= max_health * 0.6666:
 		wall_66 = true
 		spawn_wall(3.0, 1.0)
-	if not wall_33 and health <= MAX_HEALTH * 0.3333:
+	if not wall_33 and health <= max_health * 0.3333:
 		wall_33 = true
 		spawn_wall(3.5, 1.5)
 
@@ -158,24 +172,24 @@ func _process(delta: float) -> void:
 	
 	try_spawn_wall()
 	
-	if health <= MAX_HEALTH * 0.5:
+	if health <= max_health * 0.5:
 		spawn_chaser()
 
 	if missile_timer <= 0:
-		missile_timer = remap(health, MAX_HEALTH, 0, MISSILE_START_RATE, MISSILE_END_RATE)
+		missile_timer = remap(health, max_health, 0, MISSILE_START_RATE, MISSILE_END_RATE)
 		var new: Node3D = missle.instantiate()
 		add_child(new)
 		new.global_position = global_position
 	
 	if explosion_timer <= 0:
-		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
+		explosion_timer = remap(health, max_health, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
 		var new: Node3D = growing_circle.instantiate()
 		add_child(new)
 		var pos: Vector3 = Vector3.ZERO
 		while pos.distance_to(Vector3.ZERO) < 16:
 			pos = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
 		new.global_position = pos
-		new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
+		new.max_life_time = remap(health, max_health, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
 
 	move_boss(delta)
 

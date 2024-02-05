@@ -3,27 +3,34 @@ extends Node
 @onready var boss_1: PackedScene = preload("res://scenes/level_test.tscn")
 @onready var boss_2: PackedScene = preload("res://scenes/boss_2.tscn")
 @onready var lobby: PackedScene = preload("res://scenes/lobby.tscn")
-
 @onready var tutorial_1: PackedScene = preload("res://scenes/tutorial_1.tscn")
 @onready var tutorial_2: PackedScene = preload("res://scenes/tutorial_2.tscn")
 @onready var tutorial_3: PackedScene = preload("res://scenes/tutorial_3.tscn")
 @onready var tutorial_4: PackedScene = preload("res://scenes/tutorial_4.tscn")
 @onready var tutorial_5: PackedScene = preload("res://scenes/tutorial_5.tscn")
 @onready var tutorial_6: PackedScene = preload("res://scenes/tutorial_6.tscn")
+@onready var difficulty_select: PackedScene = preload("res://scenes/difficulty_select.tscn")
 
-
-var scene: Scene = Scene.BOSS_2
+var scene: Scene = Scene.TUTORIAL_1
+var difficulty: Difficulty = Difficulty.EASY
 
 enum Scene {
 	BOSS_1,
 	BOSS_2,
 	LOBBY,
-	TUTORIAL_1,
+	TUTORIAL_1, 
 	TUTORIAL_2,
 	TUTORIAL_3,
 	TUTORIAL_4,
 	TUTORIAL_5,
 	TUTORIAL_6,
+	DIFFICULTY
+}
+
+enum Difficulty {
+	EASY,
+	MEDIUM,
+	HARD
 }
 
 func goto_lobby() -> void:
@@ -69,6 +76,11 @@ func goto_tutorial5() -> void:
 func goto_tutorial6() -> void:
 	get_tree().change_scene_to_packed(tutorial_6)
 	scene = Scene.TUTORIAL_6
+	Controls.hard_reset()
+	
+func goto_difficulty() -> void:
+	get_tree().change_scene_to_packed(difficulty_select)
+	scene = Scene.DIFFICULTY
 	Controls.hard_reset()
 	
 

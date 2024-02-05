@@ -50,6 +50,10 @@ enum BossAttack {
 	LASER
 }
 
+const HP_EASY: int = 1000
+const HP_MEDIUM: int = 1500
+const HP_HARD: int = 2500
+
 var state: BossState
 
 var max_health: float
@@ -81,7 +85,15 @@ func _ready() -> void:
 	laser_fired = true
 	laser_delay = -LASER_DELAY
 	laser_lifetime = 110.0
-	max_health = 1500
+	
+	match SceneManager.difficulty:
+		SceneManager.Difficulty.EASY:
+			max_health = HP_EASY
+		SceneManager.Difficulty.MEDIUM:
+			max_health = HP_MEDIUM
+		SceneManager.Difficulty.HARD:
+			max_health = HP_HARD
+	
 	health = max_health
 	state = BossState.CHASING
 	spikes.global_position.y = SPIKES_MIN_HEIGHT
@@ -108,6 +120,8 @@ func _on_death() -> void:
 	HUD.music.stop()
 	PitchChanger.stop_all_sfx()
 	HUD.sfx_boss_death.play()
+	print("dead")
+	Leaderboard.check_high_score(1, HUD.time)
 
 func _dead_process() -> void:
 	pass

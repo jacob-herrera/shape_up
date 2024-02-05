@@ -101,6 +101,12 @@ func set_visiblity() -> void:
 			dash_bar.visible = true
 			ammo_bar.visible = true
 			ammo.visible = true
+		SceneManager.Scene.DIFFICULTY:
+			bolt_ammo.visible  = true
+			dashes.visible= true
+			dash_bar.visible = true
+			ammo_bar.visible = true
+			ammo.visible = true
 		SceneManager.Scene.TUTORIAL_1:
 			ammo.visible = true
 			ammo_bar.visible = true
@@ -155,7 +161,8 @@ func reset() -> void:
 	or SceneManager.scene == SceneManager.Scene.TUTORIAL_5\
 	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
 		music.stream = music_tutorial
-	elif SceneManager.scene == SceneManager.Scene.LOBBY:
+	elif SceneManager.scene == SceneManager.Scene.LOBBY \
+	or SceneManager.scene == SceneManager.Scene.DIFFICULTY:
 		music.stream = music_hub
 	
 	music.play(0.0)
@@ -295,6 +302,7 @@ func _process(_dt: float) -> void:
 	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
 		or SceneManager.scene == SceneManager.Scene.BOSS_2 \
 		or SceneManager.scene == SceneManager.Scene.LOBBY \
+		or SceneManager.scene == SceneManager.Scene.DIFFICULTY \
 		or SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
 		or SceneManager.scene == SceneManager.Scene.TUTORIAL_4:
 		bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED

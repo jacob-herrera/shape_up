@@ -128,7 +128,7 @@ func hard_reset() -> void:
 func _process(delta) -> void:
 	# TODO
 	#print("Shotgun click window: ", shotgun_click_window)
-	if Input.is_action_just_pressed("restart"):
+	if Input.is_action_just_pressed("restart") and not Menu.enabled:
 		hard_reset()
 		return
 	

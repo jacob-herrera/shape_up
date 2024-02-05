@@ -1,0 +1,192 @@
+[gd_scene load_steps=22 format=3 uid="uid://bgjaabba0ucav"]
+
+[ext_resource type="ArrayMesh" uid="uid://dgatf546pkey6" path="res://models/triangle.obj" id="2_rkit5"]
+[ext_resource type="Material" uid="uid://c6pcwikfdgrs3" path="res://mat/mat_tile2.tres" id="3_nxcsr"]
+[ext_resource type="Environment" uid="uid://baa1nue2up5sb" path="res://env/env_lobby.tres" id="5_76mrx"]
+[ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="6_tgbdk"]
+[ext_resource type="ArrayMesh" uid="uid://cisp4is3xfyi2" path="res://models/shape15.obj" id="7_86bl0"]
+[ext_resource type="Script" path="res://scripts/trigger.gd" id="7_10054"]
+[ext_resource type="Script" path="res://scripts/random_rotate.gd" id="10_s85ww"]
+[ext_resource type="Script" path="res://scripts/hitbox.gd" id="11_8qrj2"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="12_0ox36"]
+[ext_resource type="ArrayMesh" uid="uid://cvotyumqkkm7q" path="res://models/shape16.obj" id="12_jvhx3"]
+[ext_resource type="ArrayMesh" uid="uid://b8oeum5rebojt" path="res://models/shape13.obj" id="12_tcha5"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="13_6wtiw"]
+[ext_resource type="Shader" path="res://shader/damageable.gdshader" id="14_m8i18"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0nvu"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("6_tgbdk")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_e4w3l"]
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6am6w"]
+render_priority = 0
+shader = ExtResource("14_m8i18")
+shader_parameter/albedo = Color(1, 1, 0, 1)
+shader_parameter/amt = 0.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hakqv"]
+height = 6.5
+radius = 4.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_7k38v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_03m3m"]
+render_priority = 0
+shader = ExtResource("14_m8i18")
+shader_parameter/albedo = Color(0, 1, 0, 1)
+shader_parameter/amt = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkyty"]
+render_priority = 0
+shader = ExtResource("14_m8i18")
+shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/amt = 0.0
+
+[node name="Node3D2" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Wall X" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-3.78552e-08, -0.866026, -0.5, 1, -4.37114e-08, 0, -2.18557e-08, -0.5, 0.866026, 25.1019, 10, 6.48719)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -X" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -44.4299, 10, -24.8713)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall Z" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-3.78552e-08, 0.866025, 0.5, -1, -4.37114e-08, 0, 2.18557e-08, -0.5, 0.866025, -4.10307, 10, 42.8689)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Floor" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(-5, 0, -4.37114e-07, 0, 5, 0, 4.37114e-07, 0, -5, 0, 0, 0)
+material_override = ExtResource("3_nxcsr")
+mesh = ExtResource("2_rkit5")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("5_76mrx")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, 0)
+material_override = SubResource("StandardMaterial3D_a0nvu")
+amount = 1024
+lifetime = 7.0
+mesh = SubResource("QuadMesh_e4w3l")
+emission_shape = 3
+emission_box_extents = Vector3(125, 125, 125)
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, -2.45, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+
+[node name="Medium" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.429862, 4.75, -18.9557)
+script = ExtResource("7_10054")
+on_trigger = 11
+max_hp = 128
+
+[node name="Visual" type="Node3D" parent="Medium"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Medium/Visual"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_6am6w")
+mesh = ExtResource("7_86bl0")
+skeleton = NodePath("../..")
+script = ExtResource("10_s85ww")
+
+[node name="Hurtbox" type="Area3D" parent="Medium"]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Medium/Hurtbox"]
+shape = SubResource("CylinderShape3D_hakqv")
+
+[node name="Hitbox" type="Node" parent="Medium/Hurtbox"]
+script = ExtResource("11_8qrj2")
+
+[node name="DropShadow" type="MeshInstance3D" parent="Medium"]
+transform = Transform3D(25, 0, 0, 0, -1.09278e-06, 25, 0, -25, -1.09278e-06, 0, 0, 0)
+top_level = true
+material_override = ExtResource("12_0ox36")
+mesh = SubResource("QuadMesh_7k38v")
+script = ExtResource("13_6wtiw")
+
+[node name="Easy" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -28.1174, 4.75, -18.9557)
+script = ExtResource("7_10054")
+on_trigger = 10
+
+[node name="Visual" type="Node3D" parent="Easy"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Easy/Visual"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_03m3m")
+mesh = ExtResource("12_jvhx3")
+skeleton = NodePath("../..")
+script = ExtResource("10_s85ww")
+
+[node name="Hurtbox" type="Area3D" parent="Easy"]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Easy/Hurtbox"]
+shape = SubResource("CylinderShape3D_hakqv")
+
+[node name="Hitbox" type="Node" parent="Easy/Hurtbox"]
+script = ExtResource("11_8qrj2")
+
+[node name="DropShadow" type="MeshInstance3D" parent="Easy"]
+transform = Transform3D(25, 0, 0, 0, -1.09278e-06, 25, 0, -25, -1.09278e-06, 0, 0, 0)
+top_level = true
+material_override = ExtResource("12_0ox36")
+mesh = SubResource("QuadMesh_7k38v")
+script = ExtResource("13_6wtiw")
+
+[node name="Hard" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 27.6326, 4.75, -18.9557)
+script = ExtResource("7_10054")
+on_trigger = 12
+max_hp = 256
+
+[node name="Visual" type="Node3D" parent="Hard"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Hard/Visual"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_vkyty")
+mesh = ExtResource("12_tcha5")
+skeleton = NodePath("../..")
+script = ExtResource("10_s85ww")
+
+[node name="Hurtbox" type="Area3D" parent="Hard"]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Hard/Hurtbox"]
+shape = SubResource("CylinderShape3D_hakqv")
+
+[node name="Hitbox" type="Node" parent="Hard/Hurtbox"]
+script = ExtResource("11_8qrj2")
+
+[node name="DropShadow" type="MeshInstance3D" parent="Hard"]
+transform = Transform3D(25, 0, 0, 0, -1.09278e-06, 25, 0, -25, -1.09278e-06, 0, 0, 0)
+top_level = true
+material_override = ExtResource("12_0ox36")
+mesh = SubResource("QuadMesh_7k38v")
+script = ExtResource("13_6wtiw")
+
+[connection signal="hit" from="Medium/Hurtbox/Hitbox" to="Medium" method="_on_hit"]
+[connection signal="hit" from="Easy/Hurtbox/Hitbox" to="Easy" method="_on_hit"]
+[connection signal="hit" from="Hard/Hurtbox/Hitbox" to="Hard" method="_on_hit"]

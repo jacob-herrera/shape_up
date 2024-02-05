@@ -10,6 +10,10 @@ enum OnTrigger {
 	GOTO_TUTORIAL_5,
 	GOTO_TUTORIAL_6,
 	GOTO_BOSS_2,
+	GOTO_DIFFICULTY,
+	SELECT_EASY,
+	SELECT_MEDIUM,
+	SELECT_HARD,
 }
 
 @onready var mat: ShaderMaterial = $Visual/Mesh.material_override
@@ -52,6 +56,17 @@ func _process(delta: float) -> void:
 				SceneManager.goto_tutorial6()
 			OnTrigger.GOTO_BOSS_2:
 				SceneManager.goto_boss_2()
+			OnTrigger.GOTO_DIFFICULTY:
+				SceneManager.goto_difficulty()
+			OnTrigger.SELECT_EASY:
+				SceneManager.difficulty = SceneManager.Difficulty.EASY
+				SceneManager.goto_lobby()
+			OnTrigger.SELECT_MEDIUM:
+				SceneManager.difficulty = SceneManager.Difficulty.MEDIUM
+				SceneManager.goto_lobby()
+			OnTrigger.SELECT_HARD:
+				SceneManager.difficulty = SceneManager.Difficulty.HARD
+				SceneManager.goto_lobby()
 	
 func _on_hit(dmg: int) -> void:
 	hp -= dmg

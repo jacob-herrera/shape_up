@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://dpct7jtn2khnu" path="res://fonts/Arial_Black.ttf" id="2_dy7dq"]
 [ext_resource type="Environment" uid="uid://baa1nue2up5sb" path="res://env/env_lobby.tres" id="2_rx71y"]
 [ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="3_jwlrp"]
+[ext_resource type="ArrayMesh" uid="uid://85srlt6iselw" path="res://models/pentagon.obj" id="4_5ebk4"]
 [ext_resource type="Script" path="res://scripts/trigger.gd" id="4_exalk"]
 [ext_resource type="Material" uid="uid://6tp2rue1deuo" path="res://mat/mat_damageable.tres" id="4_mpxy3"]
 [ext_resource type="ArrayMesh" uid="uid://x56d78ji4xjs" path="res://models/dodecahedron.obj" id="5_slgrn"]
@@ -17,8 +18,6 @@
 [ext_resource type="ArrayMesh" uid="uid://dbv28rdv24mc7" path="res://models/shape5.obj" id="12_07p2s"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0nvu"]
 transparency = 1
@@ -65,7 +64,7 @@ shader_parameter/amt = 0.0
 script = ExtResource("1_uts7k")
 
 [node name="b1_1st" type="Label3D" parent="Labels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.725, 12.5, -55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.391267, 12.5, -42.6723)
 billboard = 2
 texture_filter = 5
 text = "68.23"
@@ -75,7 +74,7 @@ outline_size = 62
 width = 498.905
 
 [node name="b1_2nd" type="Label3D" parent="Labels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.725, 10.396, -55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.391267, 10.396, -42.6723)
 billboard = 2
 texture_filter = 5
 modulate = Color(0.764706, 0.764706, 0.764706, 1)
@@ -87,7 +86,41 @@ outline_size = 62
 width = 498.905
 
 [node name="b1_3rd" type="Label3D" parent="Labels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.725, 8.89603, -55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.391267, 8.89603, -42.6723)
+billboard = 2
+texture_filter = 5
+modulate = Color(0.764706, 0.764706, 0.764706, 1)
+outline_modulate = Color(0.321569, 0.321569, 0.321569, 1)
+text = "69.23"
+font = ExtResource("2_dy7dq")
+font_size = 218
+outline_size = 62
+width = 498.905
+
+[node name="b2_1st" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.3768, 12.5, -13.8917)
+billboard = 2
+texture_filter = 5
+text = "68.23"
+font = ExtResource("2_dy7dq")
+font_size = 448
+outline_size = 62
+width = 498.905
+
+[node name="b2_2nd" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.3768, 10.396, -13.8917)
+billboard = 2
+texture_filter = 5
+modulate = Color(0.764706, 0.764706, 0.764706, 1)
+outline_modulate = Color(0.321569, 0.321569, 0.321569, 1)
+text = "69.23"
+font = ExtResource("2_dy7dq")
+font_size = 218
+outline_size = 62
+width = 498.905
+
+[node name="b2_3rd" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.3768, 8.89603, -13.8917)
 billboard = 2
 texture_filter = 5
 modulate = Color(0.764706, 0.764706, 0.764706, 1)
@@ -101,28 +134,32 @@ width = 498.905
 [node name="Floor" type="StaticBody3D" parent="."]
 
 [node name="Wall X" type="CollisionShape3D" parent="Floor"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 62.5, 10, 0)
+transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, 38.0111, 10, 13.9064)
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="Wall -X" type="CollisionShape3D" parent="Floor"]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -62.5, 10, 0)
+transform = Transform3D(-4.1572e-08, 0.951057, 0.309017, -1, -4.37114e-08, 0, 1.35076e-08, -0.309017, 0.951057, -44.4299, 10, -5.87132)
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="Wall Z" type="CollisionShape3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 62.5)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 40.5)
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="Wall -Z" type="CollisionShape3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 10, -62.5)
+transform = Transform3D(0.809017, 0.587785, -2.56929e-08, 0, -4.37114e-08, -1, -0.587785, 0.809017, -3.53633e-08, -10.1215, 10, -42.6811)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -Z2" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(0.809017, -0.587785, 2.56929e-08, 0, -4.37114e-08, -1, 0.587785, 0.809017, -3.53633e-08, 21.0555, 10, -34.5534)
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="Floor" type="CollisionShape3D" parent="Floor"]
 shape = SubResource("WorldBoundaryShape3D_7ym17")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-transform = Transform3D(125, 0, 0, 0, -5.46392e-06, 1, 0, -125, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 material_override = ExtResource("1_5we23")
-mesh = SubResource("QuadMesh_yoqv7")
+mesh = ExtResource("4_5ebk4")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_rx71y")
@@ -141,7 +178,7 @@ initial_velocity_min = 2.0
 initial_velocity_max = 5.0
 
 [node name="EntranceBoss1" type="Node3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 4.73844, 5, -55.4699)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.300008, 5, -42.4952)
 script = ExtResource("4_exalk")
 
 [node name="Visual" type="Node3D" parent="EntranceBoss1"]
@@ -172,7 +209,7 @@ skeleton = NodePath("../..")
 script = ExtResource("10_46cl5")
 
 [node name="EntranceBoss2" type="Node3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 21.2384, 5, -55.4699)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 42.3818, 5, -13.8107)
 script = ExtResource("4_exalk")
 on_trigger = 8
 
@@ -184,6 +221,8 @@ material_override = SubResource("ShaderMaterial_5e50l")
 mesh = ExtResource("12_5iutl")
 skeleton = NodePath("../..")
 script = ExtResource("6_cackf")
+axis_x = false
+axis_z = false
 
 [node name="Hurtbox" type="Area3D" parent="EntranceBoss2"]
 collision_layer = 8
@@ -204,7 +243,7 @@ skeleton = NodePath("../..")
 script = ExtResource("10_46cl5")
 
 [node name="EntranceTutorial" type="Node3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -14.25, 4.75, -56.5)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -25.0018, 4.75, 36.6101)
 script = ExtResource("4_exalk")
 on_trigger = 2
 
@@ -235,9 +274,9 @@ mesh = SubResource("QuadMesh_0f6wm")
 script = ExtResource("10_46cl5")
 
 [node name="EntranceDifficulty" type="Node3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -4.36628, 4.75, -54.8959)
-visible = false
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -41.6859, 4.75, -12.8412)
 script = ExtResource("4_exalk")
+on_trigger = 9
 
 [node name="Visual" type="Node3D" parent="EntranceDifficulty"]
 
