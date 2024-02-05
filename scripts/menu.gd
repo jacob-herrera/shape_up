@@ -113,3 +113,6 @@ func _on_window_options_item_selected(index):
 		2:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+
+func _on_crt_toggle_toggled(toggled_on):
+	HUD.screenshader.visible = toggled_on

@@ -190,6 +190,15 @@ popup/item_1/id = 1
 popup/item_2/text = "WINDOWED"
 popup/item_2/id = 2
 
+[node name="CRT Toggle" type="CheckButton" parent="Margin/Graphics"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 24
+button_pressed = true
+text = "CRT Effect"
+
 [node name="Graphics Back" type="Button" parent="Margin/Graphics"]
 layout_mode = 2
 theme = ExtResource("2_2vfbs")
@@ -229,6 +238,7 @@ text = "BACK"
 [connection signal="pressed" from="Margin/Settings/Back Button" to="." method="_settings_back_pressed"]
 [connection signal="pressed" from="Margin/Sounds/Volume Back" to="." method="_submenu_back_pressed"]
 [connection signal="item_selected" from="Margin/Graphics/Window Options" to="." method="_on_window_options_item_selected"]
+[connection signal="toggled" from="Margin/Graphics/CRT Toggle" to="." method="_on_crt_toggle_toggled"]
 [connection signal="pressed" from="Margin/Graphics/Graphics Back" to="." method="_submenu_back_pressed"]
 [connection signal="pressed" from="Margin/Controls/ResetButton" to="Margin/Controls/Rebinds" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="Margin/Controls/Controls Back" to="." method="_submenu_back_pressed"]

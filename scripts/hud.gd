@@ -24,6 +24,8 @@ extends Control
 
 @onready var sfx_boss_death: AudioStreamPlayer = $BossDeath
 
+@onready var screenshader: CanvasLayer = $ScreenShader
+
 @onready var white: ColorRect = $White
 @onready var credits: Label = $Credits
 
