@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvl523ixfs2mb"]
+[gd_scene load_steps=10 format=3 uid="uid://bvl523ixfs2mb"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ecnen"]
 [ext_resource type="Theme" uid="uid://ch3qd5h20v3n4" path="res://fonts/theme1.tres" id="2_2vfbs"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://bforo8g1mqv01" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
 [ext_resource type="Script" path="res://scenes/input_settings.gd" id="5_5o2bg"]
 [ext_resource type="PackedScene" uid="uid://dvyihtdi7p0of" path="res://scenes/input_button.tscn" id="6_q47dw"]
+[ext_resource type="AudioStream" uid="uid://cyeuhs0aa1w52" path="res://sound/Menu1.mp3" id="7_wjhtk"]
+[ext_resource type="AudioStream" uid="uid://b7x1i64x67s5q" path="res://sound/Menu2.mp3" id="8_2tuoa"]
+[ext_resource type="AudioStream" uid="uid://d2sjrvrlkkhks" path="res://sound/Menu3.mp3" id="9_hvm82"]
 
 [node name="Menu" type="Control"]
 z_index = 3
@@ -227,6 +230,20 @@ layout_mode = 2
 theme = ExtResource("2_2vfbs")
 theme_override_font_sizes/font_size = 60
 text = "BACK"
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="MenuOpen" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_wjhtk")
+bus = &"Effects"
+
+[node name="MenuSelect" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_2tuoa")
+bus = &"Effects"
+
+[node name="MenuBack" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_hvm82")
+bus = &"Effects"
 
 [connection signal="pressed" from="Margin/Main/Play" to="." method="_play_pressed"]
 [connection signal="pressed" from="Margin/Main/Settings" to="." method="_settings_pressed"]

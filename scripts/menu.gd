@@ -9,6 +9,9 @@ var in_submenu: bool = false
 @onready var sounds: VBoxContainer = $Margin/Sounds
 @onready var graphics: VBoxContainer = $Margin/Graphics
 @onready var controls: VBoxContainer = $Margin/Controls
+@onready var menu_open: AudioStreamPlayer = $Sounds/MenuOpen
+@onready var menu_select: AudioStreamPlayer = $Sounds/MenuSelect
+@onready var menu_back: AudioStreamPlayer = $Sounds/MenuBack
 
 func _ready() -> void:
 	main.visible = true
@@ -26,8 +29,10 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
 		if in_settings:
 			_toggle_settings()
+			menu_back.play()
 		elif in_submenu:
 			_toggle_submenu(settings)
+			menu_back.play()
 		else:
 			_toggle_menu()
 
@@ -48,6 +53,7 @@ func _toggle_menu() -> void:
 		Engine.time_scale = 0
 		#mouse_filter =
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		menu_open.play()
 	enabled = not enabled
 
 func _toggle_settings() -> void:
@@ -63,6 +69,7 @@ func _toggle_settings() -> void:
 		sounds.hide()
 		graphics.hide()
 		controls.hide()
+		menu_select.play()
 	in_settings = not in_settings
 
 func _toggle_submenu(which_menu : VBoxContainer) -> void:
@@ -91,15 +98,19 @@ func _quit_pressed() -> void:
 	get_tree().quit(0)
 
 func _on_sounds_pressed():
+	menu_select.play()
 	_toggle_submenu(sounds)
 
 func _on_graphics_pressed():
+	menu_select.play()
 	_toggle_submenu(graphics)
 
 func _on_controls_pressed():
+	menu_select.play()
 	_toggle_submenu(controls)
 
 func _submenu_back_pressed():
+	menu_back.play()
 	_toggle_submenu(settings)
 
 func _on_window_options_item_selected(index):
