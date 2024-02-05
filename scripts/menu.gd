@@ -3,6 +3,7 @@ extends Control
 var enabled: bool = false
 var in_settings: bool = false
 var in_submenu: bool = false
+var sensitivity: float = 2.0
 
 @onready var main: VBoxContainer = $Margin/Main
 @onready var settings: VBoxContainer = $Margin/Settings
@@ -127,3 +128,7 @@ func _on_window_options_item_selected(index):
 
 func _on_crt_toggle_toggled(toggled_on):
 	HUD.screenshader.visible = toggled_on
+
+
+func _on_sensitivity_slider_value_changed(value):
+	sensitivity = value

@@ -225,6 +225,21 @@ theme = ExtResource("2_2vfbs")
 theme_override_font_sizes/font_size = 48
 text = "DEFAULT KEYBINDS"
 
+[node name="SensitivityLabel" type="Label" parent="Margin/Controls"]
+layout_mode = 2
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 50
+text = "MOUSE SENSITIVITY"
+horizontal_alignment = 1
+
+[node name="SensitivitySlider" type="HSlider" parent="Margin/Controls"]
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 4.0
+step = 0.01
+value = 2.0
+
 [node name="Controls Back" type="Button" parent="Margin/Controls"]
 layout_mode = 2
 theme = ExtResource("2_2vfbs")
@@ -258,4 +273,5 @@ bus = &"Effects"
 [connection signal="toggled" from="Margin/Graphics/CRT Toggle" to="." method="_on_crt_toggle_toggled"]
 [connection signal="pressed" from="Margin/Graphics/Graphics Back" to="." method="_submenu_back_pressed"]
 [connection signal="pressed" from="Margin/Controls/ResetButton" to="Margin/Controls/Rebinds" method="_on_reset_button_pressed"]
+[connection signal="value_changed" from="Margin/Controls/SensitivitySlider" to="." method="_on_sensitivity_slider_value_changed"]
 [connection signal="pressed" from="Margin/Controls/Controls Back" to="." method="_submenu_back_pressed"]

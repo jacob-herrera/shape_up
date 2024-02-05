@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://ch3qd5h20v3n4" path="res://fonts/theme1.tres" id="1_lahhg"]
 
 [node name="Input Button" type="Button"]
-custom_minimum_size = Vector2(0, 59)
+custom_minimum_size = Vector2(0, 50)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 8.0

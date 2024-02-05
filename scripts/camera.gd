@@ -60,7 +60,7 @@ func get_noise_from_seed(_seed : int) -> float:
 func _ready():
 	var node: ColorRect = ScreenShader.get_child(0)
 	mat = node.material
-	mouse_sensitivity = mouse_sensitivity / 1000
+	mouse_sensitivity = Menu.sensitivity / 1000
 	pitch_limit = deg_to_rad(DEG_PITCH_LIMIT)
 	
 func _set_cam_angle():
@@ -70,6 +70,7 @@ func _set_cam_angle():
 	#rotation.z = max_z * get_shake_intensity() * get_noise_from_seed(2)
 	
 func _process(delta: float) -> void:
+	mouse_sensitivity = Menu.sensitivity / 1000
 	shake_time += delta
 	if not HUD.pause_timer:
 		trauma = max(trauma - delta * REDUCTION_RATE, 0.0)
