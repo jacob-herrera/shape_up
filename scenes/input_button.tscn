@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvyihtdi7p0of"]
+
+[ext_resource type="Theme" uid="uid://ch3qd5h20v3n4" path="res://fonts/theme1.tres" id="1_lahhg"]
+
+[node name="Input Button" type="Button"]
+custom_minimum_size = Vector2(0, 60)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+focus_mode = 0
+theme = ExtResource("1_lahhg")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelAction" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+mouse_filter = 1
+theme = ExtResource("1_lahhg")
+theme_override_font_sizes/font_size = 64
+text = "ACTION NAME"
+vertical_alignment = 1
+
+[node name="LabelInput" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+mouse_filter = 1
+theme = ExtResource("1_lahhg")
+theme_override_font_sizes/font_size = 64
+text = "INPUT KEY"
+horizontal_alignment = 2
+vertical_alignment = 1

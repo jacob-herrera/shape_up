@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvl523ixfs2mb"]
+[gd_scene load_steps=7 format=3 uid="uid://bvl523ixfs2mb"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ecnen"]
 [ext_resource type="Theme" uid="uid://ch3qd5h20v3n4" path="res://fonts/theme1.tres" id="2_2vfbs"]
 [ext_resource type="StyleBox" uid="uid://64lwa73a6f4o" path="res://fonts/stylebox_black.tres" id="3_2og6p"]
-[ext_resource type="PackedScene" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
+[ext_resource type="PackedScene" uid="uid://bforo8g1mqv01" path="res://scenes/volume_slider.tscn" id="4_fimqj"]
+[ext_resource type="Script" path="res://scenes/input_settings.gd" id="5_5o2bg"]
+[ext_resource type="PackedScene" uid="uid://dvyihtdi7p0of" path="res://scenes/input_button.tscn" id="6_q47dw"]
 
 [node name="Menu" type="Control"]
 z_index = 3
@@ -170,10 +172,7 @@ bus_name = "Effects"
 visible = false
 layout_mode = 2
 
-[node name="Misc Container" type="HBoxContainer" parent="Margin/Graphics"]
-layout_mode = 2
-
-[node name="Fullscreen Toggle" type="CheckButton" parent="Margin/Graphics/Misc Container"]
+[node name="Fullscreen Toggle" type="CheckButton" parent="Margin/Graphics"]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 64
@@ -183,6 +182,20 @@ text = "Fullscreen"
 visible = false
 layout_mode = 2
 
+[node name="Rebinds" type="VBoxContainer" parent="Margin/Controls"]
+layout_mode = 2
+script = ExtResource("5_5o2bg")
+
+[node name="Input Button" parent="Margin/Controls/Rebinds" instance=ExtResource("6_q47dw")]
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="Margin/Controls"]
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 48
+text = "DEFAULT KEYBINDS"
+
 [connection signal="pressed" from="Margin/Main/Play" to="." method="_play_pressed"]
 [connection signal="pressed" from="Margin/Main/Settings" to="." method="_settings_pressed"]
 [connection signal="pressed" from="Margin/Main/Lobby" to="." method="_lobby_pressed"]
@@ -191,4 +204,5 @@ layout_mode = 2
 [connection signal="pressed" from="Margin/Settings/Graphics" to="." method="_on_graphics_pressed"]
 [connection signal="pressed" from="Margin/Settings/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="Margin/Settings/Back Button" to="." method="_settings_back_pressed"]
-[connection signal="toggled" from="Margin/Graphics/Misc Container/Fullscreen Toggle" to="." method="_fullscreen_toggle"]
+[connection signal="toggled" from="Margin/Graphics/Fullscreen Toggle" to="." method="_fullscreen_toggle"]
+[connection signal="pressed" from="Margin/Controls/ResetButton" to="Margin/Controls/Rebinds" method="_on_reset_button_pressed"]
