@@ -80,10 +80,45 @@ func set_visiblity() -> void:
 	minute_hand.visible = false
 	boss_health_bar.visible = false
 	$Shadow.visible = false
+	bolt_ammo.visible = false
+	dashes.visible = false
+	dash_bar.visible = false
+	ammo_bar.visible = false
+	ammo.visible = false
 	match SceneManager.scene:
 		SceneManager.Scene.BOSS_1:
 			timer.visible = true
 			boss_health_bar.visible = true
+			second_hand.visible = true
+			hour_hand.visible = true
+			minute_hand.visible = true
+			$Shadow.visible = true
+			bolt_ammo.visible = true
+			dashes.visible= true
+			dash_bar.visible = true
+			ammo_bar.visible = true
+			ammo.visible = true
+		SceneManager.Scene.LOBBY:
+			bolt_ammo.visible  = true
+			dashes.visible= true
+			dash_bar.visible = true
+			ammo_bar.visible = true
+			ammo.visible = true
+		SceneManager.Scene.TUTORIAL_1:
+			ammo.visible = true
+			ammo_bar.visible = true
+		SceneManager.Scene.TUTORIAL_2:
+			ammo.visible = true
+			ammo_bar.visible = true
+		SceneManager.Scene.TUTORIAL_3:
+			bolt_ammo.visible  = true
+		SceneManager.Scene.TUTORIAL_4:
+			bolt_ammo.visible  = true
+		SceneManager.Scene.TUTORIAL_5:
+			dashes.visible= true
+			dash_bar.visible = true
+		SceneManager.Scene.TUTORIAL_6:
+			timer.visible = true
 			second_hand.visible = true
 			hour_hand.visible = true
 			minute_hand.visible = true
@@ -134,22 +169,23 @@ func _on_death() -> void:
 	twinkle.frame = 60
 
 func spawn_one_particle(type: ParticleType) -> void:
-	if SceneManager.scene != SceneManager.Scene.BOSS_1: return
-	var which: PackedScene
-	match type:
-		ParticleType.TIMES_TWO:
-			which = minus_one
-		ParticleType.TIMES_HALF:
-			which = plus_one
-		ParticleType.MINUS_THREE:
-			which = minus_three
-	var v: Control = which.instantiate() as Control
-	add_child(v)
-	v.position = timer.position + timer.pivot_offset
-	var part: MinusOneParticle = MinusOneParticle.new()
-	part.visual = v
-	part.velocity = Vector2((randf() * 2 - 1) * 200, -500.0)
-	minus_one_particles.push_back(part)
+	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
+		var which: PackedScene
+		match type:
+			ParticleType.TIMES_TWO:
+				which = minus_one
+			ParticleType.TIMES_HALF:
+				which = plus_one
+			ParticleType.MINUS_THREE:
+				which = minus_three
+		var v: Control = which.instantiate() as Control
+		add_child(v)
+		v.position = timer.position + timer.pivot_offset
+		var part: MinusOneParticle = MinusOneParticle.new()
+		part.visual = v
+		part.velocity = Vector2((randf() * 2 - 1) * 200, -500.0)
+		minus_one_particles.push_back(part)
 	
 func animate_particles(delta: float) -> void:
 	delta /= 1000.00
@@ -203,10 +239,14 @@ func _process(_dt: float) -> void:
 		var credits_alpha: float = remap(fade_to_white_T, 1.0, 1.25, 0.0, 1.0)
 		credits_alpha = clampf(credits_alpha, 0.0, 1.0)
 		credits.modulate.a = credits_alpha
+		
+		if fade_to_white_T >= 2.0:
+			SceneManager.goto_lobby()
 	
 	if time < 0:
 		time = 0
-		if SceneManager.scene == SceneManager.Scene.BOSS_1:
+		if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+		or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
 			Controls.invoke_player_death()
 	
 	if time <= spawn_one_time and time > 0:
@@ -229,7 +269,14 @@ func _process(_dt: float) -> void:
 	boss_health_label.position = boss_hb_init_pos + hb_shake_vec
 	
 	bolt_ammo.value = BulletServer.bolt_damage
-	bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED
+	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+		or SceneManager.scene == SceneManager.Scene.LOBBY \
+		or SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
+		or SceneManager.scene == SceneManager.Scene.TUTORIAL_4:
+		bolt_ammo.visible = BulletServer.bolt_state == BulletServer.BoltState.COLLECTED
+	
+	
+	
 	bolt_dmg.text = str(BulletServer.bolt_damage as int)
 	
 	flash_T -= ms_diff / 500.0

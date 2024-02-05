@@ -1,0 +1,288 @@
+[gd_scene load_steps=29 format=3 uid="uid://w56ujsjnwd57"]
+
+[ext_resource type="Material" uid="uid://c6pcwikfdgrs3" path="res://mat/mat_tile2.tres" id="1_lbruk"]
+[ext_resource type="Environment" uid="uid://baa1nue2up5sb" path="res://env/env_lobby.tres" id="2_3dqka"]
+[ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="3_16tdh"]
+[ext_resource type="Script" path="res://scripts/trigger.gd" id="4_45baq"]
+[ext_resource type="FontFile" uid="uid://b2ruhl7hdm506" path="res://fonts/Arial.ttf" id="4_xh7jk"]
+[ext_resource type="FontFile" uid="uid://6bqvubkwl3ya" path="res://fonts/Times_New_Roman.ttf" id="5_3iwgo"]
+[ext_resource type="Script" path="res://scripts/random_rotate.gd" id="7_cbl8d"]
+[ext_resource type="Script" path="res://scripts/hitbox.gd" id="8_u4885"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="9_675ki"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="10_m65rn"]
+[ext_resource type="Shader" path="res://shader/damageable.gdshader" id="11_vgpn5"]
+[ext_resource type="FontFile" uid="uid://dbebi56j4s04w" path="res://fonts/Oldengl.ttf" id="12_pwxnt"]
+[ext_resource type="Script" path="res://scripts/hp_display.gd" id="13_01ibx"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_yoqv7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0nvu"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("3_16tdh")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_e4w3l"]
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u18p8"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8aae"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 20
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kx7t7"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbqmp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u351i"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2mebj"]
+bg_color = Color(1, 0, 1, 1)
+
+[sub_resource type="Theme" id="Theme_dee7d"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("5_3iwgo")
+Button/styles/disabled = SubResource("StyleBoxFlat_u18p8")
+Button/styles/focus = SubResource("StyleBoxFlat_k8aae")
+Button/styles/hover = SubResource("StyleBoxFlat_kx7t7")
+Button/styles/normal = SubResource("StyleBoxFlat_lbqmp")
+Button/styles/pressed = SubResource("StyleBoxFlat_u351i")
+Label/constants/line_spacing = -17
+Panel/styles/panel = SubResource("StyleBoxFlat_2mebj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cry0o"]
+render_priority = 0
+shader = ExtResource("11_vgpn5")
+shader_parameter/albedo = Color(0, 0, 1, 1)
+shader_parameter/amt = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_2853k"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8xytn"]
+height = 6.5
+radius = 4.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_ux3y2"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Wall X" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 37.5, 10, 0)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -X" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -37.5, 10, 0)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall Z" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 40)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -Z" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 10, -40)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Floor" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(75, 0, 0, 0, -3.49691e-06, 1, 0, -80, -4.37114e-08, 0, 0, 0)
+material_override = ExtResource("1_lbruk")
+mesh = SubResource("QuadMesh_yoqv7")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_3dqka")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, 0)
+material_override = SubResource("StandardMaterial3D_a0nvu")
+amount = 1024
+lifetime = 7.0
+mesh = SubResource("QuadMesh_e4w3l")
+emission_shape = 3
+emission_box_extents = Vector3(125, 125, 125)
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, -2.45, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Notes" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -356.0
+offset_right = 400.0
+grow_vertical = 0
+scale = Vector2(3, 1.5)
+pivot_offset = Vector2(0, 356)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_fonts/font = ExtResource("4_xh7jk")
+theme_override_font_sizes/font_size = 32
+text = "WASD - Move
+SPACE - Jump
+
+HOLD LMB - Automatic
+TAP LMB - Burst "
+vertical_alignment = 2
+
+[node name="instructions" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -202.0
+offset_right = 202.0
+offset_bottom = 111.0
+grow_horizontal = 2
+scale = Vector2(1.5, 3)
+pivot_offset = Vector2(202, 0)
+theme = SubResource("Theme_dee7d")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("5_3iwgo")
+theme_override_font_sizes/font_size = 48
+text = "SHOOT THE CUBE.
+PICK UP AMMO."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EntranceTutorial2" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 4.75, -33.25)
+script = ExtResource("4_45baq")
+on_trigger = 3
+max_hp = 448
+
+[node name="Visual" type="Node3D" parent="EntranceTutorial2"]
+
+[node name="Mesh" type="MeshInstance3D" parent="EntranceTutorial2/Visual"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_cry0o")
+mesh = SubResource("BoxMesh_2853k")
+skeleton = NodePath("../..")
+script = ExtResource("7_cbl8d")
+
+[node name="Hurtbox" type="Area3D" parent="EntranceTutorial2"]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="EntranceTutorial2/Hurtbox"]
+shape = SubResource("CylinderShape3D_8xytn")
+
+[node name="Hitbox" type="Node" parent="EntranceTutorial2/Hurtbox"]
+script = ExtResource("8_u4885")
+
+[node name="DropShadow" type="MeshInstance3D" parent="EntranceTutorial2"]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, 10, 0, -10, -4.37114e-07, 0, 0, 0)
+top_level = true
+material_override = ExtResource("9_675ki")
+mesh = SubResource("QuadMesh_ux3y2")
+script = ExtResource("10_m65rn")
+
+[node name="Label3D" type="Label3D" parent="EntranceTutorial2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.1344, 0)
+billboard = 2
+texture_filter = 5
+modulate = Color(0, 0, 1, 1)
+text = "256"
+font = ExtResource("12_pwxnt")
+font_size = 2048
+outline_size = 127
+width = 1000.0
+script = ExtResource("13_01ibx")
+
+[connection signal="hit" from="EntranceTutorial2/Hurtbox/Hitbox" to="EntranceTutorial2" method="_on_hit"]

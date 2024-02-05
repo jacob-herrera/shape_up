@@ -64,7 +64,12 @@ func _handle_clock(ms_diff: int) -> void:
 		clock_speed = 0.5
 		return
 	
-	#if eng
+	if SceneManager.scene == SceneManager.Scene.TUTORIAL_1 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_2 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_4 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_5:
+		return
 	
 	var slow: bool = Input.is_action_pressed("slow")
 	var fast: bool = Input.is_action_pressed("fast")
@@ -148,6 +153,8 @@ func _process(delta) -> void:
 	shotgun_cooldown -= delta
 	sniper_debounce -= ms_diff
 	
+	wish_jump = Input.is_action_pressed("moveup")
+	
 	if sniper_scoped:
 		sniper_charge += delta * 1.75
 		sniper_charge = clampf(sniper_charge, 0.0, 1.0)
@@ -159,6 +166,10 @@ func _process(delta) -> void:
 			shotgun_window = shotgun_click_window
 	
 	if Input.is_action_just_pressed("attacksecondary"):
+		if SceneManager.scene == SceneManager.Scene.TUTORIAL_1 \
+		or SceneManager.scene == SceneManager.Scene.TUTORIAL_2 \
+		or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
+			return
 		if not sniper_scoped:
 			if BulletServer.bolt_state == BulletServer.BoltState.COLLECTED:
 				sniper_scoped = true
@@ -172,9 +183,13 @@ func _process(delta) -> void:
 			
 	
 
-	wish_jump = Input.is_action_pressed("moveup")
-
+	
 func get_auto_attack() -> bool:
+	if SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_4 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
+		return false
+	
 	if sniper_scoped or \
 	sniper_debounce > 0 or \
 	shotgun_window >= 0 or \
@@ -189,6 +204,11 @@ func get_auto_attack() -> bool:
 	return false
 	
 func get_shotgun_attack() -> bool:
+	if SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_4\
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
+		return false	
+
 	if sniper_scoped or shotgun_cooldown > 0:
 		return false
 	var is_released = Input.is_action_just_released("attackprimary")
@@ -215,11 +235,23 @@ func get_move_input() -> Vector2:
 	return Input.get_vector("moveleft", "moveright", "movebackward", "moveforward")
  
 func get_try_parry() -> bool:
+	if SceneManager.scene == SceneManager.Scene.TUTORIAL_1 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_2 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_4 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_5:
+		return false
 	if Input.is_action_just_pressed("parry"):
 		return true
 	return false
 
 func try_dash() -> int:
+	if SceneManager.scene == SceneManager.Scene.TUTORIAL_1 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_2 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_4 \
+	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
+		return 0
 	if Input.is_action_just_pressed("dash"):
 		if dash_meter >= 1.0:
 			dash_meter -= 1.0

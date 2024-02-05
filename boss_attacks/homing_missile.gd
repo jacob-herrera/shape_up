@@ -19,10 +19,10 @@ func _process(delta: float) -> void:
 	#var angle_to_player: float = global_position.angle_to(target)
 	#rotate(dir, angle_to_player)
 	if time < life_time:
-		var original_basis: Basis = basis
+		var original_basis: Basis = basis.orthonormalized()
 		look_at(target)
-		var goal_q = Quaternion(basis)
-		var current_q = Quaternion(original_basis)
+		var goal_q := Quaternion(basis.orthonormalized())
+		var current_q := Quaternion(original_basis.orthonormalized())
 		
 		var t: float = pow(0.5, delta * homing_power)
 		#clock_speed = lerpf(target_clock_speed, clock_speed, t)

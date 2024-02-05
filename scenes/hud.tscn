@@ -392,6 +392,7 @@ width = 1.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="FPS" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 19.0

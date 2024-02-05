@@ -137,7 +137,6 @@ func _process(delta: float) -> void:
 	
 	HUD.update_boss_health(health)
 	amt -= delta * FADE_RATE
-	#var amt = 
 	mat.set_shader_parameter("amt", clampf(amt, 0.0, 1.0))
 	var strength: float = remap(clampf(amt, 0.0, 1.0), 0.0, 1.0, 0, SHAKE_STRENGTH)
 	var shake_vec := Vector3(RNG.randf_range(-strength, strength), RNG.randf_range(-strength, strength) , RNG.randf_range(-strength, strength))

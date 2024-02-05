@@ -38,6 +38,7 @@ var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
 var just_spawned: int = 2
 var invincible: bool = false
+var sniper_shot_last_step: bool = false
 
 signal parry
 
@@ -61,6 +62,8 @@ func _process(_delta: float) -> void:
 	if Menu.enabled: return
 	
 func _do_guns() -> void:
+	if just_spawned > 0:
+		return
 	var dir: Vector3 = -camera.global_basis.z
 	var pitch_bullets: float = clampi(BulletServer.valid_bullets, 0, 128)
 	
@@ -68,6 +71,7 @@ func _do_guns() -> void:
 		#ssfx_sniper_shoot.pitch_scale = remap(BulletServer.bolt_damage, 0.0, 128.0, 1.25, 0.75)
 		#sfx_sniper_shoot.volume_db = remap(BulletServer.bolt_damage, 0.0, 128.0, -1, 5)
 		sfx_sniper_shoot.play()
+		sniper_shot_last_step = true
 		BulletServer.fire_sniper(camera.global_position, dir)
 		velocity = -dir * sniper_kickback
 		
@@ -104,9 +108,11 @@ func _physics_process(delta: float) -> void:
 	
 	var wish_dir: Vector3 = get_wish_dir()
 	
-	if is_on_floor() and Controls.wish_jump:
+	if is_on_floor() and Controls.wish_jump and not sniper_shot_last_step:
 		velocity.y = JUMP_VEL
 		grounded = false
+	
+	sniper_shot_last_step = false
 	
 	accelerate(wish_dir, delta)
 	
