@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://57fv5ppntrgp"]
+[gd_scene load_steps=24 format=3 uid="uid://57fv5ppntrgp"]
 
 [ext_resource type="Material" uid="uid://c6pcwikfdgrs3" path="res://mat/mat_tile2.tres" id="1_5we23"]
 [ext_resource type="Environment" uid="uid://baa1nue2up5sb" path="res://env/env_lobby.tres" id="2_rx71y"]
@@ -11,6 +11,7 @@
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="9_lyd0f"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="10_46cl5"]
 [ext_resource type="Shader" path="res://shader/damageable.gdshader" id="11_gjq87"]
+[ext_resource type="ArrayMesh" uid="uid://bm83mvgxjt2gq" path="res://models/shape2.obj" id="12_5iutl"]
 [ext_resource type="ArrayMesh" uid="uid://dbv28rdv24mc7" path="res://models/shape5.obj" id="12_07p2s"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
@@ -34,6 +35,12 @@ height = 6.5
 radius = 4.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_0f6wm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5e50l"]
+render_priority = 0
+shader = ExtResource("11_gjq87")
+shader_parameter/albedo = Color(1, 1, 0, 1)
+shader_parameter/amt = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s4q2l"]
 render_priority = 0
@@ -125,6 +132,38 @@ mesh = SubResource("QuadMesh_0f6wm")
 skeleton = NodePath("../..")
 script = ExtResource("10_46cl5")
 
+[node name="EntranceBoss2" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 21.2384, 5, -55.4699)
+script = ExtResource("4_exalk")
+on_trigger = 8
+
+[node name="Visual" type="Node3D" parent="EntranceBoss2"]
+
+[node name="Mesh" type="MeshInstance3D" parent="EntranceBoss2/Visual"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_5e50l")
+mesh = ExtResource("12_5iutl")
+skeleton = NodePath("../..")
+script = ExtResource("6_cackf")
+
+[node name="Hurtbox" type="Area3D" parent="EntranceBoss2"]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="EntranceBoss2/Hurtbox"]
+shape = SubResource("CylinderShape3D_ptpnn")
+
+[node name="Hitbox" type="Node" parent="EntranceBoss2/Hurtbox"]
+script = ExtResource("8_ccrnk")
+
+[node name="DropShadow" type="MeshInstance3D" parent="EntranceBoss2"]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, 10, 0, -10, -4.37114e-07, 0, 0, 0)
+top_level = true
+material_override = ExtResource("9_lyd0f")
+mesh = SubResource("QuadMesh_0f6wm")
+skeleton = NodePath("../..")
+script = ExtResource("10_46cl5")
+
 [node name="EntranceTutorial" type="Node3D" parent="."]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -14.25, 4.75, -56.5)
 script = ExtResource("4_exalk")
@@ -188,5 +227,6 @@ mesh = SubResource("QuadMesh_0f6wm")
 script = ExtResource("10_46cl5")
 
 [connection signal="hit" from="EntranceBoss1/Hurtbox/Hitbox" to="EntranceBoss1" method="_on_hit"]
+[connection signal="hit" from="EntranceBoss2/Hurtbox/Hitbox" to="EntranceBoss2" method="_on_hit"]
 [connection signal="hit" from="EntranceTutorial/Hurtbox/Hitbox" to="EntranceTutorial" method="_on_hit"]
 [connection signal="hit" from="EntranceDifficulty/Hurtbox/Hitbox" to="EntranceDifficulty" method="_on_hit"]

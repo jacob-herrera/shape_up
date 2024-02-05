@@ -212,11 +212,8 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_fonts/font = ExtResource("4_xh7jk")
 theme_override_font_sizes/font_size = 32
-text = "WASD - Move
-SPACE - Jump
-
-HOLD LMB - Automatic
-TAP LMB - Burst "
+text = "WASD - Move                   HOLD LMB - Auto
+SPACE - Jump                    TAP LMB - Burst"
 vertical_alignment = 2
 
 [node name="instructions" type="Label" parent="Control"]

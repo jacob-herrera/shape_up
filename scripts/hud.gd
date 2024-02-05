@@ -41,9 +41,10 @@ enum ParticleType {
 
 @export var styles: Array[StyleBox]
 
-var time: float = 100.000
+var time: float
 var start_ms: int
 var pervious_ms: int
+var spawn_one_time: int
 
 var flash_T: float = 0.0
 var timer_pos: Vector2
@@ -54,7 +55,7 @@ const SHAKE_STRENGTH: float = 5.0
 var boss_hb_init_pos: Vector2
 static var boss_health_bar_shake: float = 0.0
 
-var spawn_one_time: int = 99
+
 
 var pause_timer: bool = false
 
@@ -86,18 +87,6 @@ func set_visiblity() -> void:
 	ammo_bar.visible = false
 	ammo.visible = false
 	match SceneManager.scene:
-		SceneManager.Scene.BOSS_1:
-			timer.visible = true
-			boss_health_bar.visible = true
-			second_hand.visible = true
-			hour_hand.visible = true
-			minute_hand.visible = true
-			$Shadow.visible = true
-			bolt_ammo.visible = true
-			dashes.visible= true
-			dash_bar.visible = true
-			ammo_bar.visible = true
-			ammo.visible = true
 		SceneManager.Scene.LOBBY:
 			bolt_ammo.visible  = true
 			dashes.visible= true
@@ -123,6 +112,18 @@ func set_visiblity() -> void:
 			hour_hand.visible = true
 			minute_hand.visible = true
 			$Shadow.visible = true
+		_:
+			timer.visible = true
+			boss_health_bar.visible = true
+			second_hand.visible = true
+			hour_hand.visible = true
+			minute_hand.visible = true
+			$Shadow.visible = true
+			bolt_ammo.visible = true
+			dashes.visible= true
+			dash_bar.visible = true
+			ammo_bar.visible = true
+			ammo.visible = true
 			
 
 func reset() -> void:
@@ -136,7 +137,8 @@ func reset() -> void:
 	spawn_one_time = 99
 	
 	music.stop()
-	if SceneManager.scene == SceneManager.Scene.BOSS_1:
+	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+	or SceneManager.scene == SceneManager.Scene.BOSS_2:
 		music.play(0.0)
 		
 	sfx_death.stop()
@@ -170,6 +172,7 @@ func _on_death() -> void:
 
 func spawn_one_particle(type: ParticleType) -> void:
 	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+	or SceneManager.scene == SceneManager.Scene.BOSS_2 \
 	or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
 		var which: PackedScene
 		match type:
@@ -246,6 +249,7 @@ func _process(_dt: float) -> void:
 	if time < 0:
 		time = 0
 		if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+		or SceneManager.scene == SceneManager.Scene.BOSS_2 \
 		or SceneManager.scene == SceneManager.Scene.TUTORIAL_6:
 			Controls.invoke_player_death()
 	
@@ -270,6 +274,7 @@ func _process(_dt: float) -> void:
 	
 	bolt_ammo.value = BulletServer.bolt_damage
 	if SceneManager.scene == SceneManager.Scene.BOSS_1 \
+		or SceneManager.scene == SceneManager.Scene.BOSS_2 \
 		or SceneManager.scene == SceneManager.Scene.LOBBY \
 		or SceneManager.scene == SceneManager.Scene.TUTORIAL_3 \
 		or SceneManager.scene == SceneManager.Scene.TUTORIAL_4:

@@ -1,0 +1,136 @@
+[gd_scene load_steps=19 format=3 uid="uid://lpv8itno5sf"]
+
+[ext_resource type="Material" uid="uid://dhj6accegntx2" path="res://mat/mat_tile3.tres" id="1_1xluu"]
+[ext_resource type="ArrayMesh" uid="uid://c3k46s7otulpr" path="res://models/octogon_floor.obj" id="2_sr8bj"]
+[ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="2_ywd7e"]
+[ext_resource type="Shader" path="res://shader/damageable.gdshader" id="3_ek3si"]
+[ext_resource type="ArrayMesh" uid="uid://bm83mvgxjt2gq" path="res://models/shape2.obj" id="4_fapga"]
+[ext_resource type="Script" path="res://scripts/boss_2.gd" id="4_i137r"]
+[ext_resource type="Script" path="res://scripts/random_rotate.gd" id="6_fui2n"]
+[ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="7_gynah"]
+[ext_resource type="Script" path="res://scripts/hitbox.gd" id="8_xmijs"]
+[ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="9_ig8jc"]
+[ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="10_6bl1p"]
+[ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="11_kt8t0"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cflqd"]
+render_priority = 0
+shader = ExtResource("3_ek3si")
+shader_parameter/albedo = Color(1, 1, 0, 1)
+shader_parameter/amt = 0.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1tq5y"]
+height = 6.5
+radius = 4.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_hfy6a"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4hwo0"]
+transparency = 1
+albedo_texture = ExtResource("11_kt8t0")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_nf2p0"]
+size = Vector2(0.2, 0.2)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Wall X" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1.67276e-08, 0.382683, -0.92388, 1, -4.37114e-08, 0, -4.03841e-08, -0.92388, -0.382683, -26.5008, 10, 63.9787)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -X" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1.67276e-08, -0.382683, -0.92388, -1, -4.37114e-08, 0, -4.03841e-08, 0.92388, -0.382683, 26.5008, 10, -63.9787)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall Z" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-0.382683, 0.92388, 4.03841e-08, 0, -4.37114e-08, 1, 0.92388, 0.382683, 1.67276e-08, -63.9787, 10, -26.5008)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -Z" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-0.382683, -0.92388, 4.03841e-08, 0, -4.37114e-08, -1, 0.92388, -0.382683, 1.67276e-08, 63.9787, 10, 26.5008)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall X2" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(4.03841e-08, 0.92388, -0.382683, 1, -4.37114e-08, 0, -1.67276e-08, -0.382683, -0.92388, -63.9787, 10, 26.5008)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -X2" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(4.03841e-08, -0.92388, -0.382683, -1, -4.37114e-08, 0, -1.67276e-08, 0.382683, -0.92388, 63.9787, 10, -26.5008)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall Z2" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-0.92388, 0.382683, 1.67276e-08, 0, -4.37114e-08, 1, 0.382683, 0.92388, 4.03841e-08, -26.5008, 10, -63.9787)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Wall -Z2" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(-0.92388, -0.382683, 1.67276e-08, 0, -4.37114e-08, -1, 0.382683, -0.92388, 4.03841e-08, 26.5008, 10, 63.9787)
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="Floor" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("WorldBoundaryShape3D_7ym17")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(75, 0, 0, 0, 75, 0, 0, 0, 75, 0, 0, 0)
+material_override = ExtResource("1_1xluu")
+mesh = ExtResource("2_sr8bj")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_ywd7e")
+
+[node name="Boss2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+script = ExtResource("4_i137r")
+
+[node name="Visual" type="Node3D" parent="Boss2"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Boss2/Visual"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_cflqd")
+mesh = ExtResource("4_fapga")
+skeleton = NodePath("../..")
+script = ExtResource("6_fui2n")
+axis_x = false
+axis_z = false
+
+[node name="Hurtbox" type="Area3D" parent="Boss2"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("7_gynah")
+additional_layer = 8
+
+[node name="Shape" type="CollisionShape3D" parent="Boss2/Hurtbox"]
+shape = SubResource("CylinderShape3D_1tq5y")
+
+[node name="Hitbox" type="Node" parent="Boss2/Hurtbox"]
+script = ExtResource("8_xmijs")
+
+[node name="DropShadow" type="MeshInstance3D" parent="Boss2"]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, 10, 0, -10, -4.37114e-07, 0, 0, 0)
+top_level = true
+material_override = ExtResource("9_ig8jc")
+mesh = SubResource("QuadMesh_hfy6a")
+skeleton = NodePath("../..")
+script = ExtResource("10_6bl1p")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, 0)
+material_override = SubResource("StandardMaterial3D_4hwo0")
+amount = 1024
+lifetime = 7.0
+mesh = SubResource("QuadMesh_nf2p0")
+emission_shape = 3
+emission_box_extents = Vector3(125, 125, 125)
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, -2.45, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+
+[connection signal="hit" from="Boss2/Hurtbox/Hitbox" to="Boss2" method="_on_hit"]

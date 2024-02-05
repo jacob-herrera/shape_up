@@ -10,11 +10,13 @@ config_version=5
 
 [application]
 
-config/name="brj2024"
-run/main_scene="res://scenes/tutorial_1.tscn"
+config/name="SHAPE UP"
+run/main_scene="res://scenes/boss_2.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
+boot_splash/image="res://ICON.png"
+config/icon="res://ICON.png"
 
 [autoload]
 

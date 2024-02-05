@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://cqsm78eiwy8rh"]
 
 [ext_resource type="Material" uid="uid://0iqxlwgsdbch" path="res://mat/mat_tile.tres" id="1_5c6lb"]
+[ext_resource type="Environment" uid="uid://clye526cwulqn" path="res://env/env_boss1.tres" id="2_k112e"]
 [ext_resource type="Script" path="res://scripts/boss.gd" id="3_7e1cy"]
 [ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_ggtlv"]
-[ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="3_knkit"]
 [ext_resource type="Material" uid="uid://6tp2rue1deuo" path="res://mat/mat_damageable.tres" id="3_xy6ow"]
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="5_ovuvu"]
 [ext_resource type="ArrayMesh" uid="uid://x56d78ji4xjs" path="res://models/dodecahedron.obj" id="5_ydrnv"]
@@ -50,7 +50,7 @@ material_override = ExtResource("1_5c6lb")
 mesh = SubResource("QuadMesh_yoqv7")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("3_knkit")
+environment = ExtResource("2_k112e")
 
 [node name="Boss1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)

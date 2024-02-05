@@ -157,9 +157,13 @@ func _physics_process(delta: float) -> void:
 			
 			sfx_parry.play()
 		else:
-			HUD.time -= 3
-			HUD.spawn_one_particle(HUD.ParticleType.MINUS_THREE)
-			sfx_parry_miss.play()
+			if not HUD.pause_timer:
+				var playback_pos: float = HUD.music.get_playback_position()
+				HUD.time -= 3
+				HUD.music.stop()
+				HUD.music.play(playback_pos + 3)
+				HUD.spawn_one_particle(HUD.ParticleType.MINUS_THREE)
+				sfx_parry_miss.play()
 	
 	move_and_slide()
 	

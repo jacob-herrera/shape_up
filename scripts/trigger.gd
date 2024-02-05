@@ -9,6 +9,7 @@ enum OnTrigger {
 	GOTO_TUTORIAL_4,
 	GOTO_TUTORIAL_5,
 	GOTO_TUTORIAL_6,
+	GOTO_BOSS_2,
 }
 
 @onready var mat: ShaderMaterial = $Visual/Mesh.material_override
@@ -49,6 +50,8 @@ func _process(delta: float) -> void:
 				SceneManager.goto_tutorial5()
 			OnTrigger.GOTO_TUTORIAL_6:
 				SceneManager.goto_tutorial6()
+			OnTrigger.GOTO_BOSS_2:
+				SceneManager.goto_boss_2()
 	
 func _on_hit(dmg: int) -> void:
 	hp -= dmg

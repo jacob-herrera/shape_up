@@ -135,7 +135,7 @@ func move_boss(delta: float) -> void:
 func _process(delta: float) -> void:
 	if Menu.enabled or Controls.is_dead: return 
 	
-	HUD.update_boss_health(health)
+	
 	amt -= delta * FADE_RATE
 	mat.set_shader_parameter("amt", clampf(amt, 0.0, 1.0))
 	var strength: float = remap(clampf(amt, 0.0, 1.0), 0.0, 1.0, 0, SHAKE_STRENGTH)
@@ -180,6 +180,7 @@ func _on_hit(dmg: int) -> void:
 	health -= dmg
 	health = max(0, health)
 	amt = 1.25
+	HUD.update_boss_health(health)
 	HUD.shake_health()
 	Character.sfx_hit.play()
 	if wall != null:
