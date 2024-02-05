@@ -169,7 +169,7 @@ func _physics_process(delta: float) -> void:
 	
 	if Controls.get_try_parry():
 		sfx_click.play()
-		pary_active = 3.0 / 60.0
+		pary_active = 4.0 / 60.0
 			
 	if pary_active > 0.0:
 		var parry_area: Area3D = Character.get_node("Camera3D/ParryArea") as Area3D

@@ -107,6 +107,7 @@ func invoke_player_death() -> void:
 
 
 func hard_reset() -> void:
+	PitchChanger.stop_all_sfx()
 	slow_toggle = false
 	fast_toggle = false
 	Controls.clock_speed = 1.0
@@ -120,6 +121,7 @@ func hard_reset() -> void:
 	sniper_charge = 0.0
 	sniper_scoped = false
 	Menu.reset()
+
 	if get_tree().current_scene != null:
 		get_tree().reload_current_scene()
 
