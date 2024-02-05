@@ -49,7 +49,6 @@ func _toggle_menu() -> void:
 		#mouse_filter =
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	enabled = not enabled
-	print(enabled)
 
 func _toggle_settings() -> void:
 	if in_settings:
@@ -65,7 +64,6 @@ func _toggle_settings() -> void:
 		graphics.hide()
 		controls.hide()
 	in_settings = not in_settings
-	print(enabled)
 
 func _toggle_submenu(which_menu : VBoxContainer) -> void:
 	settings.hide()
@@ -75,7 +73,6 @@ func _toggle_submenu(which_menu : VBoxContainer) -> void:
 	which_menu.show()
 	in_settings = not in_settings
 	in_submenu = not in_submenu
-	print(enabled)
 
 func _fullscreen_toggle(full):
 	if full == true:
@@ -107,3 +104,6 @@ func _on_graphics_pressed():
 
 func _on_controls_pressed():
 	_toggle_submenu(controls)
+
+func _submenu_back_pressed():
+	_toggle_submenu(settings)

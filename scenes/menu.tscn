@@ -166,6 +166,12 @@ layout_mode = 2
 value = 0.25
 bus_name = "Effects"
 
+[node name="Volume Back" type="Button" parent="Margin/Sounds"]
+layout_mode = 2
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 60
+text = "BACK"
+
 [node name="Graphics" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
@@ -174,6 +180,12 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 64
 text = "Fullscreen"
+
+[node name="Graphics Back" type="Button" parent="Margin/Graphics"]
+layout_mode = 2
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 60
+text = "BACK"
 
 [node name="Controls" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
@@ -192,6 +204,12 @@ theme = ExtResource("2_2vfbs")
 theme_override_font_sizes/font_size = 48
 text = "DEFAULT KEYBINDS"
 
+[node name="Controls Back" type="Button" parent="Margin/Controls"]
+layout_mode = 2
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 60
+text = "BACK"
+
 [connection signal="pressed" from="Margin/Main/Play" to="." method="_play_pressed"]
 [connection signal="pressed" from="Margin/Main/Settings" to="." method="_settings_pressed"]
 [connection signal="pressed" from="Margin/Main/Lobby" to="." method="_lobby_pressed"]
@@ -200,5 +218,8 @@ text = "DEFAULT KEYBINDS"
 [connection signal="pressed" from="Margin/Settings/Graphics" to="." method="_on_graphics_pressed"]
 [connection signal="pressed" from="Margin/Settings/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="Margin/Settings/Back Button" to="." method="_settings_back_pressed"]
+[connection signal="pressed" from="Margin/Sounds/Volume Back" to="." method="_submenu_back_pressed"]
 [connection signal="toggled" from="Margin/Graphics/Fullscreen Toggle" to="." method="_fullscreen_toggle"]
+[connection signal="pressed" from="Margin/Graphics/Graphics Back" to="." method="_submenu_back_pressed"]
 [connection signal="pressed" from="Margin/Controls/ResetButton" to="Margin/Controls/Rebinds" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="Margin/Controls/Controls Back" to="." method="_submenu_back_pressed"]
