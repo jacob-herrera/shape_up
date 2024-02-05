@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/random_rotate.gd" id="3_0sprl"]
 [ext_resource type="Script" path="res://scripts/kill_on_touch.gd" id="4_k22hm"]
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="7_dhtdh"]
-[ext_resource type="AudioStream" uid="uid://dy1bfsov7iksy" path="res://sound/Bell1.mp3" id="8_n2pme"]
+[ext_resource type="AudioStream" uid="uid://bpt1mj7giech4" path="res://sound/bong.mp3" id="8_nmmyy"]
 [ext_resource type="AudioStream" uid="uid://bg7wy7l2r44mj" path="res://sound/followlaugh1.wav" id="8_t7vo2"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="8_u42fg"]
 
@@ -47,7 +47,7 @@ skeleton = NodePath("../..")
 script = ExtResource("8_u42fg")
 
 [node name="spawn" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("8_n2pme")
+stream = ExtResource("8_nmmyy")
 volume_db = 30.0
 max_db = 6.0
 autoplay = true
