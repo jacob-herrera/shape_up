@@ -814,6 +814,7 @@ vertical_alignment = 1
 autowrap_mode = 1
 
 [node name="White" type="ColorRect" parent="."]
+visible = false
 z_index = 5
 layout_mode = 1
 anchors_preset = 15
@@ -824,6 +825,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Credits" type="Label" parent="."]
+visible = false
 modulate = Color(0, 0, 0, 1)
 z_index = 7
 layout_mode = 1

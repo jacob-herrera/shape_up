@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://lpv8itno5sf"]
 
-[ext_resource type="Material" uid="uid://dhj6accegntx2" path="res://mat/mat_tile3.tres" id="1_1xluu"]
+[ext_resource type="Material" path="res://mat/mat_tile3.tres" id="1_1xluu"]
 [ext_resource type="ArrayMesh" uid="uid://c3k46s7otulpr" path="res://models/octogon_floor.obj" id="2_sr8bj"]
 [ext_resource type="Environment" uid="uid://dgcoe53w276n3" path="res://env/env1.tres" id="2_ywd7e"]
 [ext_resource type="Shader" path="res://shader/damageable.gdshader" id="3_ek3si"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://57fv5ppntrgp"]
+[gd_scene load_steps=27 format=3 uid="uid://bnwx2nxlwsfud"]
 
-[ext_resource type="Material" uid="uid://c6pcwikfdgrs3" path="res://mat/mat_tile2.tres" id="1_5we23"]
-[ext_resource type="Environment" uid="uid://baa1nue2up5sb" path="res://env/env_lobby.tres" id="2_rx71y"]
+[ext_resource type="Material" path="res://mat/mat_tile2.tres" id="1_5we23"]
+[ext_resource type="Script" path="res://scenes/change_labels.gd" id="1_uts7k"]
+[ext_resource type="Environment" path="res://env/env_lobby.tres" id="2_rx71y"]
 [ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="3_jwlrp"]
 [ext_resource type="Script" path="res://scripts/trigger.gd" id="4_exalk"]
 [ext_resource type="Material" uid="uid://6tp2rue1deuo" path="res://mat/mat_damageable.tres" id="4_mpxy3"]
@@ -13,6 +14,8 @@
 [ext_resource type="Shader" path="res://shader/damageable.gdshader" id="11_gjq87"]
 [ext_resource type="ArrayMesh" uid="uid://bm83mvgxjt2gq" path="res://models/shape2.obj" id="12_5iutl"]
 [ext_resource type="ArrayMesh" uid="uid://dbv28rdv24mc7" path="res://models/shape5.obj" id="12_07p2s"]
+[ext_resource type="FontFile" uid="uid://dbebi56j4s04w" path="res://fonts/Oldengl.ttf" id="14_6npus"]
+[ext_resource type="Script" path="res://scripts/hp_display.gd" id="15_n34st"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
 
@@ -58,6 +61,30 @@ shader_parameter/albedo = Color(0, 1, 1, 1)
 shader_parameter/amt = 0.0
 
 [node name="Node3D2" type="Node3D"]
+
+[node name="Labels" type="Node3D" parent="."]
+script = ExtResource("1_uts7k")
+
+[node name="BestTimes" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.725, 13, -55)
+billboard = 2
+texture_filter = 5
+modulate = Color(0, 1, 0.254902, 1)
+font = ExtResource("14_6npus")
+font_size = 2048
+outline_size = 127
+width = 1000.0
+
+[node name="BestTimes2" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.927, 13, -55)
+billboard = 2
+texture_filter = 5
+modulate = Color(1, 1, 0, 1)
+font = ExtResource("14_6npus")
+font_size = 2048
+outline_size = 127
+width = 1000.0
+script = ExtResource("15_n34st")
 
 [node name="Floor" type="StaticBody3D" parent="."]
 

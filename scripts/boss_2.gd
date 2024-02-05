@@ -88,7 +88,6 @@ func _alive_process(delta: float) -> void:
 	
 	var T: float = remap(laser_delay, LASER_DELAY, -LASER_DELAY, 0.0, 1.0)
 	var amt: float = laser_animate_curve.sample(T) - 0.5
-	print(amt)
 	scale = Vector3(1 - amt, 1 + amt, 1 - amt)
 	
 	if not laser_fired and laser_delay <= 0.0:

@@ -29,6 +29,7 @@ BulletServer="*res://scenes/bullet_server.tscn"
 PitchChanger="*res://scripts/pitch_changer.gd"
 Character="*res://scenes/character.tscn"
 SceneManager="*res://scripts/scene_manager.gd"
+Leaderboard="*res://scripts/leaderboard.gd"
 
 [display]
 
