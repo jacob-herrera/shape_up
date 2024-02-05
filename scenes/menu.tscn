@@ -175,11 +175,20 @@ text = "BACK"
 [node name="Graphics" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
-[node name="Fullscreen Toggle" type="CheckButton" parent="Margin/Graphics"]
+[node name="Window Options" type="OptionButton" parent="Margin/Graphics"]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_font_sizes/font_size = 64
-text = "Fullscreen"
+theme = ExtResource("2_2vfbs")
+theme_override_font_sizes/font_size = 24
+item_count = 3
+selected = 2
+popup/item_0/text = "FULLSCREEN"
+popup/item_0/id = 0
+popup/item_1/text = "BORDERLESS"
+popup/item_1/id = 1
+popup/item_2/text = "WINDOWED"
+popup/item_2/id = 2
 
 [node name="Graphics Back" type="Button" parent="Margin/Graphics"]
 layout_mode = 2
@@ -219,7 +228,7 @@ text = "BACK"
 [connection signal="pressed" from="Margin/Settings/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="Margin/Settings/Back Button" to="." method="_settings_back_pressed"]
 [connection signal="pressed" from="Margin/Sounds/Volume Back" to="." method="_submenu_back_pressed"]
-[connection signal="toggled" from="Margin/Graphics/Fullscreen Toggle" to="." method="_fullscreen_toggle"]
+[connection signal="item_selected" from="Margin/Graphics/Window Options" to="." method="_on_window_options_item_selected"]
 [connection signal="pressed" from="Margin/Graphics/Graphics Back" to="." method="_submenu_back_pressed"]
 [connection signal="pressed" from="Margin/Controls/ResetButton" to="Margin/Controls/Rebinds" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="Margin/Controls/Controls Back" to="." method="_submenu_back_pressed"]

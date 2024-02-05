@@ -74,12 +74,6 @@ func _toggle_submenu(which_menu : VBoxContainer) -> void:
 	in_settings = not in_settings
 	in_submenu = not in_submenu
 
-func _fullscreen_toggle(full):
-	if full == true:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-
 func _settings_back_pressed() -> void:
 	_toggle_settings()
 
@@ -107,3 +101,15 @@ func _on_controls_pressed():
 
 func _submenu_back_pressed():
 	_toggle_submenu(settings)
+
+func _on_window_options_item_selected(index):
+	match index:
+		0:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+		1:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
+		2:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
