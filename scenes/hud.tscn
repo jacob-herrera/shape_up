@@ -1,7 +1,8 @@
-[gd_scene load_steps=92 format=3 uid="uid://cbkst7wbewsav"]
+[gd_scene load_steps=93 format=3 uid="uid://cbkst7wbewsav"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gxd7r"]
-[ext_resource type="AudioStream" uid="uid://ds8iaorvkbq0g" path="res://sound/music_boss.mp3" id="2_fjjpl"]
+[ext_resource type="AudioStream" uid="uid://bnnbd3hcs34bl" path="res://sound/music_boss.mp3" id="2_fjjpl"]
+[ext_resource type="AudioStream" uid="uid://bod3xm0prctwk" path="res://sound/shatter.mp3" id="3_5gnhj"]
 [ext_resource type="AudioStream" uid="uid://dhtmhww5e5nrb" path="res://sound/death.wav" id="3_e0ll7"]
 [ext_resource type="Texture2D" uid="uid://osc184cess" path="res://textures/handle1.png" id="4_cpako"]
 [ext_resource type="Texture2D" uid="uid://dodstjamhsrvg" path="res://textures/handle2.png" id="4_ixj0j"]
@@ -328,6 +329,11 @@ styles = Array[StyleBox]([SubResource("StyleBoxFlat_l2ixj"), SubResource("StyleB
 stream = ExtResource("2_fjjpl")
 volume_db = -5.0
 bus = &"Music"
+
+[node name="BossDeath" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_5gnhj")
+volume_db = 5.0
+bus = &"Effects"
 
 [node name="Death" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_e0ll7")

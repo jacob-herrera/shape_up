@@ -62,8 +62,8 @@ var wall_health_threshold: int = 0
 var boss_phase: int = 1
 #var center_pos: Vector3 = Vector3(0.0, 5.25, 0.0) 
 var PHASE_ONE_ORIBIT_HEIGHT: float = 5.0
-var PHASE_TWO_ORBIT_HEIGHT: float = 7.5
-var PHASE_THREE_ORBIT_HEIGHT: float = 10.0
+var PHASE_TWO_ORBIT_HEIGHT: float = 10.0
+var PHASE_THREE_ORBIT_HEIGHT: float = 15.0
 
 var orbit_height: float = PHASE_ONE_ORIBIT_HEIGHT
 
@@ -135,44 +135,45 @@ func move_boss(delta: float) -> void:
 func _process(delta: float) -> void:
 	if Menu.enabled or Controls.is_dead: return 
 	
-	
 	amt -= delta * FADE_RATE
 	mat.set_shader_parameter("amt", clampf(amt, 0.0, 1.0))
 	var strength: float = remap(clampf(amt, 0.0, 1.0), 0.0, 1.0, 0, SHAKE_STRENGTH)
 	var shake_vec := Vector3(RNG.randf_range(-strength, strength), RNG.randf_range(-strength, strength) , RNG.randf_range(-strength, strength))
 	visual.global_position = global_position + shake_vec
 	
-	alive_time += delta
-	missile_timer -= delta
-	explosion_timer -= delta
-	
-	if health <= 0:
+	if health <= 0 and state != BossState.DEAD:
 		state = BossState.DEAD
 		Character.invincible = true
 		HUD.pause_timer = true
 		HUD.music.stop()
 		PitchChanger.stop_all_sfx()
-	else:
-		try_spawn_wall()
-		
-		if health <= MAX_HEALTH * 0.5:
-			spawn_chaser()
+		HUD.sfx_boss_death.play()
+		return
 	
-		if missile_timer <= 0:
-			missile_timer = remap(health, MAX_HEALTH, 0, MISSILE_START_RATE, MISSILE_END_RATE)
-			var new: Node3D = missle.instantiate()
-			add_child(new)
-			new.global_position = global_position
-		
-		if explosion_timer <= 0:
-			explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
-			var new: Node3D = growing_circle.instantiate()
-			add_child(new)
-			var pos: Vector3 = Vector3.ZERO
-			while pos.distance_to(Vector3.ZERO) < 16:
-				pos = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
-			new.global_position = pos
-			new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
+	alive_time += delta
+	missile_timer -= delta
+	explosion_timer -= delta
+	
+	try_spawn_wall()
+	
+	if health <= MAX_HEALTH * 0.5:
+		spawn_chaser()
+
+	if missile_timer <= 0:
+		missile_timer = remap(health, MAX_HEALTH, 0, MISSILE_START_RATE, MISSILE_END_RATE)
+		var new: Node3D = missle.instantiate()
+		add_child(new)
+		new.global_position = global_position
+	
+	if explosion_timer <= 0:
+		explosion_timer = remap(health, MAX_HEALTH, 0, EXPLOSION_START_RATE, EXPLOSION_END_RATE)
+		var new: Node3D = growing_circle.instantiate()
+		add_child(new)
+		var pos: Vector3 = Vector3.ZERO
+		while pos.distance_to(Vector3.ZERO) < 16:
+			pos = Vector3(randf_range(-62.5, 62.5), 0, randf_range(-62.5, 62.5))
+		new.global_position = pos
+		new.max_life_time = remap(health, MAX_HEALTH, 0, EXPLOSION_START_LIFETIME, EXPLOSION_END_LIFETIME)
 
 	move_boss(delta)
 

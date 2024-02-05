@@ -33,12 +33,16 @@ var GRAVITY: float
 @onready var sfx_parry_miss: AudioStreamPlayer = $Sounds/ParryMiss
 @onready var sfx_sniper_error: AudioStreamPlayer = $Sounds/SniperError
 @onready var sfx_hit: AudioStreamPlayer = $Sounds/Hit
+@onready var sfx_boss_laser: AudioStreamPlayer = $Sounds/BossLaser
+@onready var sfx_click: AudioStreamPlayer = $Sounds/Click
 
 var grounded: bool = false
 var is_auto_out_of_ammo_flag: bool = false
 var just_spawned: int = 2
 var invincible: bool = false
 var sniper_shot_last_step: bool = false
+
+var pary_active: float = 0.0
 
 signal parry
 
@@ -47,6 +51,7 @@ func _ready() -> void:
 	GRAVITY = (-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 	Controls.connect("entered_scope", _entered_scope)
 	Controls.connect("exited_scope", _exited_scope)
+	PitchChanger.register_inverse_player(sfx_boss_laser)
 	#PitchChanger.register_inverse_player(sfx_sniper_shoot)
 	#PitchChanger.register_inverse_player(sfx_sniper_charge)
 	#PitchChanger.register_inverse_player(sfx_shotgun)
@@ -146,7 +151,27 @@ func _physics_process(delta: float) -> void:
 		flat_vel = flat_vel.normalized() * SPEED_CAP
 		velocity = Vector3(flat_vel.x, velocity.y, flat_vel.z)
 	
+
+			
+	move_and_slide()
+			
+			
+	var last_parry_time: float = pary_active
+	pary_active -= delta
+	if last_parry_time > 0.0 and pary_active <= 0.0:
+		if not HUD.pause_timer:
+			var playback_pos: float = HUD.music.get_playback_position()
+			HUD.time -= 3
+			HUD.music.stop()
+			HUD.music.play(playback_pos + 3)
+			HUD.spawn_one_particle(HUD.ParticleType.MINUS_THREE)
+			sfx_parry_miss.play()
+	
 	if Controls.get_try_parry():
+		sfx_click.play()
+		pary_active = 3.0 / 60.0
+			
+	if pary_active > 0.0:
 		var parry_area: Area3D = Character.get_node("Camera3D/ParryArea") as Area3D
 		var overlapping: Array[Area3D] = parry_area.get_overlapping_areas()
 		if overlapping.size() > 0:
@@ -154,18 +179,9 @@ func _physics_process(delta: float) -> void:
 				area.emit_signal("parried")
 			emit_signal("parry")
 			Controls.freeze_frames = Controls.FREEZE_FRAME_MS
-			
+			pary_active = -1.0
 			sfx_parry.play()
-		else:
-			if not HUD.pause_timer:
-				var playback_pos: float = HUD.music.get_playback_position()
-				HUD.time -= 3
-				HUD.music.stop()
-				HUD.music.play(playback_pos + 3)
-				HUD.spawn_one_particle(HUD.ParticleType.MINUS_THREE)
-				sfx_parry_miss.play()
-	
-	move_and_slide()
+			just_spawned = 2
 	
 	_do_guns()
 	
@@ -185,10 +201,11 @@ func reset() -> void:
 	is_auto_out_of_ammo_flag = false
 	global_position = Vector3(0, 1, 25)
 	velocity = Vector3.ZERO
-	camera.rot_x = 0.0
-	camera.rot_y = 0.0
-	camera.rot_z = 0.0
+	camera.rot_x = 0.001
+	camera.rot_y = 0.001
+	camera.rot_z = 0.001
 	camera.trauma = 0.0
+	pary_active = 0.0
 	Camera.has_saved_last_view_angle_before_death = false
 	move_and_slide()
 

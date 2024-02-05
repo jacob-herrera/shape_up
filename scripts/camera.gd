@@ -74,6 +74,7 @@ func _ready():
 func _set_cam_angle():
 	rotation.y = rot_y + max_y * get_shake_intensity() * get_noise_from_seed(1)
 	rotation.x = rot_x + max_x * get_shake_intensity() * get_noise_from_seed(0)
+	rotation.x = clampf(rotation.x, -pitch_limit, pitch_limit)
 	#rotation.z = max_z * get_shake_intensity() * get_noise_from_seed(2)
 	
 func _process(delta: float) -> void:

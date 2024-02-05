@@ -22,6 +22,8 @@ extends Control
 @onready var boss_health_bar: ProgressBar = $BossHealthBar
 @onready var boss_health_label: Label = $BossHealthBar/Label
 
+@onready var sfx_boss_death: AudioStreamPlayer = $BossDeath
+
 @onready var white: ColorRect = $White
 @onready var credits: Label = $Credits
 

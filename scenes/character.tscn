@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=27 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
@@ -16,6 +16,8 @@
 [ext_resource type="AudioStream" uid="uid://d3egblc8jo66j" path="res://sound/miss.wav" id="13_rsh02"]
 [ext_resource type="AudioStream" uid="uid://qvokx3n3kdyv" path="res://sound/plunk.wav" id="14_irw3d"]
 [ext_resource type="AudioStream" uid="uid://ccvbvh2lb1wwe" path="res://sound/hitsound.wav" id="15_i881q"]
+[ext_resource type="AudioStream" uid="uid://78gqa4vtn3sk" path="res://sound/boss_laser.wav" id="16_2jv0r"]
+[ext_resource type="AudioStream" uid="uid://c73mjli1yt8pl" path="res://sound/click.wav" id="17_gwx6a"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
 
@@ -167,6 +169,17 @@ bus = &"Effects"
 stream = ExtResource("15_i881q")
 volume_db = 1.25
 max_polyphony = 3
+bus = &"Effects"
+
+[node name="BossLaser" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("16_2jv0r")
+volume_db = 10.0
+bus = &"Effects"
+
+[node name="Click" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("17_gwx6a")
+volume_db = 15.0
+pitch_scale = 0.75
 bus = &"Effects"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

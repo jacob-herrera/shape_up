@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://lpv8itno5sf"]
+[gd_scene load_steps=23 format=3 uid="uid://lpv8itno5sf"]
 
 [ext_resource type="Material" uid="uid://dhj6accegntx2" path="res://mat/mat_tile3.tres" id="1_1xluu"]
 [ext_resource type="ArrayMesh" uid="uid://c3k46s7otulpr" path="res://models/octogon_floor.obj" id="2_sr8bj"]
@@ -12,8 +12,24 @@
 [ext_resource type="Material" uid="uid://bignqpjhbb5hj" path="res://mat/drop_shadow.tres" id="9_ig8jc"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="10_6bl1p"]
 [ext_resource type="Texture2D" uid="uid://bly68ckuhhofv" path="res://textures/snow.png" id="11_kt8t0"]
+[ext_resource type="Script" path="res://boss_attacks/parriable.gd" id="13_rrm1c"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4hwo0"]
+transparency = 1
+albedo_texture = ExtResource("11_kt8t0")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_nf2p0"]
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="Curve" id="Curve_1gqsr"]
+_data = [Vector2(0, 0.5), 0.0, -6.49067, 0, 0, Vector2(0.477799, 0.192223), 0.0, 0.0, 0, 0, Vector2(0.508687, 0.757171), 0.0, 0.0, 0, 0, Vector2(1, 0.5), -0.354244, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cflqd"]
 render_priority = 0
@@ -27,16 +43,13 @@ radius = 4.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_hfy6a"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4hwo0"]
-transparency = 1
-albedo_texture = ExtResource("11_kt8t0")
-billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_evguc"]
+height = 100.0
+radius = 25.0
 
-[sub_resource type="QuadMesh" id="QuadMesh_nf2p0"]
-size = Vector2(0.2, 0.2)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_71xte"]
+height = 100.0
+radius = 5.0
 
 [node name="Node3D" type="Node3D"]
 
@@ -85,9 +98,23 @@ mesh = ExtResource("2_sr8bj")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_ywd7e")
 
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, 0)
+material_override = SubResource("StandardMaterial3D_4hwo0")
+amount = 1024
+lifetime = 7.0
+mesh = SubResource("QuadMesh_nf2p0")
+emission_shape = 3
+emission_box_extents = Vector3(125, 125, 125)
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, -2.45, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+
 [node name="Boss2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 script = ExtResource("4_i137r")
+laser_animate_curve = SubResource("Curve_1gqsr")
 
 [node name="Visual" type="Node3D" parent="Boss2"]
 
@@ -120,17 +147,27 @@ mesh = SubResource("QuadMesh_hfy6a")
 skeleton = NodePath("../..")
 script = ExtResource("10_6bl1p")
 
-[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, 0)
-material_override = SubResource("StandardMaterial3D_4hwo0")
-amount = 1024
-lifetime = 7.0
-mesh = SubResource("QuadMesh_nf2p0")
-emission_shape = 3
-emission_box_extents = Vector3(125, 125, 125)
-direction = Vector3(0, -1, 0)
-gravity = Vector3(0, -2.45, 0)
-initial_velocity_min = 2.0
-initial_velocity_max = 5.0
+[node name="LaserParry" type="Area3D" parent="Boss2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+top_level = true
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("13_rrm1c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boss2/LaserParry"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -50)
+shape = SubResource("CylinderShape3D_evguc")
+
+[node name="LaserDamage" type="Area3D" parent="Boss2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+top_level = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("7_gynah")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boss2/LaserDamage"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -50)
+shape = SubResource("CylinderShape3D_71xte")
 
 [connection signal="hit" from="Boss2/Hurtbox/Hitbox" to="Boss2" method="_on_hit"]
+[connection signal="parried" from="Boss2/LaserParry" to="Boss2" method="laser_parried"]
