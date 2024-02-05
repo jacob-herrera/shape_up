@@ -185,7 +185,6 @@ bus = &"Effects"
 
 [node name="BossSpinner" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("18_fhd1x")
-volume_db = 5.0
 bus = &"Effects"
 
 [node name="Click" type="AudioStreamPlayer" parent="Sounds"]

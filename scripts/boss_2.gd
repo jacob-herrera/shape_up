@@ -29,8 +29,12 @@ const SPIKES_MAX_HEIGHT: float = -2.0
 @export var screen_shake_curve: Curve
 
 
-const LASER_MIN_RANDOM_TIME: float = 6.0
-const LASER_MAX_RANDOM_TIME: float = 12.0
+const LASER_MIN_RANDOM_TIME_UPPER_HEALTH: float = 6.0
+const LASER_MAX_RANDOM_TIME_UPPER_HEALTH: float = 10.0
+
+const LASER_MIN_RANDOM_TIME_LOWER_HEALTH: float = 15.0
+const LASER_MAX_RANDOM_TIME_LOWER_HEALTH: float = 20.0
+
 const LASER_LENGTH: float = 256.0
 
 var spinner_mat: ShaderMaterial = preload("res://mat/mat_spinner.tres")
@@ -158,7 +162,9 @@ func _alive_process(delta: float) -> void:
 		Character.sfx_boss_laser.play()
 		laser_fired = false
 		laser_delay = LASER_DELAY
-		laser_cooldown = randf_range(LASER_MIN_RANDOM_TIME, LASER_MAX_RANDOM_TIME)
+		var min_time_scaled = remap(health, 0, max_health, LASER_MIN_RANDOM_TIME_UPPER_HEALTH, LASER_MIN_RANDOM_TIME_LOWER_HEALTH)
+		var max_time_scaled = remap(health, 0, max_health, LASER_MAX_RANDOM_TIME_UPPER_HEALTH, LASER_MAX_RANDOM_TIME_LOWER_HEALTH)
+		laser_cooldown = randf_range(min_time_scaled, max_time_scaled)
 
 	if health <= max_health * 0.5 and not went_to_center:
 		goto_center()
