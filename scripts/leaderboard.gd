@@ -1,11 +1,11 @@
 extends Node
 
-var highscores = [[0,0,0], [0,0,0]]
+var highscores = [[[0,0,0],[0,0,0]],[[0,0,0],[0,0,0]],[[0,0,0],[0,0,0]]]
 
-func check_high_score(boss : int, time : float):
+func check_high_score(difficulty: int, boss : int, time : float):
 	print("run")
 	for score in 3:
-		if time >= highscores[boss][score]:
-			highscores[boss].insert(score, time)
-			highscores[boss].pop_back()
+		if time >= highscores[difficulty][boss][score]:
+			highscores[difficulty][boss].insert(score, time)
+			highscores[difficulty][boss].pop_back()
 			return
