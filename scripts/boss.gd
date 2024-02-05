@@ -48,7 +48,7 @@ const POS_LERP_SPEED: float = 2.5
 #const ATTACK_RATE: float = 2.5
 #var attack_cooldown: float = 0.0
 
-const MAX_HEALTH: int = 1500
+const MAX_HEALTH: int = 15
 var health: int = MAX_HEALTH
 var spawned_chaser: bool = false
 
@@ -134,7 +134,7 @@ func move_boss(delta: float) -> void:
 	global_position = lerp(target_pos, global_position, t)
 
 func _process(delta: float) -> void:
-	if Menu.enabled or Controls.is_dead: return 
+	if Menu.enabled or Controls.is_dead or state == BossState.DEAD: return 
 	
 	amt -= delta * FADE_RATE
 	mat.set_shader_parameter("amt", clampf(amt, 0.0, 1.0))
