@@ -121,7 +121,7 @@ func _on_death() -> void:
 	PitchChanger.stop_all_sfx()
 	HUD.sfx_boss_death.play()
 	print("dead")
-	Leaderboard.check_high_score(1, HUD.time)
+	Leaderboard.check_high_score(SceneManager.difficulty, 1, HUD.time)
 
 func _dead_process() -> void:
 	pass

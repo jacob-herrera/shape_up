@@ -1,15 +1,21 @@
 extends Node3D
 
+var dif: int
+
 func _ready():
+	dif = SceneManager.difficulty
+	
 	var scores = Leaderboard.highscores
 
-	$b1_1st.text = "%.3f" % scores[0][0]
-	$b1_2nd.text = "%.3f" % scores[0][1]
-	$b1_3rd.text = "%.3f" % scores[0][2]
 	
-	$b2_1st.text = "%.3f" % scores[1][0]
-	$b2_2nd.text = "%.3f" % scores[1][1]
-	$b2_3rd.text = "%.3f" % scores[1][2]
+
+	$b1_1st.text = "%.3f" % scores[dif][0][0]
+	$b1_2nd.text = "%.3f" % scores[dif][0][1]
+	$b1_3rd.text = "%.3f" % scores[dif][0][2]
+	
+	$b2_1st.text = "%.3f" % scores[dif][1][0]
+	$b2_2nd.text = "%.3f" % scores[dif][1][1]
+	$b2_3rd.text = "%.3f" % scores[dif][1][2]
 	
 func _process(_delta: float) -> void:
 	var boss1_dist: float = $b1_2nd.global_position.distance_to(Character.global_position)
