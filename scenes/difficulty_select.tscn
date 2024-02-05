@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bgjaabba0ucav"]
+[gd_scene load_steps=23 format=3 uid="uid://bgjaabba0ucav"]
 
 [ext_resource type="ArrayMesh" uid="uid://dgatf546pkey6" path="res://models/triangle.obj" id="2_rkit5"]
 [ext_resource type="Material" uid="uid://c6pcwikfdgrs3" path="res://mat/mat_tile2.tres" id="3_nxcsr"]
@@ -12,6 +12,7 @@
 [ext_resource type="ArrayMesh" uid="uid://cvotyumqkkm7q" path="res://models/shape16.obj" id="12_jvhx3"]
 [ext_resource type="ArrayMesh" uid="uid://b8oeum5rebojt" path="res://models/shape13.obj" id="12_tcha5"]
 [ext_resource type="Script" path="res://scripts/drop_shadow.gd" id="13_6wtiw"]
+[ext_resource type="FontFile" uid="uid://dpct7jtn2khnu" path="res://fonts/Arial_Black.ttf" id="14_022ss"]
 [ext_resource type="Shader" path="res://shader/damageable.gdshader" id="14_m8i18"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ym17"]
@@ -186,6 +187,36 @@ top_level = true
 material_override = ExtResource("12_0ox36")
 mesh = SubResource("QuadMesh_7k38v")
 script = ExtResource("13_6wtiw")
+
+[node name="difficulty_rating" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.1401, 11.6744, -19.2161)
+billboard = 2
+texture_filter = 5
+text = "EASY"
+font = ExtResource("14_022ss")
+font_size = 512
+outline_size = 32
+width = 498.905
+
+[node name="difficulty_rating2" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.390114, 11.6744, -19.2161)
+billboard = 2
+texture_filter = 5
+text = "NORMAL"
+font = ExtResource("14_022ss")
+font_size = 512
+outline_size = 32
+width = 498.905
+
+[node name="difficulty_rating3" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.8599, 11.6744, -19.2161)
+billboard = 2
+texture_filter = 5
+text = "HARD"
+font = ExtResource("14_022ss")
+font_size = 512
+outline_size = 32
+width = 498.905
 
 [connection signal="hit" from="Medium/Hurtbox/Hitbox" to="Medium" method="_on_hit"]
 [connection signal="hit" from="Easy/Hurtbox/Hitbox" to="Easy" method="_on_hit"]

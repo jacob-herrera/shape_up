@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b0ipqld686dli"]
+
+[ext_resource type="Shader" path="res://shader/fake_shadows_alpha.gdshader" id="1_2auej"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2auej")
+shader_parameter/albedo = Color(1, 1, 0, 1)
+shader_parameter/alpha = 0.25

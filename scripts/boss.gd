@@ -157,6 +157,7 @@ func _process(delta: float) -> void:
 	visual.global_position = global_position + shake_vec
 	
 	if health <= 0 and state != BossState.DEAD:
+		Leaderboard.boss2_unlocked = true
 		Leaderboard.check_high_score(SceneManager.difficulty, 0, HUD.time)
 		state = BossState.DEAD
 		Character.invincible = true

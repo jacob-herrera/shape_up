@@ -5,8 +5,10 @@ var config: ConfigFile
 const SAVE_PATH: String = "user://shapeup_savedata.cfg"
 
 var time_sec: String = "TIME TABLE"
+var flags_sec: String = "FLAGS"
 
 func _populate_config():
+	config.set_value(flags_sec, "BOSS_2", false)
 	for difficulty in 3:
 		for boss in 2:
 			for placement in 3:
@@ -14,6 +16,7 @@ func _populate_config():
 				config.set_value(time_sec, s, 0)
 
 func read_config():
+	Leaderboard.boss2_unlocked = config.get_value(flags_sec, "BOSS_2")
 	for difficulty in 3:
 		for boss in 2:
 			for placement in 3:
@@ -25,6 +28,7 @@ func save_config():
 	if not OS.has_feature("windows"):
 		return
 		
+	config.set_value(flags_sec, "BOSS_2", Leaderboard.boss2_unlocked)
 	for difficulty in 3:
 		for boss in 2:
 			for placement in 3:
