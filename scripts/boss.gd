@@ -52,7 +52,7 @@ const HP_EASY: int = 1000
 const HP_MEDIUM: int = 1750
 const HP_HARD: int = 4500
 
-var max_health: float
+var max_health: int
 
 var health: int
 var spawned_chaser: bool = false
