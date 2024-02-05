@@ -286,7 +286,11 @@ func _process(_dt: float) -> void:
 	
 	flash_T -= ms_diff / 500.0
 	flash.color.a = remap(flash_T, 0.0, 1.0, 0.0, 0.5)
+	twinkle.modulate = Color(1,1,1,remap(flash_T, 0.0, 1.0, 0.0, 0.5))
 	twinkle.frame = remap(flash_T, 1.0, 0.0, 0.0, 60.0) as int
+	var s: float = remap(flash_T, 0.0, 1.0, 0.0, 2.0)
+	twinkle.scale = Vector2(s,s)
+	twinkle.rotation = remap(flash_T, 0.0, 1.0, -45.0, 0.0)
 	
 	var strength: float = remap(clampf(Controls.clock_speed, 1.0, 2.0), 1.0, 2.0, 0, SHAKE_STRENGTH)
 	var shake_vec := Vector2(rng.randf_range(-strength, strength), rng.randf_range(-strength, strength))
