@@ -41,10 +41,15 @@ func _toggle_menu() -> void:
 	else:
 		#play_button.grab_focus()
 		show()
+		settings.hide()
+		sounds.hide()
+		graphics.hide()
+		controls.hide()
 		Engine.time_scale = 0
 		#mouse_filter =
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	enabled = not enabled
+	print(enabled)
 
 func _toggle_settings() -> void:
 	if in_settings:
@@ -60,6 +65,7 @@ func _toggle_settings() -> void:
 		graphics.hide()
 		controls.hide()
 	in_settings = not in_settings
+	print(enabled)
 
 func _toggle_submenu(which_menu : VBoxContainer) -> void:
 	settings.hide()
@@ -67,8 +73,9 @@ func _toggle_submenu(which_menu : VBoxContainer) -> void:
 	graphics.hide()
 	controls.hide()
 	which_menu.show()
-	in_submenu = not in_submenu
 	in_settings = not in_settings
+	in_submenu = not in_submenu
+	print(enabled)
 
 func _fullscreen_toggle(full):
 	if full == true:

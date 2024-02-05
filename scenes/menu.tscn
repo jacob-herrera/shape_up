@@ -30,7 +30,6 @@ theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
 [node name="Main" type="VBoxContainer" parent="Margin"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 50
 
@@ -97,7 +96,6 @@ text = "BACK
 "
 
 [node name="Sounds" type="VBoxContainer" parent="Margin"]
-visible = false
 layout_mode = 2
 
 [node name="Master Label" type="Label" parent="Margin/Sounds"]
@@ -169,7 +167,6 @@ value = 0.25
 bus_name = "Effects"
 
 [node name="Graphics" type="VBoxContainer" parent="Margin"]
-visible = false
 layout_mode = 2
 
 [node name="Fullscreen Toggle" type="CheckButton" parent="Margin/Graphics"]
@@ -179,7 +176,6 @@ theme_override_font_sizes/font_size = 64
 text = "Fullscreen"
 
 [node name="Controls" type="VBoxContainer" parent="Margin"]
-visible = false
 layout_mode = 2
 
 [node name="Rebinds" type="VBoxContainer" parent="Margin/Controls"]
