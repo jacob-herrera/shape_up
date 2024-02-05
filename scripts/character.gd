@@ -35,6 +35,7 @@ var GRAVITY: float
 @onready var sfx_hit: AudioStreamPlayer = $Sounds/Hit
 @onready var sfx_boss_laser: AudioStreamPlayer = $Sounds/BossLaser
 @onready var sfx_boss_spikes: AudioStreamPlayer = $Sounds/BossSpikes
+@onready var sfx_boss_spinner: AudioStreamPlayer = $Sounds/BossSpinner
 @onready var sfx_click: AudioStreamPlayer = $Sounds/Click
 
 var grounded: bool = false
@@ -54,6 +55,7 @@ func _ready() -> void:
 	Controls.connect("exited_scope", _exited_scope)
 	PitchChanger.register_inverse_player(sfx_boss_laser)
 	PitchChanger.register_inverse_player(sfx_boss_spikes)
+	PitchChanger.register_inverse_player(sfx_boss_spinner)
 	#PitchChanger.register_inverse_player(sfx_sniper_shoot)
 	#PitchChanger.register_inverse_player(sfx_sniper_charge)
 	#PitchChanger.register_inverse_player(sfx_shotgun)
@@ -88,9 +90,8 @@ func _do_guns() -> void:
 				velocity -= dir * auto_kickback 
 			sfx_auto.pitch_scale = remap(pitch_bullets, 128.0, 0.0, 2.0, 1.0)
 			sfx_auto.play()
-		elif not is_auto_out_of_ammo_flag and not invincible:
+		elif not invincible:
 			sfx_dryfire.play()
-			is_auto_out_of_ammo_flag = true
 			
 	elif Controls.get_shotgun_attack():
 		var result: int = BulletServer.fire_shotgun(fire_pos.global_position, dir)
@@ -103,9 +104,6 @@ func _do_guns() -> void:
 			sfx_shotgun.play()	
 		else:
 			sfx_dryfire.play()
-			
-	if BulletServer.valid_bullets > 0:
-		is_auto_out_of_ammo_flag = false
 
 
 func _physics_process(delta: float) -> void:

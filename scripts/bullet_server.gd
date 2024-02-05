@@ -208,6 +208,7 @@ func _process(delta: float) -> void:
 					if not bullet.stale:
 						var hitbox: Hitbox = result.collider.find_child("Hitbox", false) as Hitbox
 						if hitbox != null:
+							bullet.stale = true
 							hitbox.do_hit(bullet.dmg)
 							did_hit = true
 					

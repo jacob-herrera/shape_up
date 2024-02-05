@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://qhuvdggdf4tv"]
+[gd_scene load_steps=29 format=3 uid="uid://qhuvdggdf4tv"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_3xlau"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_34f15"]
@@ -19,6 +19,7 @@
 [ext_resource type="AudioStream" uid="uid://78gqa4vtn3sk" path="res://sound/boss_laser.wav" id="16_2jv0r"]
 [ext_resource type="AudioStream" uid="uid://c73mjli1yt8pl" path="res://sound/click.wav" id="17_gwx6a"]
 [ext_resource type="AudioStream" uid="uid://bf58nw6hxv863" path="res://sound/spike.mp3" id="17_vpex1"]
+[ext_resource type="AudioStream" uid="uid://dbn2b6td4occ2" path="res://sound/charge_spinner.mp3" id="18_fhd1x"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cc7ui"]
 
@@ -180,6 +181,11 @@ bus = &"Effects"
 [node name="BossSpikes" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("17_vpex1")
 volume_db = 10.0
+bus = &"Effects"
+
+[node name="BossSpinner" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("18_fhd1x")
+volume_db = 5.0
 bus = &"Effects"
 
 [node name="Click" type="AudioStreamPlayer" parent="Sounds"]

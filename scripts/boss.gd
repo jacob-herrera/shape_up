@@ -70,6 +70,7 @@ var orbit_height: float = PHASE_ONE_ORIBIT_HEIGHT
 
 func _ready() -> void:
 	HUD.boss_health_bar.max_value = MAX_HEALTH
+	HUD.update_boss_health(MAX_HEALTH)
 	spawned_chaser = false
 
 func spawn_chaser() -> void:
