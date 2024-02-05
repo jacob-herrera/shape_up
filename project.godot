@@ -30,6 +30,7 @@ PitchChanger="*res://scripts/pitch_changer.gd"
 Character="*res://scenes/character.tscn"
 SceneManager="*res://scripts/scene_manager.gd"
 Leaderboard="*res://scripts/leaderboard.gd"
+SaveData="*res://scripts/save_data.gd"
 
 [display]
 

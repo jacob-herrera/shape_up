@@ -7,8 +7,6 @@ func _ready():
 	
 	var scores = Leaderboard.highscores
 
-	
-
 	$b1_1st.text = "%.3f" % scores[dif][0][0]
 	$b1_2nd.text = "%.3f" % scores[dif][0][1]
 	$b1_3rd.text = "%.3f" % scores[dif][0][2]
