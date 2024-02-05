@@ -5,5 +5,5 @@ extends Node3D
 
 func _ready():
 	var scores = Leaderboard.highscores
-	BestTimes.text = "%s %.3f %.3f %.3f" % ["String", scores[0][0], scores[0][1], scores[0][2]]
-	BestTimes2.text = "%s %.3f %.3f %.3f" % ["String", scores[1][0], scores[1][1], scores[1][2]]
+	BestTimes.text = "%s %.3f %.3f %.3f" % ["Time:", scores[0][0], scores[0][1], scores[0][2]]
+	BestTimes2.text = "%s %.3f %.3f %.3f" % ["Time:", scores[1][0], scores[1][1], scores[1][2]]
