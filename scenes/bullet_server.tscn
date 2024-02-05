@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ds3q4pv5yoswy"]
+[gd_scene load_steps=5 format=3 uid="uid://ds3q4pv5yoswy"]
 
 [ext_resource type="Script" path="res://scripts/bullet_server.gd" id="1_cg617"]
 [ext_resource type="AudioStream" uid="uid://dvhb2pwsttobd" path="res://sound/collect_pop.wav" id="2_6k3nl"]
 [ext_resource type="AudioStream" uid="uid://k23hycwyi42l" path="res://sound/collect_bolt.wav" id="3_6ch25"]
+[ext_resource type="AudioStream" uid="uid://dnyvwddf4b2lm" path="res://sound/sniper_fully_loaded.mp3" id="4_sr47j"]
 
 [node name="BulletServer" type="Node3D"]
 script = ExtResource("1_cg617")
@@ -16,4 +17,8 @@ bus = &"Effects"
 
 [node name="CollectBolt" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_6ch25")
+bus = &"Effects"
+
+[node name="SniperLoaded" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_sr47j")
 bus = &"Effects"

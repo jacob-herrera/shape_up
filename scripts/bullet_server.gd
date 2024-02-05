@@ -73,6 +73,7 @@ var bolt_world_pos: Vector3
 var bolt_T: float = 0
 var bolt_state: BoltState = BoltState.COLLECTED
 var bolt_damage: float = 128.0
+#var sound_played:
 var BOLT_DAMAGE_CHARGE_RATE: float = 8.0
 #const MAX_BOLT_DA
 
@@ -142,8 +143,11 @@ func _process_bolt(delta: float) -> void:
 			cone_mat.set_shader_parameter("alpha", 1-bolt_T)
 			cone.global_position = lerp(cone.global_position, target, bolt_T) 
 		BoltState.COLLECTED:
-			bolt_damage += delta * BOLT_DAMAGE_CHARGE_RATE
-			bolt_damage = clampf(bolt_damage, 0, MAX_SNIPER_DAMAGE)
+			if bolt_damage < MAX_SNIPER_DAMAGE:
+				bolt_damage += delta * BOLT_DAMAGE_CHARGE_RATE
+				bolt_damage = clampf(bolt_damage, 0, MAX_SNIPER_DAMAGE)
+				if bolt_damage == MAX_SNIPER_DAMAGE:
+					$SniperLoaded.play()
 			
 	cone.visible = bolt_state != BoltState.COLLECTED
 

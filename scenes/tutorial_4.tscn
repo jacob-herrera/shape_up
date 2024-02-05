@@ -245,7 +245,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("5_i6o8x")
 theme_override_font_sizes/font_size = 48
 text = "IT DOES NOT LOSE CHARGE
-UNTIL DAMAGE IS DONE."
+UNLESS DAMAGE IS DELT."
 horizontal_alignment = 1
 vertical_alignment = 1
 

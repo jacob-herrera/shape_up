@@ -165,6 +165,7 @@ bus = &"Effects"
 
 [node name="Hit" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("15_i881q")
+volume_db = 1.25
 max_polyphony = 3
 bus = &"Effects"
 
